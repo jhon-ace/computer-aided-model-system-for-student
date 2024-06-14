@@ -1,19 +1,19 @@
 
-<div class="fixed flex flex-col   left-0 w-14 hover:w-48 md:w-48 bg-white h-full text-white transition-all duration-300 border-none z-10 sidebar">
+<div class="fixed flex flex-col   left-0 w-14 hover:w-48 md:w-48 bg-white h-full text-black transition-all duration-300 border-none z-10 sidebar">
     <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow">
         <ul class="flex flex-col py-2 space-y-1 text-gray-800" >
             <a href="#">
                 <img class="w-auto h-auto object-contain" src="<?php echo e(asset('assets/img/user.png')); ?>" alt="SCMS Logo">
             </a>
-            <label class="relative flex flex-row justify-center items-center h-1 focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent  pr-6 ">
-                <span class=" text-sm tracking-wide truncate text-gray-800"><?php echo e(Auth::user()->name); ?></span>
+            <label class="relative flex flex-row justify-center items-center h-1 focus:outline-none   text-black hover:text-white-800 border-l-4 border-transparent  pr-6 ">
+                <span class=" text-sm tracking-wide truncate text-black ml-2"><?php echo e(Auth::user()->name); ?></span>
             </label>
             <label class="relative flex flex-row justify-center h-5 focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent   ">
                 <span class=" text-xs tracking-wide truncate text-black"><?php echo e(Auth::user()->email); ?></span>
             </label>
             <div class="border-t"></div>
             <li>
-            <a href="<?php echo e(route('teacher.dashboard')); ?>" class="relative flex flex-row items-center h-11 focus:outline-none  hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 <?php echo e(request()->routeIs('teacher.dashboard') ? ' border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white'); ?>">
+            <a href="<?php echo e(route('teacher.dashboard')); ?>" class="relative flex flex-row items-center h-11 focus:outline-none  hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 <?php echo e(request()->routeIs('teacher.dashboard') ? ' rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white'); ?>">
                 <span class="inline-flex justify-center items-center ml-4">
                     <i class="fa-solid fa-gauge-high fa-lg" style="color: #fffff;"></i>
                 </span>
