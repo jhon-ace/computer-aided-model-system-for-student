@@ -28,10 +28,10 @@
 <?php $component = $__componentOriginal8a863ae962bbf3c4907cbf5446e54179; ?>
 <?php unset($__componentOriginal8a863ae962bbf3c4907cbf5446e54179); ?>
 <?php endif; ?>
-    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-neutral-300 text-black dark:text-white">
+    <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-neutral-200 text-black dark:text-white">
         <div class="h-full ml-14 mb-10 md:ml-48 ">
             <div class="max-w-full mx-auto  mt-10 sm:px-10 md:px-12 lg:px-10 xl:px-10 ">
-                <div class="text-gray-700 ml-5 text-md">Admin / Edit Department</div>
+                <div class="ml-5 font-bold text-md tracking-tight text-gray-600 uppercase">admin / edit department</div>
                     <div class="container mx-auto p-4">
                         <div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-8 lg:p-10 text-black font-medium">
                             <div class="flex justify-end mb-4">
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="flex  mb-4 mt-5 justify-center">
                                         <button type="submit" class="w-80 bg-blue-500 text-white px-4 py-2 rounded-md">
-                                            <i class="fa-solid fa-pen" style="color: #ffffff;"></i> Update
+                                            <i class="fa-solid fa-pen" style="color: #ffffff;"></i> Save Update
                                         </button>
                                 </div>
                             </form>

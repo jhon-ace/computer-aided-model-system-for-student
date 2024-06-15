@@ -1,6 +1,8 @@
 
-<div class="fixed flex flex-col   left-0 w-14 hover:w-48 md:w-48 bg-white h-full text-black transition-all duration-300 border-none z-10 sidebar">
-    <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow">
+<div class="fixed flex flex-col left-0 w-14 hover:w-48 md:w-48 bg-white h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-10 sidebar">
+
+
+    <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow mr-1">
         <ul class="flex flex-col py-2 space-y-1 text-gray-800" >
             <a href="#">
                 <img class="w-auto h-auto object-contain" src="<?php echo e(asset('assets/img/user.png')); ?>" alt="SCMS Logo">
@@ -26,7 +28,7 @@
                 </div>
             </li>
             <li>
-                <a  href="<?php echo e(route('admin.department.index')); ?>"  
+                <a  href=""  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
                         <?php echo e(request()->routeIs('admin.department.index') || request()->routeIs('admin.department.edit') || request()->routeIs('admin.department.create') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
                     <span class="inline-flex justify-center items-center ml-4">
@@ -36,7 +38,7 @@
                 </a>
             </li>
             <li>
-                <a  href="<?php echo e(route('admin.dean.index')); ?>"  
+                <a  href=""  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
                         <?php echo e(request()->routeIs('admin.dean.index') || request()->routeIs('admin.dean.edit') || request()->routeIs('admin.dean.create') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
                     <span class="inline-flex justify-center items-center ml-4">
@@ -45,36 +47,7 @@
                     <span class="ml-2 text-sm tracking-wide truncate">My Modules</span>
                 </a>
             </li>
-            <li>
-                <a  href="<?php echo e(route('admin.program.index')); ?>"  
-                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        <?php echo e(request()->routeIs('admin.program.index') || request()->routeIs('admin.program.edit') || request()->routeIs('admin.program.create') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
-                    <span class="inline-flex justify-center items-center ml-4">
-                        <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md" style="color: #fffff;"></i>
-                    </span>
-                    <span class="ml-2 text-sm tracking-wide truncate">Programs</span>
-                </a>
-            </li>
-            <li>
-                <a  href="<?php echo e(route('admin.course.index')); ?>"  
-                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        <?php echo e(request()->routeIs('admin.course.index') || request()->routeIs('admin.course.edit') || request()->routeIs('admin.course.create') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
-                    <span class="inline-flex justify-center items-center ml-4">
-                        <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md" style="color: #fffff;"></i>
-                    </span>
-                    <span class="ml-2 text-sm tracking-wide truncate">Course</span>
-                </a>
-            </li>
-            <li>
-                <a  href="<?php echo e(route('admin.faculty.index')); ?>"  
-                    class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        <?php echo e(request()->routeIs('admin.faculty.index') || request()->routeIs('admin.faculty.edit') || request()->routeIs('admin.faculty.create') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
-                    <span class="inline-flex justify-center items-center ml-4">
-                        <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md" style="color: #fffff;"></i>
-                    </span>
-                    <span class="ml-2 text-sm tracking-wide truncate">Faculty</span>
-                </a>
-            </li>
+            
             <li class="px-5 hidden md:block">
                 <div class="flex flex-row items-center mt-5 h-8">
                 <div class="text-sm font-light tracking-wide text-gray-500 uppercase">Tools</div>
@@ -83,7 +56,7 @@
             
             
             <li>
-              <a href="<?php echo e(route('admin.profile.edit')); ?>" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 <?php echo e(request()->routeIs('admin.profile.edit') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white'); ?>">
+              <a href="" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 <?php echo e(request()->routeIs('admin.profile.edit') ? 'border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white'); ?>">
                     <span class="inline-flex justify-center items-center ml-4">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>

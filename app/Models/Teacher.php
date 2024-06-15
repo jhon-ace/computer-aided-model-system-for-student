@@ -6,10 +6,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Models\Course;
+use App\Models\Department;
 
 class Teacher extends Authenticatable
 {
     use HasFactory, Notifiable;
+
+    public $table = 'teachers';
     
     protected $guard = 'teacher';
 
@@ -19,9 +23,13 @@ class Teacher extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'teachers_photo',
         'name',
         'email',
         'password',
+        'course_taught_id',
+        'department_id',
+        'status',
     ];
 
     /**
@@ -45,5 +53,16 @@ class Teacher extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'course_taught_id');
+    }
+
+    
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
     }
 }

@@ -3,7 +3,7 @@
     <div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-white text-black dark:text-white">
         <div class="h-full ml-14 mb-10 md:ml-48 ">
             <div class="max-w-full mx-auto  mt-10 sm:px-10 md:px-12 lg:px-10 xl:px-10 ">
-                <div class="ml-5 font-bold text-md tracking-wide text-gray-600 uppercase">Welcome {{ Auth::user()->name }}!</div>
+                <div class="ml-5 font-bold text-md tracking-wide text-gray-600 uppercase">Welcome, {{ Auth::user()->name }} !</div>
                     <div class="grid grid-cols-1  sm:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
                         <a href="" class="">
                             <div class=" shadow-lg rounded-lg flex items-center justify-between p-10 border-2 border-gray-300 dark:border-gray-600 text-black font-medium group">

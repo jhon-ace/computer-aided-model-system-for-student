@@ -5,7 +5,7 @@ use App\Http\Controllers\Admin\Auth\DepartmentController;
 use App\Http\Controllers\Admin\Auth\DeanController;
 use App\Http\Controllers\Admin\Auth\ProgramController;
 use App\Http\Controllers\Admin\Auth\CourseController;
-use App\Http\Controllers\Admin\Auth\FacultyController;
+use App\Http\Controllers\Admin\Auth\TeacherController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -68,15 +68,15 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     ]);
     Route::delete('course', [CourseController::class, 'deleteSelected'])->name('course.deleteSelected');
 
-// Instructor Routes
-    Route::resource('faculty', FacultyController::class)->names([
-        'index' => 'faculty.index',
-        'create' => 'faculty.create',
-        'store' => 'faculty.store',
-        'edit' => 'faculty.edit',
-        'update' => 'faculty.update',
+// Teacher Routes
+    Route::resource('teacher', TeacherController::class)->names([
+        'index' => 'teacher.index',
+        'create' => 'teacher.create',
+        'store' => 'teacher.store',
+        'edit' => 'teacher.edit',
+        'update' => 'teacher.update',
     ]);
-    Route::delete('faculty', [FacultyController::class, 'deleteSelected'])->name('faculty.deleteSelected');
+    Route::delete('teacher', [TeacherController::class, 'deleteSelected'])->name('teacher.deleteSelected');
     
 });
 

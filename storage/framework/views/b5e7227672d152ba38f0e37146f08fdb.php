@@ -1,6 +1,6 @@
 
-<div class="fixed flex flex-col   left-0 w-14 hover:w-48 md:w-48 bg-white h-full text-white transition-all duration-300 border-none z-10 sidebar">
-    <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow">
+<div class="fixed flex flex-col left-0 w-14 hover:w-48 md:w-48 bg-white h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-10 sidebar">
+    <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow mr-0.5">
         <ul class="flex flex-col py-2 space-y-1 text-gray-800" >
             <a href="#">
                 <img class="w-auto h-auto object-contain" src="<?php echo e(asset('assets/img/user.png')); ?>" alt="SCMS Logo">
@@ -66,13 +66,13 @@
                 </a>
             </li>
             <li>
-                <a  href="<?php echo e(route('admin.faculty.index')); ?>"  
+                <a  href="<?php echo e(route('admin.teacher.index')); ?>"  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        <?php echo e(request()->routeIs('admin.faculty.index') || request()->routeIs('admin.faculty.edit') || request()->routeIs('admin.faculty.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
+                        <?php echo e(request()->routeIs('admin.teacher.index') || request()->routeIs('admin.teacher.edit') || request()->routeIs('admin.teacher.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : ''); ?>">
                     <span class="inline-flex justify-center items-center ml-4">
                         <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md" style="color: #fffff;"></i>
                     </span>
-                    <span class="ml-2 text-sm tracking-wide truncate">Faculty</span>
+                    <span class="ml-2 text-sm tracking-wide truncate">Teachers</span>
                 </a>
             </li>
             <li class="px-5 hidden md:block">

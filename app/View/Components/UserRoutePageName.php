@@ -60,9 +60,9 @@ class UserRoutePageName extends Component
             'admin.course.create' => __('Add Course'),
             'admin.course.edit' => __('Edit Course'),
 
-            'admin.faculty.index' => __('Manage Faculty'),
-            'admin.faculty.create' => __('Add Faculty'),
-            'admin.faculty.edit' => __('Edit Faculty'),
+            'admin.teacher.index' => __('Manage Teachers'),
+            'admin.teacher.create' => __('Add Teacher'),
+            'admin.teacher.edit' => __('Edit Teacher'),
 
             'admin.profile.edit' => __('Edit Admin Profile'),
 
