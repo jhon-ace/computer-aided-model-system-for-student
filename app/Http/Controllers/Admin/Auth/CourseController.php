@@ -133,11 +133,11 @@ class CourseController extends Controller
 
         if ($selectedCourses) {
             // Fetch faculties associated with the selected courses
-            $facultiesInUse = Faculty::whereIn('course_taught_id', $selectedCourses)->exists();
+            $facultiesInUse = Course::whereIn('course_taught_id', $selectedCourses)->exists();
 
             // Check if any faculties are associated with the selected courses
             if ($facultiesInUse) {
-                return redirect()->route('admin.course.index')->with('error', 'Cannot delete course' . (count($selectedCourses) > 1 ? 's' : '') . ' because they are associated with faculties.');
+                return redirect()->route('admin.course.index')->with('error', 'Cannot delete course' . (count($selectedCourses) > 1 ? 's' : '') . ' because they are associated with teacher.');
             }
 
             // Attempt to delete courses if no faculties are associated

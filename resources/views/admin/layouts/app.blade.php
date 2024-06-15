@@ -17,7 +17,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
@@ -26,11 +26,13 @@
 
             <main>
                 {{ $slot }}
+                
             </main>
+
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        @include('components.footer')
-
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <x-footer />
     </body>
 </html>

@@ -34,7 +34,7 @@ class DepartmentController extends Controller
         $department = Department::create($request->validated());
            
         return redirect()->route('admin.department.index')
-                         ->with('success', $department->department_name . ' Department created successfully.');
+                         ->with('success', $department->department_name . ' department created successfully.');
     }
 
     /**
@@ -63,10 +63,10 @@ class DepartmentController extends Controller
 
         if ($department->wasChanged()) {
             return redirect()->route('admin.department.index')
-                            ->with('success', $department->department_name . ' Department updated successfully.');
+                            ->with('success', $department->department_name . ' department updated successfully.');
         } else {
             return redirect()->route('admin.department.index')
-                            ->with('info', 'No changes were made to the ' . $department->department_name . ' Department.');
+                            ->with('info', 'No changes were made to the ' . $department->department_name . ' department.');
         }
 
     }
