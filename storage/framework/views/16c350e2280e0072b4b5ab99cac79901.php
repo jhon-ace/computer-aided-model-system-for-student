@@ -207,14 +207,15 @@
                                                                 
                                                                 <!-- Modal body -->
                                                                 <p>Teacher Name: <span x-text="teacherName"></span></p>
-                                                                <label for="semester_filter" class="block text-gray-700 text-md font-bold mb-2">Select Semester:</label>
-<select id="semester_filter" name="semester_filter" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" onchange="filterCourses()">
-    <option value="1st Semester">1st Semester</option>
-    <option value="2nd Semester">2nd Semester</option>
-</select>
-
-<label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2 mt-4">Select Courses:</label>
-<select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['course_thaught_id'];
+                                                                <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Semester:</label>
+                                                                
+                                                                <select id="semester" name="semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline">
+                                                                    <option value="1st semester">1st Semester</option>
+                                                                    <option value="2nd semester">2nd Semester</option>
+                                                                </select>
+                                                                
+                                                                <label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2">Select Courses:</label>
+                                                                <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['course_thaught_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -222,54 +223,27 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" required>
-    <?php
-        $hasCourse = false;
-        $selectedSemester = request('semester_filter', '2nd Semester'); // Default to 1st Semester if not set
-    ?>
+                                                                    <?php
+                                                                        $hasCourse = false;
+                                                                    ?>
 
-    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-        <?php
-            // Check if the program's department_id matches the faculty's department_id
-            $programDepartmentId = $course->program->department_id ?? null;
-            $facultyDepartmentId = $teacher->department_id;
-            $courseSemester = $course->course_semester ?? null; // Assuming 'course_semester' attribute exists
-        ?>
-        
-        <!--[if BLOCK]><![endif]--><?php if($programDepartmentId === $facultyDepartmentId && $courseSemester === $selectedSemester): ?>
-            <?php $hasCourse = true; ?>
-            <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="<?php echo e($course->id); ?>"><?php echo e($course->course_code); ?> - <?php echo e($course->course_name); ?></option>
-        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <?php
+                                                                            // Check if the program's department_id matches the faculty's department_id
+                                                                            $programDepartmentId = $course->program->department_id ?? null;
+                                                                            $facultyDepartmentId = $teacher->department_id;
+                                                                        ?>
+                                                                        
+                                                                        <!--[if BLOCK]><![endif]--><?php if($programDepartmentId === $facultyDepartmentId): ?>
+                                                                            <?php $hasCourse = true; ?>
+                                                                            <option lass="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline"value="<?php echo e($course->id); ?>"><?php echo e($course->course_code); ?> - <?php echo e($course->course_name); ?></option>
+                                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
-    <!--[if BLOCK]><![endif]--><?php if(!$hasCourse): ?>
-        <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No courses available for this teacher in <?php echo e($selectedSemester); ?>.</option>
-    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-</select>
-
-<script>
-    function filterCourses() {
-        var semester = document.getElementById('semester_filter').value;
-        var options = document.getElementById('course_thaught_id').options;
-        
-        for (var i = 0; i < options.length; i++) {
-            var courseName = options[i].innerText;
-            
-            if (courseName.includes(semester)) {
-                options[i].style.display = 'block';
-            } else {
-                options[i].style.display = 'none';
-            }
-        }
-    }
-    
-    // Call filterCourses() once on page load to initialize based on default semester selection
-    filterCourses();
-</script>
-
-
-
-
-
+                                                                    <!--[if BLOCK]><![endif]--><?php if(!$hasCourse): ?>
+                                                                        <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No courses available for this teacher.</option>
+                                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                </select>
                                                                  <!-- Table -->
                                                                 <table class="min-w-full divide-y divide-gray-200 mt-4">
                                                                     <thead class="bg-gray-50">

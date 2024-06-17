@@ -150,62 +150,36 @@
                                                                 
                                                                 <!-- Modal body -->
                                                                 <p>Teacher Name: <span x-text="teacherName"></span></p>
-                                                                <label for="semester_filter" class="block text-gray-700 text-md font-bold mb-2">Select Semester:</label>
-<select id="semester_filter" name="semester_filter" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline" onchange="filterCourses()">
-    <option value="1st Semester">1st Semester</option>
-    <option value="2nd Semester">2nd Semester</option>
-</select>
+                                                                <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Semester:</label>
+                                                                
+                                                                <select id="semester" name="semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline">
+                                                                    <option value="1st semester">1st Semester</option>
+                                                                    <option value="2nd semester">2nd Semester</option>
+                                                                </select>
+                                                                
+                                                                <label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2">Select Courses:</label>
+                                                                <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('course_thaught_id') is-invalid @enderror" required>
+                                                                    @php
+                                                                        $hasCourse = false;
+                                                                    @endphp
 
-<label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2 mt-4">Select Courses:</label>
-<select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('course_thaught_id') is-invalid @enderror" required>
-    @php
-        $hasCourse = false;
-        $selectedSemester = request('semester_filter', '2nd Semester'); // Default to 1st Semester if not set
-    @endphp
+                                                                    @foreach($courses as $course)
+                                                                        @php
+                                                                            // Check if the program's department_id matches the faculty's department_id
+                                                                            $programDepartmentId = $course->program->department_id ?? null;
+                                                                            $facultyDepartmentId = $teacher->department_id;
+                                                                        @endphp
+                                                                        
+                                                                        @if ($programDepartmentId === $facultyDepartmentId)
+                                                                            @php $hasCourse = true; @endphp
+                                                                            <option lass="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline"value="{{ $course->id }}">{{ $course->course_code }} - {{ $course->course_name }}</option>
+                                                                        @endif
+                                                                    @endforeach
 
-    @foreach($courses as $course)
-        @php
-            // Check if the program's department_id matches the faculty's department_id
-            $programDepartmentId = $course->program->department_id ?? null;
-            $facultyDepartmentId = $teacher->department_id;
-            $courseSemester = $course->course_semester ?? null; // Assuming 'course_semester' attribute exists
-        @endphp
-        
-        @if ($programDepartmentId === $facultyDepartmentId && $courseSemester === $selectedSemester)
-            @php $hasCourse = true; @endphp
-            <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="{{ $course->id }}">{{ $course->course_code }} - {{ $course->course_name }}</option>
-        @endif
-    @endforeach
-
-    @if (!$hasCourse)
-        <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No courses available for this teacher in {{ $selectedSemester }}.</option>
-    @endif
-</select>
-
-<script>
-    function filterCourses() {
-        var semester = document.getElementById('semester_filter').value;
-        var options = document.getElementById('course_thaught_id').options;
-        
-        for (var i = 0; i < options.length; i++) {
-            var courseName = options[i].innerText;
-            
-            if (courseName.includes(semester)) {
-                options[i].style.display = 'block';
-            } else {
-                options[i].style.display = 'none';
-            }
-        }
-    }
-    
-    // Call filterCourses() once on page load to initialize based on default semester selection
-    filterCourses();
-</script>
-
-
-
-
-
+                                                                    @if (!$hasCourse)
+                                                                        <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No courses available for this teacher.</option>
+                                                                    @endif
+                                                                </select>
                                                                  <!-- Table -->
                                                                 <table class="min-w-full divide-y divide-gray-200 mt-4">
                                                                     <thead class="bg-gray-50">
