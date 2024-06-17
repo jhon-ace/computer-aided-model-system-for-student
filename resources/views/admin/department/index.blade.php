@@ -1,4 +1,3 @@
-
 <x-admin-app-layout>
     <x-user-route-page-name :routeName="'admin.department.index'" />
     <x-section-div-style>

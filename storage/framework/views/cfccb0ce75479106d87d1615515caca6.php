@@ -38,11 +38,8 @@
 <?php $attributes = $attributes->except(\App\View\Components\SectionDivStyle::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-        <div class="h-full ml-14 mb-10 md:ml-48 ">
-            <div class="max-w-full mx-auto  mt-10 sm:px-10 md:px-12 lg:px-10 xl:px-10 ">
-                <div class="ml-5 font-bold text-md tracking-tight text-gray-600 uppercase">admin / Manage program</div>
-                    <div class="container mx-auto p-4">
-                        <?php
+        <div class="container mx-auto p-4">
+            <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
 };
@@ -58,9 +55,6 @@ unset($__params);
 unset($__split);
 if (isset($__slots)) unset($__slots);
 ?>
-                    </div>
-                </div>
-            </div>
         </div>
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
@@ -83,5 +77,25 @@ if (isset($__slots)) unset($__slots);
 <?php unset($__componentOriginal15a72a62debbe72bfa7a4f1dc73a4a07); ?>
 <?php endif; ?>
 
+<?php if (isset($component)) { $__componentOriginal7f83d574ebf694838d71081ed65bad7b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7f83d574ebf694838d71081ed65bad7b = $attributes; } ?>
+<?php $component = App\View\Components\ShowHideSidebar::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('show-hide-sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\ShowHideSidebar::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['toggleButtonId' => 'toggleButton','sidebarContainerId' => 'sidebarContainer','dashboardContentId' => 'dashboardContent','toggleIconId' => 'toggleIcon']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7f83d574ebf694838d71081ed65bad7b)): ?>
+<?php $attributes = $__attributesOriginal7f83d574ebf694838d71081ed65bad7b; ?>
+<?php unset($__attributesOriginal7f83d574ebf694838d71081ed65bad7b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7f83d574ebf694838d71081ed65bad7b)): ?>
+<?php $component = $__componentOriginal7f83d574ebf694838d71081ed65bad7b; ?>
+<?php unset($__componentOriginal7f83d574ebf694838d71081ed65bad7b); ?>
+<?php endif; ?>
 
 <?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/admin/program/index.blade.php ENDPATH**/ ?>

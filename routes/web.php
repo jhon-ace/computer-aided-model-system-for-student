@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\Auth\DeanController;
 use App\Http\Controllers\Admin\Auth\ProgramController;
 use App\Http\Controllers\Admin\Auth\CourseController;
 use App\Http\Controllers\Admin\Auth\TeacherController;
+use App\Http\Controllers\Admin\Auth\TeacherCourseController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -54,10 +55,6 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
     ]);
     Route::delete('program', [ProgramController::class, 'deleteSelected'])->name('program.deleteSelected');
 
-
-
-
-
 // Course Routes
     Route::resource('course', CourseController::class)->names([
         'index' => 'course.index',
@@ -77,6 +74,8 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
         'update' => 'teacher.update',
     ]);
     Route::delete('teacher', [TeacherController::class, 'deleteSelected'])->name('teacher.deleteSelected');
+    
+  //  Route::get('teacher-course/id={id}', [TeacherController::class, 'assignCourse'])->name('teacher.assignCourse');
     
 });
 

@@ -1,35 +1,36 @@
-<div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-8 lg:p-10 text-black font-medium">
+<div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-8 text-black font-medium">
     @if (session('success'))
-        <x-success-message>
-            {{ session('success') }}
-        </x-success-message>
+        <x-sweetalert type="success" :message="session('success')" />
     @endif
 
     @if (session('info'))
-        <x-info-message>
-            {{ session('info') }}
-        </x-info-message>
+        <x-sweetalert type="info" :message="session('info')" />
     @endif
+
     @if (session('error'))
-        <x-error-message>
-            {{ session('error') }}
-        </x-error-message>
+        <x-sweetalert type="error" :message="session('error')" />
     @endif
-    <div class="flex justify-between mb-4">
-        <a href="{{ route('admin.course.create') }}">
-            <button class="bg-blue-500 text-white text-sm px-4 py-2 rounded hover:bg-blue-700">
-                <i class="fa-solid fa-plus fa-md" style="color: #ffffff;"></i> Add
-            </button>
-        </a>
-        <div class="flex justify-center sm:justify-end w-full sm:w-auto">
-            <input wire:model.live="search" type="text" class="border text-black border-gray-300 rounded-md p-2 w-64" placeholder="Search..." autofocus>
+    <div class="flex justify-between mb-4 sm:-mt-4">
+        <div class="font-bold text-md tracking-tight text-black mt-2">Admin / Manage Courses</div>
+            <a href="{{ route('admin.course.create') }}">
+                <button class="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-blue-700">
+                    <i class="fa-solid fa-plus fa-xs" style="color: #ffffff;"></i> Add Course
+                </button>
+            </a>
         </div>
-    </div>
-    <div class="overflow-x-auto">
-        @if($courses->isEmpty())
-            <p class="text-black mt-10 text-center">No program found for matching "{{ $search }}"</p>
-        @else
-                <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
+        <hr class="border-gray-200 my-4">
+        <div class="flex justify-end mb-4">
+            <div class="flex justify-center sm:justify-end w-full sm:w-auto">
+                <input wire:model.live="search" type="text" class="border text-black border-gray-300 rounded-md p-2 w-64" placeholder="Search..." autofocus>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            @if($search && $courses->isEmpty())
+                <p class="text-black mt-8 text-center">No course found for matching "{{ $search }}"</p>
+            @elseif(!$search && $courses->isEmpty())
+                <p class="text-black mt-8 text-center">No data available in table</p>
+            @else
+                <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4 ">
                     <thead class="bg-gray-200 text-black">
                         <tr>
                             <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
@@ -96,7 +97,7 @@
                             <th class="border border-gray-400 px-4 py-2">Action</th>
                         </tr>
                     </thead>
-                    <form id="deleteSelectedForm" action="{{ route('admin.course.deleteSelected') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete the selected courses?');">
+                    <form id="deleteSelectedForm" action="{{ route('admin.course.deleteSelected') }}" method="POST" onsubmit="return confirmDelete(event);">
                         @csrf
                         @method('DELETE')
                         <input type="hidden" wire:model="deleteAllClicked" value="true">
@@ -127,9 +128,33 @@
     </div>
 </div>
 
+
 <script>
+    // Function to confirm delete action using SweetAlert2
+    function confirmDelete(event) {
+        event.preventDefault(); // Prevent form submission initially
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the form programmatically
+                document.getElementById('deleteSelectedForm').submit();
+            }
+        });
+    }
+
+    // Check all checkboxes when "selectAll" checkbox is clicked
     document.getElementById('selectAll').addEventListener('change', function(e) {
         const checkboxes = document.querySelectorAll('input[name="selected[]"]');
         checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
     });
 </script>
+
+

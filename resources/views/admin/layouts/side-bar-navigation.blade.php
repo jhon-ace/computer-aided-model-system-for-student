@@ -15,7 +15,7 @@
             <li>
             <a href="{{route('admin.dashboard')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 {{ request()->routeIs('admin.dashboard') ? ' rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white' }}">
                 <span class="inline-flex justify-center items-center ml-4">
-                    <i class="fa-solid fa-gauge-high fa-lg" style="color: #fffff;"></i>
+                    <i class="fa-solid fa-gauge-high fa-lg text-white" style="color: #fffff;"></i>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate text-white">Dashboard</span>
                 </a>
@@ -68,7 +68,8 @@
             <li>
                 <a  href="{{ route('admin.teacher.index') }}"  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        {{ request()->routeIs('admin.teacher.index') || request()->routeIs('admin.teacher.edit') || request()->routeIs('admin.teacher.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
+                        {{ request()->routeIs('admin.teacher.index') || request()->routeIs('admin.teacher.edit') || request()->routeIs('admin.teacher.create') 
+                         || request()->routeIs('admin.teacher.assignCourse') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
                     <span class="inline-flex justify-center items-center ml-4">
                         <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md text-white" style="color: #fffff;"></i>
                     </span>
@@ -110,7 +111,7 @@
                 </form>
             </li> -->
         </ul>
-            <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs text-white">Copyright @2021</p>
+            <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs text-white">Copyright @2024</p>
     </div>
 </div>
 <!-- end of admin navigation -->

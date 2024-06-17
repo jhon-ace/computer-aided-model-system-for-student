@@ -21,6 +21,7 @@ class TeacherController extends Controller
      */
     public function index()
     {
+        
         return view('admin.teacher.index');
     }
 
@@ -72,7 +73,7 @@ class TeacherController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Faculty $faculty)
+    public function show(string $id)
     {
         //
     }
@@ -200,4 +201,18 @@ class TeacherController extends Controller
             return redirect()->route('admin.teacher.index')->with('error', 'No teacher selected for deletion.');
         }
     }
+
+    public function assignCourse(Request $request, $id)
+    {
+        $teacher = Teacher::find($id);
+        $courses = Course::all();
+        return view('admin.teacher.courses.assign-course', [
+            'teacher' => $teacher,
+            'courses' => $courses,
+
+        ]);
+
+    }
+
+
 }

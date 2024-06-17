@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin\Auth;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Program;
-use App\Models\Faculty;
 use Illuminate\Http\Request;
 use App\Http\Requests\CourseStoreRequest;
 use App\Http\Requests\CourseUpdateRequest;
@@ -104,27 +103,6 @@ class CourseController extends Controller
                         ->with('success','Course deleted successfully');
     }
 
-    /**
-     * Delete selected resources from storage.
-     */
-    // public function deleteSelected(Request $request)
-    // {
-
-        
-    //     // Get the IDs of the selected courses
-    //     $selectedCourses = $request->input('selected');
-
-    //     if ($selectedCourses) {
-    //         // Delete the selected courses
-    //         Course::whereIn('id', $selectedCourses)->delete();
-
-    //         // Redirect with a success message
-    //         return redirect()->route('course.index')->with('success', 'Selected courses have been deleted successfully.');
-    //     } else {
-    //         // Redirect with an error message if no courses were selected
-    //         return redirect()->route('course.index')->with('error', 'No courses selected for deletion.');
-    //     }
-    // }
 
     public function deleteSelected(Request $request)
     {
@@ -133,12 +111,7 @@ class CourseController extends Controller
 
         if ($selectedCourses) {
             // Fetch faculties associated with the selected courses
-            $facultiesInUse = Course::whereIn('course_taught_id', $selectedCourses)->exists();
-
-            // Check if any faculties are associated with the selected courses
-            if ($facultiesInUse) {
-                return redirect()->route('admin.course.index')->with('error', 'Cannot delete course' . (count($selectedCourses) > 1 ? 's' : '') . ' because they are associated with teacher.');
-            }
+            $facultiesInUse = Course::whereIn('id', $selectedCourses)->exists();
 
             // Attempt to delete courses if no faculties are associated
             try {
@@ -152,6 +125,8 @@ class CourseController extends Controller
             return redirect()->route('admin.course.index')->with('error', 'No course selected for deletion.');
         }
     }
+
+
 
 
 }
