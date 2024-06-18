@@ -84,7 +84,7 @@
         </div>
         <div class="overflow-x-auto">
             <!--[if BLOCK]><![endif]--><?php if($search && $deans->isEmpty()): ?>
-                <p class="text-black mt-8 text-center">No program found for matching "<?php echo e($search); ?>"</p>
+                <p class="text-black mt-8 text-center">No dean found for matching "<?php echo e($search); ?>"</p>
             <?php elseif(!$search && $deans->isEmpty()): ?>
                 <p class="text-black mt-8 text-center">No data available in table</p>
             <?php else: ?>

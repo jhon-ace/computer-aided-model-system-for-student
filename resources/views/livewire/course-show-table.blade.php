@@ -112,9 +112,74 @@
                                     <td class="text-black border border-gray-400 px-4 py-2">{{ $course->program->program_abbreviation }}</td>
                                     <td class="text-black border border-gray-400 px-4 py-2">
                                         <div class="flex justify-center items-center space-x-2">
-                                            <a href="{{ route('admin.course.edit', $course->id) }}" class="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-red-500">
-                                                <i class="fas fa-edit fa-md"></i>
-                                            </a>
+                                            <div class="relative" x-data="{ open: false, showModal: false }">
+                                                <div @click="open = !open" class="mr-5 cursor-pointer">
+                                                    <a class="bg-slate-500 text-white text-sm mx-auto px-4 py-2 rig hover:bg-blue-700">Action <i class="fa-solid fa-caret-down" style="color: #ffffff;"></i></a>
+                                                </div>
+                                                <div x-show="open" @click.away="open = false" class="absolute right-4 mt-1.5 w-40 bg-white text-left border-2 border-gray-400 rounded-sm shadow-lg py-2 z-20">
+                                                    <a href="{{ route('admin.course.edit', $course->id) }}" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                                    </a>
+                                                    <hr class="border-gray-200">
+                                                    <div x-data="">
+                                                        <a href="#" @click="showModal = true" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                                                            <i class="fa-solid fa-file-pen"></i> Assign Teacher
+                                                        </a>
+                                                        
+                                                        <!-- Modal backdrop, show/hide based on modal state -->
+                                                        <div x-show="showModal" class="fixed inset-0 bg-black opacity-50"></div>
+
+                                                        <!-- Modal dialog, show/hide based on modal state -->
+                                                        <div x-show="showModal" class="w-full fixed inset-0 flex items-center justify-center z-50">
+                                                            <!-- Modal content -->
+                                                            <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-7xl">
+                                                                <!-- Modal header -->
+                                                                <div class="flex justify-between items-center mb-4">
+                                                                    <h3 class="text-lg font-semibold text-gray-900">Select Teacher for the Course</h3>
+                                                                    <hr class="border-gray-200">                                                                
+                                                                </div>
+                                                                
+                                                                <!-- Modal body -->
+                                                                <p>Teacher Name: <span x-text="teacherName"></span></p>
+                                                                <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Semester:</label>
+                                                                
+                                                                <select id="semester" name="semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline">
+                                                                    <option value="1st semester">1st Semester</option>
+                                                                    <option value="2nd semester">2nd Semester</option>
+                                                                </select>
+                                                                
+                                                                <label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2">Select Courses:</label>
+                                                                <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('course_thaught_id') is-invalid @enderror" required>
+                                                                    
+                                                                </select>
+                                                                <!-- Table -->
+                                                                <table class="min-w-full divide-y divide-gray-200 mt-4">
+                                                                    <thead class="bg-gray-50">
+                                                                        <tr>
+                                                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                                                <!-- Table header cells -->
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    
+                                                                    </tbody>
+                                                                </table>
+
+                                                                <!-- Modal footer -->
+                                                                <div class="mt-6 flex justify-end">
+                                                                    <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
+                                                                        Cancel
+                                                                    </a>
+                                                                    <a class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
+                                                                        Save
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                 </tr>

@@ -58,7 +58,7 @@
                                 <i class="fa-solid fa-folder-open fa-2xl" style="color: #00b825;"></i>
                             </div>
                             <div class="text-right">
-                                
+                                <p class="text-4xl">{{ \Illuminate\Support\Facades\DB::table('teachers')->count('id') }}</p>
                                 <p>Teachers</p>
                             </div>
                         </x-card-div-style>
