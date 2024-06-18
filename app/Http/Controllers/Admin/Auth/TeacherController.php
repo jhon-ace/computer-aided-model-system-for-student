@@ -202,17 +202,7 @@ class TeacherController extends Controller
         }
     }
 
-    public function assignCourse(Request $request, $id)
-    {
-        $teacher = Teacher::find($id);
-        $courses = Course::all();
-        return view('admin.teacher.courses.assign-course', [
-            'teacher' => $teacher,
-            'courses' => $courses,
 
-        ]);
-
-    }
 
 
 }

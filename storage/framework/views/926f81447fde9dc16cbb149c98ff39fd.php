@@ -178,7 +178,7 @@
                                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                                     </a>
                                                     <hr class="border-gray-200">
-                                                    <div x-data="">
+                                                    <div x-data="{ showModal: false, courseId: <?php echo e($course->id); ?>, courseCode: '<?php echo e($course->course_code); ?>', courseName: '<?php echo e($course->course_name); ?>'}">
                                                         <a href="#" @click="showModal = true" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
                                                             <i class="fa-solid fa-file-pen"></i> Assign Teacher
                                                         </a>
@@ -189,24 +189,22 @@
                                                         <!-- Modal dialog, show/hide based on modal state -->
                                                         <div x-show="showModal" class="w-full fixed inset-0 flex items-center justify-center z-50">
                                                             <!-- Modal content -->
-                                                            <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-7xl">
+                                                            <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-xl max-w-xl">
                                                                 <!-- Modal header -->
                                                                 <div class="flex justify-between items-center mb-4">
-                                                                    <h3 class="text-lg font-semibold text-gray-900">Select Teacher for the Course</h3>
-                                                                    <hr class="border-gray-200">                                                                
+                                                                    <h3 class="text-lg font-semibold text-gray-900">Assign Course to Teacher</h3> 
+                                                                    <a @click="showModal = false" class="cursor-pointer px-4 py-2 text-gray-400 rounded-md hover:text-blue-500">
+                                                                        <i class="fa-solid fa-close"></i>
+                                                                    </a>                                                          
                                                                 </div>
-                                                                
+                                                                <hr class="border-gray-200 mb-4">
+
                                                                 <!-- Modal body -->
-                                                                <p>Teacher Name: <span x-text="teacherName"></span></p>
-                                                                <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Semester:</label>
-                                                                
-                                                                <select id="semester" name="semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline">
-                                                                    <option value="1st semester">1st Semester</option>
-                                                                    <option value="2nd semester">2nd Semester</option>
-                                                                </select>
-                                                                
-                                                                <label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2">Select Courses:</label>
-                                                                <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['course_thaught_id'];
+                                                                <p class=" text-gray-700 text-md w-full font-bold mb-2">Course: <span x-text="courseCode" class="text-red-500"></span> - <span x-text="courseName" class="text-red-500"></span></p>
+                                                               <form id="assign-course-form" method="POST" action="<?php echo e(route('admin.course.assignCourse', $course->id)); ?>">
+                                                                    <?php echo csrf_field(); ?>
+                                                                    <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Teacher:</label>
+                                                                    <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['course_thaught_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -214,31 +212,38 @@ $message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
 if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>" required>
-                                                                    
-                                                                </select>
-                                                                <!-- Table -->
-                                                                <table class="min-w-full divide-y divide-gray-200 mt-4">
-                                                                    <thead class="bg-gray-50">
-                                                                        <tr>
-                                                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                                                <!-- Table header cells -->
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    
-                                                                    </tbody>
-                                                                </table>
+                                                                        <?php
+                                                                            $hasTeacher = false;
+                                                                        ?>
 
-                                                                <!-- Modal footer -->
-                                                                <div class="mt-6 flex justify-end">
-                                                                    <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
-                                                                        Cancel
-                                                                    </a>
-                                                                    <a class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
-                                                                        Save
-                                                                    </a>
-                                                                </div>
+                                                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teachers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $teacher): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                            <?php
+                                                                                // Check if the program's department_id matches the faculty's department_id
+                                                                                $programDepartmentId = $course->program->department_id ?? null;
+                                                                                $facultyDepartmentId = $teacher->department_id;
+                                                                            ?>
+                                                                            
+                                                                            <!--[if BLOCK]><![endif]--><?php if($programDepartmentId === $facultyDepartmentId): ?>
+                                                                                <?php $hasTeacher = true; ?>
+                                                                                <option lass="py-2 px-3  text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="<?php echo e($teacher->id); ?>"><?php echo e($teacher->name); ?></option>
+                                                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+
+                                                                        <!--[if BLOCK]><![endif]--><?php if(!$hasTeacher): ?>
+                                                                            <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No teacher available for this course.</option>
+                                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                    </select>
+
+                                                                    <!-- Modal footer -->
+                                                                    <div class="mt-6 flex justify-end">
+                                                                        <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
+                                                                            Cancel
+                                                                        </a>
+                                                                        <a href="#" onclick="event.preventDefault(); document.getElementById('assign-course-form').submit();" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
+                                                                            Save
+                                                                        </a>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -248,10 +253,12 @@ unset($__errorArgs, $__bag); ?>" required>
                                     </td>
                                 </tr>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                        </tbody>       
-                </table>
-                    <button type="submit" class="bg-red-500 text-white text-sm px-4 py-2 rounded hover:bg-red-700 mb-2">Delete Selected</button>
-                </form>
+                        </tbody>
+                    </table>
+                        <a href="#" onclick="event.preventDefault(); document.getElementById('deleteSelectedForm').submit();" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
+                                Delete
+                        </a>
+                    </form>
             <?php echo e($courses->links()); ?>
 
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->

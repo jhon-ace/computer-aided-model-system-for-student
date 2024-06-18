@@ -64,6 +64,7 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
         'update' => 'course.update',
     ]);
     Route::delete('course', [CourseController::class, 'deleteSelected'])->name('course.deleteSelected');
+    Route::post('course-assign-teacher/{id}', [CourseController::class, 'assignCourse'])->name('course.assignCourse'); // Updated route name
 
 // Teacher Routes
     Route::resource('teacher', TeacherController::class)->names([

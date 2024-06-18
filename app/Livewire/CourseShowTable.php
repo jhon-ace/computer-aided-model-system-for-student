@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use \App\Models\Course; 
+use \App\Models\Teacher; 
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
@@ -49,8 +50,11 @@ class CourseShowTable extends Component
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
+            $teachers = Teacher::all();
+
         return view('livewire.course-show-table', [
             'courses' => $courses,
+            'teachers' => $teachers,
         ]);
     }
 }

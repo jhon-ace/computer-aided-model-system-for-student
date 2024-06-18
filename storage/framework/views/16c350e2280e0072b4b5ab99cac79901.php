@@ -254,24 +254,7 @@ unset($__errorArgs, $__bag); ?>" required>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teachers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $teacher): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                        <tr>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="<?php echo e($teacher->id); ?>"></td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2 flex  items-center justify-center">
-                                                                                <!--[if BLOCK]><![endif]--><?php if($teacher->teacher_photo && Storage::exists('public/teacher_photos/' . $teacher->teacher_photo)): ?>
-                                                                                    <img src="<?php echo e(asset('storage/teacher_photos/' . $teacher->teacher_photo)); ?>" class="rounded-full w-9 h-9">
-                                                                                <?php else: ?>
-                                                                                    <img id="imagePreview" src="<?php echo e(asset('assets/img/user.png')); ?>" class="rounded-lg w-9 h-9">
-                                                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-
-                                                                            </td>
-
-                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->name); ?></td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->email); ?></td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->department->department_name); ?></td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->status); ?></td>
-                                                                        </tr>
-                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                                                    
                                                                     </tbody>
                                                                 </table>
 

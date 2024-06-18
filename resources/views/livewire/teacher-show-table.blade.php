@@ -190,24 +190,7 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody>
-                                                                    @foreach ($teachers as $teacher)
-                                                                        <tr>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="{{ $teacher->id }}"></td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2 flex  items-center justify-center">
-                                                                                @if ($teacher->teacher_photo && Storage::exists('public/teacher_photos/' . $teacher->teacher_photo))
-                                                                                    <img src="{{ asset('storage/teacher_photos/' . $teacher->teacher_photo) }}" class="rounded-full w-9 h-9">
-                                                                                @else
-                                                                                    <img id="imagePreview" src="{{ asset('assets/img/user.png') }}" class="rounded-lg w-9 h-9">
-                                                                                @endif
-
-                                                                            </td>
-
-                                                                            <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->name }}</td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->email }}</td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->department->department_name }}</td>
-                                                                            <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->status }}</td>
-                                                                        </tr>
-                                                                    @endforeach
+                                                                    
                                                                     </tbody>
                                                                 </table>
 

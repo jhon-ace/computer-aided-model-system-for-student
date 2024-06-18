@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Teacher;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use App\Http\Requests\CourseStoreRequest;
@@ -126,7 +127,24 @@ class CourseController extends Controller
         }
     }
 
+    public function assignCourse(Request $request, $id)
+    {
 
+        $course = Course::findOrFail($id);
+    
+        $teacherId = $request->input('course_thaught_id');
+    
+        $teacher = Teacher::findOrFail($teacherId);
+        
+        $newTeacher = $teacher->replicate();
+        $newTeacher->course_taught_id = $course->id;
+        $newTeacher->save();
+
+        // Redirect back with a success message or to another appropriate location
+        return redirect()->route('admin.course.index')->with('success', 'Course assigned to teacher successfully.');
+       
+    }
+    
 
 
 }
