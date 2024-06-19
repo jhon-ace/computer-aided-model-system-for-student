@@ -46,6 +46,17 @@
                 </a>
             </li>
             <li>
+                <a  href="{{ route('admin.teacher.index') }}"  
+                    class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
+                        {{ request()->routeIs('admin.teacher.index') || request()->routeIs('admin.teacher.edit') || request()->routeIs('admin.teacher.create') 
+                         || request()->routeIs('admin.teacher.assignCourse') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
+                    <span class="inline-flex justify-center items-center ml-4">
+                        <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md text-white" style="color: #fffff;"></i>
+                    </span>
+                    <span class="ml-2 text-sm tracking-wide truncate text-white">Teachers</span>
+                </a>
+            </li>
+            <li>
                 <a  href="{{ route('admin.program.index') }}"  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
                         {{ request()->routeIs('admin.program.index') || request()->routeIs('admin.program.edit') || request()->routeIs('admin.program.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
@@ -65,17 +76,7 @@
                     <span class="ml-2 text-sm tracking-wide truncate text-white">Course</span>
                 </a>
             </li>
-            <li>
-                <a  href="{{ route('admin.teacher.index') }}"  
-                    class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        {{ request()->routeIs('admin.teacher.index') || request()->routeIs('admin.teacher.edit') || request()->routeIs('admin.teacher.create') 
-                         || request()->routeIs('admin.teacher.assignCourse') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
-                    <span class="inline-flex justify-center items-center ml-4">
-                        <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md text-white" style="color: #fffff;"></i>
-                    </span>
-                    <span class="ml-2 text-sm tracking-wide truncate text-white">Teachers</span>
-                </a>
-            </li>
+
             <!-- <li class="px-5 hidden md:block">
                 <div class="flex flex-row items-center mt-5 h-8">
                 <div class="text-sm font-light tracking-wide text-gray-500 uppercase">Tools</div>

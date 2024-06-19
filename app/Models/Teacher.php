@@ -27,7 +27,6 @@ class Teacher extends Authenticatable
         'name',
         'email',
         'password',
-        'course_taught_id',
         'department_id',
         'status',
     ];
@@ -55,12 +54,7 @@ class Teacher extends Authenticatable
         ];
     }
 
-    public function course()
-    {
-        return $this->belongsTo(Course::class, 'course_taught_id');
-    }
-
-    
+   
     public function department()
     {
         return $this->belongsTo(Department::class);

@@ -33,7 +33,7 @@
                 <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
                     <thead class="bg-gray-200 text-black">
                         <tr>
-                            <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
+                        <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('teacher_photo')" class="w-full h-full flex items-center justify-center">
                                     Photo
@@ -104,6 +104,9 @@
                         <tbody>
                             @foreach ($teachers as $teacher)
                                 <tr>
+                                <form id="deleteSelectedForm" method="POST" action="{{ route('admin.course.deleteSelected') }}" onsubmit="return confirmDelete(event);">
+                                @csrf
+                                @method('DELETE')
                                     <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="{{ $teacher->id }}"></td>
                                     <td class="text-black border border-gray-400 px-4 py-2 flex  items-center justify-center">
                                         @if ($teacher->teacher_photo && Storage::exists('public/teacher_photos/' . $teacher->teacher_photo))
@@ -118,6 +121,7 @@
                                     <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->email }}</td>
                                     <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->department->department_name }}</td>
                                     <td class="text-black border border-gray-400 px-4 py-2">{{ $teacher->status }}</td>
+                                </form>
                                     <td class="text-black border border-gray-400 px-4 py-2">
                                         <div class="flex justify-center items-center space-x-2">
                                             <div class="relative" x-data="{ open: false }">
@@ -132,8 +136,9 @@
                                                     <div x-data="{ showModal: false, teacherId: {{ $teacher->id }}, teacherName: '{{ $teacher->name }}', selectedCourse: '' }">
                                                         <a href="#" x-on:click="showModal = true"
                                                             class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
-                                                            <i class="fa-solid fa-file-pen"></i> Assign Course
+                                                            <i class="fa-solid fa-file-pen"></i> View Course
                                                         </a>
+
                                                         
                                                         <!-- Modal backdrop, show/hide based on modal state -->
                                                         <div x-show="showModal" class="fixed inset-0 bg-black opacity-50"></div>
@@ -144,66 +149,19 @@
                                                             <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-7xl">
                                                                 <!-- Modal header -->
                                                                 <div class="flex justify-between items-center mb-4">
-                                                                    <h3 class="text-lg font-semibold text-gray-900">Assign Course</h3>
-                                                                    <hr class="border-gray-200">                                                                
+                                                                    <h3 class="text-lg font-semibold text-gray-900">Assign Courses</h3>
+                                                                    <a @click="showModal = false" class="cursor-pointer px-4 py-2 text-gray-400 rounded-md hover:text-blue-500">
+                                                                        <i class="fa-solid fa-close"></i>
+                                                                    </a>                                                           
                                                                 </div>
-                                                                
+                                                                <hr class="border-gray-200 mb-5">   
                                                                 <!-- Modal body -->
-                                                                <p>Teacher Name: <span x-text="teacherName"></span></p>
-                                                                <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Semester:</label>
+                                                                <p>Teacher Name: <span x-text="teacherName " class="text-red-500"></span></p>
                                                                 
-                                                                <select id="semester" name="semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline">
-                                                                    <option value="1st semester">1st Semester</option>
-                                                                    <option value="2nd semester">2nd Semester</option>
-                                                                </select>
-                                                                
-                                                                <label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2">Select Courses:</label>
-                                                                <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('course_thaught_id') is-invalid @enderror" required>
-                                                                    @php
-                                                                        $hasCourse = false;
-                                                                    @endphp
+                                                                <livewire:course-assign-show-table :teacherId="$teacher->id" />
 
-                                                                    @foreach($courses as $course)
-                                                                        @php
-                                                                            // Check if the program's department_id matches the faculty's department_id
-                                                                            $programDepartmentId = $course->program->department_id ?? null;
-                                                                            $facultyDepartmentId = $teacher->department_id;
-                                                                        @endphp
-                                                                        
-                                                                        @if ($programDepartmentId === $facultyDepartmentId)
-                                                                            @php $hasCourse = true; @endphp
-                                                                            <option lass="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline"value="{{ $course->id }}">{{ $course->course_code }} - {{ $course->course_name }}</option>
-                                                                        @endif
-                                                                    @endforeach
 
-                                                                    @if (!$hasCourse)
-                                                                        <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No courses available for this teacher.</option>
-                                                                    @endif
-                                                                </select>
-                                                                 <!-- Table -->
-                                                                <table class="min-w-full divide-y divide-gray-200 mt-4">
-                                                                    <thead class="bg-gray-50">
-                                                                        <tr>
-                                                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                                                <!-- Table header cells -->
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    
-                                                                    </tbody>
-                                                                </table>
-
-                                                                <!-- Modal footer -->
-                                                                <div class="mt-6 flex justify-end">
-                                                                    <a x-on:click="showModal = false"
-                                                                        class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
-                                                                        Cancel
-                                                                    </a>
-                                                                    <a class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
-                                                                        Save
-                                                                    </a>
-                                                                </div>
+                                                            
                                                             </div>
                                                         </div>
                                                     </div>
@@ -215,8 +173,9 @@
                             @endforeach
                         </tbody>       
                 </table>
-                    <button type="submit" class="bg-red-500 text-white text-sm px-4 py-2 rounded hover:bg-red-700 mb-2">Delete Selected</button>
-                    </form>
+                <button id="deleteSelected" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700" onclick="confirmDelete(event)">
+                    <i class="fa-solid fa-trash fa-xs" style="color: #ffffff;"></i> Delete Selected
+                </button>
                 {{ $teachers->links() }}
             @endif
         </div>
@@ -240,8 +199,28 @@
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // If confirmed, submit the form programmatically
+                // If confirmed, submit the deleteSelectedForm form programmatically
                 document.getElementById('deleteSelectedForm').submit();
+            }
+        });
+    }
+
+    // Function to confirm teacher assignment action using SweetAlert2
+    function confirmAssign(event) {
+        event.preventDefault(); // Prevent form submission initially
+
+        Swal.fire({
+            title: 'Assign Teacher to Course?',
+            text: "Are you sure you want to assign this teacher to the course?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, assign it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the assign-course-form form programmatically
+                document.getElementById('assign-course-form').submit();
             }
         });
     }
@@ -252,3 +231,4 @@
         checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
     });
 </script>
+

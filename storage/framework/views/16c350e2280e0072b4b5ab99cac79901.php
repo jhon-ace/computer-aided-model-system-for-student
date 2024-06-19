@@ -90,7 +90,7 @@
                 <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
                     <thead class="bg-gray-200 text-black">
                         <tr>
-                            <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
+                        <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('teacher_photo')" class="w-full h-full flex items-center justify-center">
                                     Photo
@@ -161,6 +161,9 @@
                         <tbody>
                             <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teachers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $teacher): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                 <tr>
+                                <form id="deleteSelectedForm" method="POST" action="<?php echo e(route('admin.course.deleteSelected')); ?>" onsubmit="return confirmDelete(event);">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
                                     <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="<?php echo e($teacher->id); ?>"></td>
                                     <td class="text-black border border-gray-400 px-4 py-2 flex  items-center justify-center">
                                         <!--[if BLOCK]><![endif]--><?php if($teacher->teacher_photo && Storage::exists('public/teacher_photos/' . $teacher->teacher_photo)): ?>
@@ -175,6 +178,7 @@
                                     <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->email); ?></td>
                                     <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->department->department_name); ?></td>
                                     <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($teacher->status); ?></td>
+                                </form>
                                     <td class="text-black border border-gray-400 px-4 py-2">
                                         <div class="flex justify-center items-center space-x-2">
                                             <div class="relative" x-data="{ open: false }">
@@ -189,8 +193,9 @@
                                                     <div x-data="{ showModal: false, teacherId: <?php echo e($teacher->id); ?>, teacherName: '<?php echo e($teacher->name); ?>', selectedCourse: '' }">
                                                         <a href="#" x-on:click="showModal = true"
                                                             class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
-                                                            <i class="fa-solid fa-file-pen"></i> Assign Course
+                                                            <i class="fa-solid fa-file-pen"></i> View Course
                                                         </a>
+
                                                         
                                                         <!-- Modal backdrop, show/hide based on modal state -->
                                                         <div x-show="showModal" class="fixed inset-0 bg-black opacity-50"></div>
@@ -201,73 +206,34 @@
                                                             <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-7xl">
                                                                 <!-- Modal header -->
                                                                 <div class="flex justify-between items-center mb-4">
-                                                                    <h3 class="text-lg font-semibold text-gray-900">Assign Course</h3>
-                                                                    <hr class="border-gray-200">                                                                
+                                                                    <h3 class="text-lg font-semibold text-gray-900">Assign Courses</h3>
+                                                                    <a @click="showModal = false" class="cursor-pointer px-4 py-2 text-gray-400 rounded-md hover:text-blue-500">
+                                                                        <i class="fa-solid fa-close"></i>
+                                                                    </a>                                                           
                                                                 </div>
-                                                                
+                                                                <hr class="border-gray-200 mb-5">   
                                                                 <!-- Modal body -->
-                                                                <p>Teacher Name: <span x-text="teacherName"></span></p>
-                                                                <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Semester:</label>
+                                                                <p>Teacher Name: <span x-text="teacherName " class="text-red-500"></span></p>
                                                                 
-                                                                <select id="semester" name="semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline">
-                                                                    <option value="1st semester">1st Semester</option>
-                                                                    <option value="2nd semester">2nd Semester</option>
-                                                                </select>
-                                                                
-                                                                <label for="course_thaught_id" class="block text-gray-700 text-md font-bold mb-2">Select Courses:</label>
-                                                                <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['course_thaught_id'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>" required>
-                                                                    <?php
-                                                                        $hasCourse = false;
-                                                                    ?>
+                                                                <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('course-assign-show-table', ['teacherId' => $teacher->id]);
 
-                                                                    <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                        <?php
-                                                                            // Check if the program's department_id matches the faculty's department_id
-                                                                            $programDepartmentId = $course->program->department_id ?? null;
-                                                                            $facultyDepartmentId = $teacher->department_id;
-                                                                        ?>
-                                                                        
-                                                                        <!--[if BLOCK]><![endif]--><?php if($programDepartmentId === $facultyDepartmentId): ?>
-                                                                            <?php $hasCourse = true; ?>
-                                                                            <option lass="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline"value="<?php echo e($course->id); ?>"><?php echo e($course->course_code); ?> - <?php echo e($course->course_name); ?></option>
-                                                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+$__html = app('livewire')->mount($__name, $__params, 'lw-1064071578-0', $__slots ?? [], get_defined_vars());
 
-                                                                    <!--[if BLOCK]><![endif]--><?php if(!$hasCourse): ?>
-                                                                        <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="" disabled>No courses available for this teacher.</option>
-                                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                                                                </select>
-                                                                 <!-- Table -->
-                                                                <table class="min-w-full divide-y divide-gray-200 mt-4">
-                                                                    <thead class="bg-gray-50">
-                                                                        <tr>
-                                                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                                                <!-- Table header cells -->
-                                                                            </th>
-                                                                        </tr>
-                                                                    </thead>
-                                                                    <tbody>
-                                                                    
-                                                                    </tbody>
-                                                                </table>
+echo $__html;
 
-                                                                <!-- Modal footer -->
-                                                                <div class="mt-6 flex justify-end">
-                                                                    <a x-on:click="showModal = false"
-                                                                        class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
-                                                                        Cancel
-                                                                    </a>
-                                                                    <a class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
-                                                                        Save
-                                                                    </a>
-                                                                </div>
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
+
+
+                                                            
                                                             </div>
                                                         </div>
                                                     </div>
@@ -279,8 +245,9 @@ unset($__errorArgs, $__bag); ?>" required>
                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                         </tbody>       
                 </table>
-                    <button type="submit" class="bg-red-500 text-white text-sm px-4 py-2 rounded hover:bg-red-700 mb-2">Delete Selected</button>
-                    </form>
+                <button id="deleteSelected" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700" onclick="confirmDelete(event)">
+                    <i class="fa-solid fa-trash fa-xs" style="color: #ffffff;"></i> Delete Selected
+                </button>
                 <?php echo e($teachers->links()); ?>
 
             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
@@ -305,8 +272,28 @@ unset($__errorArgs, $__bag); ?>" required>
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // If confirmed, submit the form programmatically
+                // If confirmed, submit the deleteSelectedForm form programmatically
                 document.getElementById('deleteSelectedForm').submit();
+            }
+        });
+    }
+
+    // Function to confirm teacher assignment action using SweetAlert2
+    function confirmAssign(event) {
+        event.preventDefault(); // Prevent form submission initially
+
+        Swal.fire({
+            title: 'Assign Teacher to Course?',
+            text: "Are you sure you want to assign this teacher to the course?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, assign it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the assign-course-form form programmatically
+                document.getElementById('assign-course-form').submit();
             }
         });
     }
@@ -317,4 +304,5 @@ unset($__errorArgs, $__bag); ?>" required>
         checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
     });
 </script>
+
 <?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/livewire/teacher-show-table.blade.php ENDPATH**/ ?>

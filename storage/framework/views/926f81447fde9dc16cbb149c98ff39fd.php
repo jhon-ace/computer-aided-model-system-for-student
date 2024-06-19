@@ -67,38 +67,42 @@
 <?php unset($__componentOriginal54e362747f6a5fcdcf7fd32363698818); ?>
 <?php endif; ?>
     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
     <div class="flex justify-between mb-4 sm:-mt-4">
         <div class="font-bold text-md tracking-tight text-black mt-2">Admin / Manage Courses</div>
-            <a href="<?php echo e(route('admin.course.create')); ?>">
-                <button class="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-blue-700">
-                    <i class="fa-solid fa-plus fa-xs" style="color: #ffffff;"></i> Add Course
-                </button>
-            </a>
+        <a href="<?php echo e(route('admin.course.create')); ?>">
+            <button class="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-blue-700">
+                <i class="fa-solid fa-plus fa-xs" style="color: #ffffff;"></i> Add Course
+            </button>
+        </a>
+    </div>
+    <hr class="border-gray-200 my-4">
+    <div class="flex justify-end mb-4">
+        <div class="flex justify-center sm:justify-end w-full sm:w-auto">
+            <input wire:model.live="search" type="text" class="border text-black border-gray-300 rounded-md p-2 w-64" placeholder="Search..." autofocus>
         </div>
-        <hr class="border-gray-200 my-4">
-        <div class="flex justify-end mb-4">
-            <div class="flex justify-center sm:justify-end w-full sm:w-auto">
-                <input wire:model.live="search" type="text" class="border text-black border-gray-300 rounded-md p-2 w-64" placeholder="Search..." autofocus>
-            </div>
-        </div>
-        <div class="overflow-x-auto">
-            <!--[if BLOCK]><![endif]--><?php if($search && $courses->isEmpty()): ?>
-                <p class="text-black mt-8 text-center">No course found for matching "<?php echo e($search); ?>"</p>
-            <?php elseif(!$search && $courses->isEmpty()): ?>
-                <p class="text-black mt-8 text-center">No data available in table</p>
-            <?php else: ?>
+    </div>
+    
+    <div class="overflow-x-auto">
+        <!--[if BLOCK]><![endif]--><?php if($search && $courses->isEmpty()): ?>
+            <p class="text-black mt-8 text-center">No course found for matching "<?php echo e($search); ?>"</p>
+        <?php elseif(!$search && $courses->isEmpty()): ?>
+            <p class="text-black mt-8 text-center">No data available in table</p>
+        <?php else: ?>
+
+
                 <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4 ">
                     <thead class="bg-gray-200 text-black">
                         <tr>
-                            <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
+                        <th class="border border-gray-400 px-4 py-2"><input type="checkbox" id="selectAll"></th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('course_code')" class="w-full h-full flex items-center justify-center">
                                     Course Code
                                     <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_code'): ?>
                                         <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                            <?php else: ?>
-                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i> 
+                                        <?php else: ?>
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
@@ -109,8 +113,8 @@
                                     <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_name'): ?>
                                         <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                            <?php else: ?>
-                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i> 
+                                        <?php else: ?>
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
@@ -121,8 +125,8 @@
                                     <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_description'): ?>
                                         <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                            <?php else: ?>
-                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i> 
+                                        <?php else: ?>
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
@@ -133,8 +137,8 @@
                                     <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_semester'): ?>
                                         <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                            <?php else: ?>
-                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i> 
+                                        <?php else: ?>
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
@@ -145,8 +149,8 @@
                                     <!--[if BLOCK]><![endif]--><?php if($sortField == 'program_id'): ?>
                                         <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                            <?php else: ?>
-                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i> 
+                                        <?php else: ?>
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
@@ -154,34 +158,36 @@
                             <th class="border border-gray-400 px-4 py-2">Action</th>
                         </tr>
                     </thead>
-                    <form id="deleteSelectedForm" action="<?php echo e(route('admin.course.deleteSelected')); ?>" method="POST" onsubmit="return confirmDelete(event);">
-                        <?php echo csrf_field(); ?>
-                        <?php echo method_field('DELETE'); ?>
-                        <input type="hidden" wire:model="deleteAllClicked" value="true">
-                        <tbody>
-                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                <tr>
-                                    <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="<?php echo e($course->id); ?>"></td>
-                                    <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_code); ?></td>
-                                    <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_name); ?></td>
-                                    <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_description); ?></td>
-                                    <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_semester); ?></td>
-                                    <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->program->program_abbreviation); ?></td>
+                    <tbody>
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $course): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <tr>
+                                <form id="deleteSelectedForm" method="POST" action="<?php echo e(route('admin.course.deleteSelected')); ?>" onsubmit="return confirmDelete(event);">
+                                <?php echo csrf_field(); ?>
+                                <?php echo method_field('DELETE'); ?>
+                                <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="<?php echo e($course->id); ?>"></td>
+                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_code); ?>s</td>
+                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_name); ?></td>
+                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_description); ?></td>
+                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_semester); ?></td>
+                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->program->program_abbreviation); ?></td>
+                                </form>
                                     <td class="text-black border border-gray-400 px-4 py-2">
                                         <div class="flex justify-center items-center space-x-2">
-                                            <div class="relative" x-data="{ open: false, showModal: false }">
+                                            <div x-data="{ open: false, showModal: false }">
                                                 <div @click="open = !open" class="mr-5 cursor-pointer">
-                                                    <a class="bg-slate-500 text-white text-sm mx-auto px-4 py-2 rig hover:bg-blue-700">Action <i class="fa-solid fa-caret-down" style="color: #ffffff;"></i></a>
+                                                    <a class="bg-slate-500 text-white text-xs mx-auto px-4 py-2 rig hover:bg-blue-700">Action <i class="fa-solid fa-caret-down" style="color: #ffffff;"></i></a>
                                                 </div>
                                                 <div x-show="open" @click.away="open = false" class="absolute right-4 mt-1.5 w-40 bg-white text-left border-2 border-gray-400 rounded-sm shadow-lg py-2 z-20">
                                                     <a href="<?php echo e(route('admin.course.edit', $course->id)); ?>" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
                                                         <i class="fa-solid fa-pen-to-square"></i> Edit
                                                     </a>
+
                                                     <hr class="border-gray-200">
                                                     <div x-data="{ showModal: false, courseId: <?php echo e($course->id); ?>, courseCode: '<?php echo e($course->course_code); ?>', courseName: '<?php echo e($course->course_name); ?>'}">
                                                         <a href="#" @click="showModal = true" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
                                                             <i class="fa-solid fa-file-pen"></i> Assign Teacher
                                                         </a>
+
                                                         
                                                         <!-- Modal backdrop, show/hide based on modal state -->
                                                         <div x-show="showModal" class="fixed inset-0 bg-black opacity-50"></div>
@@ -201,10 +207,10 @@
 
                                                                 <!-- Modal body -->
                                                                 <p class=" text-gray-700 text-md w-full font-bold mb-2">Course: <span x-text="courseCode" class="text-red-500"></span> - <span x-text="courseName" class="text-red-500"></span></p>
-                                                               <form id="assign-course-form" method="POST" action="<?php echo e(route('admin.course.assignCourse', $course->id)); ?>">
+                                                                <form id="assign-course-form" method="POST" action="<?php echo e(route('admin.course.assignCourse', $course->id)); ?>">
                                                                     <?php echo csrf_field(); ?>
-                                                                    <label for="semester" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Teacher:</label>
-                                                                    <select id="course_thaught_id" name="course_thaught_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['course_thaught_id'];
+                                                                    <label for="teacher_id" class="block text-gray-700 text-md w-72 font-bold mb-2">Select Teacher:</label>
+                                                                    <select id="teacher_id" name="teacher_id" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['teacher_id'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :
 if (isset($message)) { $__messageOriginal = $message; }
@@ -217,15 +223,9 @@ unset($__errorArgs, $__bag); ?>" required>
                                                                         ?>
 
                                                                         <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teachers; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $teacher): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                                            <?php
-                                                                                // Check if the program's department_id matches the faculty's department_id
-                                                                                $programDepartmentId = $course->program->department_id ?? null;
-                                                                                $facultyDepartmentId = $teacher->department_id;
-                                                                            ?>
-                                                                            
-                                                                            <!--[if BLOCK]><![endif]--><?php if($programDepartmentId === $facultyDepartmentId): ?>
+                                                                            <!--[if BLOCK]><![endif]--><?php if($teacher->department_id === $course->program->department_id): ?>
                                                                                 <?php $hasTeacher = true; ?>
-                                                                                <option lass="py-2 px-3  text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="<?php echo e($teacher->id); ?>"><?php echo e($teacher->name); ?></option>
+                                                                                <option class="py-2 px-3 text-md text-black leading-tight focus:outline-none focus:shadow-outline" value="<?php echo e($teacher->id); ?>"><?php echo e($teacher->name); ?></option>
                                                                             <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
 
@@ -234,14 +234,58 @@ unset($__errorArgs, $__bag); ?>" required>
                                                                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                                     </select>
 
+                                                                    <!-- Hidden input field for department ID -->
+                                                                    <input type="hidden" name="department_id" value="<?php echo e($course->program->department_id); ?>">
+
+                                                                    <label for="section" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Enter Section:</label>
+                                                                    <input type="text" name="section" id="section" value="<?php echo e(old('section')); ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                                                    <!-- Multi-select box for days of the week -->
+                                                                    <label for="days_of_week" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Select Days of the Week:</label>
+                                                                    <select id="days_of_week" name="days_of_the_week" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['days_of_week'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" required>
+                                                                        <option value="M.W">M.W</option>
+                                                                        <option value="M.W.F">M.W.F</option>
+                                                                        <option value="T.Th">T.Th</option>
+
+                                                                    </select>
+
+                                                                    <!-- Input field for time slots -->
+                                                                    <label for="time_slots" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Class Start Time:</label>
+                                                                    <input type="time" id="time_slots" name="class_start_time" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['time_slots'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" placeholder="Enter time slots (e.g., 09:00-10:00, 10:00-11:00)" required>
+
+                                                                    <!-- Input field for time slots -->
+                                                                    <label for="time_slots" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Class End Time:</label>
+                                                                    <input type="time" id="time_slots" name="class_end_time" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline <?php $__errorArgs = ['time_slots'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?> is-invalid <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>" placeholder="Enter time slots (e.g., 09:00-10:00, 10:00-11:00)" required>
+
                                                                     <!-- Modal footer -->
                                                                     <div class="mt-6 flex justify-end">
                                                                         <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
                                                                             Cancel
                                                                         </a>
-                                                                        <a href="#" onclick="event.preventDefault(); document.getElementById('assign-course-form').submit();" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
+                                                                        <button type="submit" onclick="confirmAssign(event)" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
                                                                             Save
-                                                                        </a>
+                                                                        </button>
+
                                                                     </div>
                                                                 </form>
                                                             </div>
@@ -251,20 +295,19 @@ unset($__errorArgs, $__bag); ?>" required>
                                             </div>
                                         </div>
                                     </td>
-                                </tr>
-                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                        </tbody>
-                    </table>
-                        <a href="#" onclick="event.preventDefault(); document.getElementById('deleteSelectedForm').submit();" class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
-                                Delete
-                        </a>
-                    </form>
-            <?php echo e($courses->links()); ?>
+                            </tr>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                    </tbody>
+                </table>
+                <button id="deleteSelected" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700" onclick="confirmDelete(event)">
+                    <i class="fa-solid fa-trash fa-xs" style="color: #ffffff;"></i> Delete Selected
+                </button>
+                <?php echo e($courses->links()); ?>
+
 
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 </div>
-
 
 <script>
     // Function to confirm delete action using SweetAlert2
@@ -281,8 +324,28 @@ unset($__errorArgs, $__bag); ?>" required>
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                // If confirmed, submit the form programmatically
+                // If confirmed, submit the deleteSelectedForm form programmatically
                 document.getElementById('deleteSelectedForm').submit();
+            }
+        });
+    }
+
+    // Function to confirm teacher assignment action using SweetAlert2
+    function confirmAssign(event) {
+        event.preventDefault(); // Prevent form submission initially
+
+        Swal.fire({
+            title: 'Assign Teacher to Course?',
+            text: "Are you sure you want to assign this teacher to the course?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, assign it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If confirmed, submit the assign-course-form form programmatically
+                document.getElementById('assign-course-form').submit();
             }
         });
     }
@@ -293,6 +356,5 @@ unset($__errorArgs, $__bag); ?>" required>
         checkboxes.forEach(checkbox => checkbox.checked = e.target.checked);
     });
 </script>
-
 
 <?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/livewire/course-show-table.blade.php ENDPATH**/ ?>

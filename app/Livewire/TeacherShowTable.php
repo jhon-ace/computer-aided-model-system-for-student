@@ -37,14 +37,11 @@ class TeacherShowTable extends Component
     public function render()
     {
 
-        $teachers = Teacher::with(['course', 'department'])
+        $teachers = Teacher::with('department')
         ->where(function (Builder $query) {
             $query->where('name', 'like', '%' . $this->search . '%')
                   ->orWhere('email', 'like', '%' . $this->search . '%')
                   ->orWhere('status', 'like', '%' . $this->search . '%')
-                  ->orWhereHas('course', function (Builder $query) {
-                      $query->where('course_code', 'like', '%' . $this->search . '%');
-                  })
                   ->orWhereHas('department', function (Builder $query) {
                       $query->where('department_name', 'like', '%' . $this->search . '%');
                   });

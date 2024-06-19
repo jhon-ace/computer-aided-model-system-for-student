@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Teacher;
 use App\Models\Program;
+use App\Models\CourseAssignment;
 use Illuminate\Http\Request;
 use App\Http\Requests\CourseStoreRequest;
 use App\Http\Requests\CourseUpdateRequest;
@@ -129,22 +130,58 @@ class CourseController extends Controller
 
     public function assignCourse(Request $request, $id)
     {
-
-        $course = Course::findOrFail($id);
+        // Validate the request
+        $request->validate([
+            'teacher_id' => 'required|exists:teachers,id',
+            'section' => 'required|string|max:255',
+            'days_of_the_week' => 'required|string|in:M.W,M.W.F,T.Th',
+            'class_start_time' => 'required|date_format:H:i',
+            'class_end_time' => 'required|date_format:H:i|after:class_start_time',
+        ], [
+            'teacher_id.exists' => 'The selected teacher does not exist.',
+            'days_of_the_week.in' => 'Invalid days of the week selection.',
+            'class_end_time.after' => 'Class end time must be after class start time.',
+        ]);
     
-        $teacherId = $request->input('course_thaught_id');
+        try {
+            // Find the course
+            $course = Course::findOrFail($id);
     
-        $teacher = Teacher::findOrFail($teacherId);
-        
-        $newTeacher = $teacher->replicate();
-        $newTeacher->course_taught_id = $course->id;
-        $newTeacher->save();
-
-        // Redirect back with a success message or to another appropriate location
-        return redirect()->route('admin.course.index')->with('success', 'Course assigned to teacher successfully.');
-       
+            // Retrieve inputs
+            $teacherId = $request->input('teacher_id');
+            $section = $request->input('section');
+            $days_of_the_week = $request->input('days_of_the_week');
+            $class_start_time = $request->input('class_start_time');
+            $class_end_time = $request->input('class_end_time');
+    
+            // Find the teacher
+            $teacher = Teacher::findOrFail($teacherId);
+    
+            // Create a new course assignment
+            CourseAssignment::create([
+                'course_id' => $course->id,
+                'section' => $section,
+                'days_of_the_week' => $days_of_the_week,
+                'class_start_time' => $class_start_time,
+                'class_end_time' => $class_end_time,
+                'teacher_id' => $teacherId,
+                'program_id' => $course->program_id,
+                'department_id' => $course->program->department_id,
+            ]);
+    
+            // Redirect back with a success message
+            return redirect()->route('admin.course.index')->with('success', 'Course assigned to teacher successfully.');
+    
+        } catch (ModelNotFoundException $e) {
+            // Redirect back with an error message if the course or teacher is not found
+            return redirect()->back()->with('error', 'Failed to assign course. ' . $e->getMessage());
+    
+        } catch (\Exception $e) {
+            // Redirect back with a general error message for other exceptions
+            return redirect()->back()->with('error', 'Failed to assign course. ' . $e->getMessage());
+        }
     }
     
-
-
-}
+        
+    }
+    

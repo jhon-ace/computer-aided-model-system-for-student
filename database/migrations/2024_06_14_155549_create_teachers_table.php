@@ -18,13 +18,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->unsignedBigInteger('department_id')->nullable(); 
+            $table->unsignedBigInteger('department_id'); 
             $table->string('status')->default('Active');
-            $table->unsignedBigInteger('course_taught_id')->nullable(); 
             $table->rememberToken();
             $table->timestamps();
-            
-            $table->foreign('course_taught_id')->references('id')->on('courses')->onDelete('restrict');
             $table->foreign('department_id')->references('id')->on('departments')->onDelete('restrict');
         });
     }
