@@ -186,7 +186,7 @@
                                                                                 <td class="text-black border border-gray-400 px-4 py-2 ">
                                                                                     
                                                                                     
-                                                                                <form id="deleteAssignedCourse" method="POST" action="{{ route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id]) }}" onsubmit="return confirm('Are you sure you want to remove this course?')">
+                                                                                <form id="deleteAssignedCourse" method="POST" action="{{ route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id]) }}" onsubmit="return confirmDeleteAssignedCourse(event, {{ $courseAssignment->id }}, '{{ addslashes($courseAssignment->course->course_name) }}','{{ $courseAssignment->course->course_code }}', '{{ $teacher->id }}');">
                                                                                     @csrf
                                                                                     @method('DELETE')
                                                                                     <button type="submit" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>
@@ -233,7 +233,32 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmDeleteAssignedCourse(event, courseId, courseName, courseCode, teacherId) {
+        event.preventDefault(); 
 
+        Swal.fire({
+            title: `Are you sure you want to remove assigned course ${courseCode} - ${courseName}?`,
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const form = document.getElementById('deleteAssignedCourse');
+                form.action = `{{ route('admin.teacher.deleteAssignCourse', ['teacher_id' => ':teacherId','id' => ':courseId']) }}`
+                    .replace(':teacherId', teacherId)
+                    .replace(':courseId', courseId);
+                form.submit();
+            }
+        });
+
+        return false; 
+    }
+</script>
 
 <script>
     // Function to confirm delete action using SweetAlert2
