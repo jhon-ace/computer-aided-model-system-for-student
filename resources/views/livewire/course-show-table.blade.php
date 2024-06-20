@@ -82,6 +82,18 @@
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
+                                <button wire:click="sortBy('course_unit')" class="w-full h-full flex items-center justify-center">
+                                    Unit/s
+                                    @if ($sortField == 'course_unit')
+                                        @if ($sortDirection == 'asc')
+                                            &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
+                                        @else
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
+                                        @endif
+                                    @endif
+                                </button>
+                            </th>
+                            <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('course_semester')" class="w-full h-full flex items-center justify-center">
                                     Course Semester
                                     @if ($sortField == 'course_semester')
@@ -114,6 +126,7 @@
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_code }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_name }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_description }}</td>
+                                <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_unit }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_semester }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->program->program_abbreviation }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">

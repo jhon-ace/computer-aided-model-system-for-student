@@ -44,6 +44,11 @@
                         <input type="text" name="course_description" id="course_description" value="{{ old('course_description', $course->course_description) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required autofocus>
                         <x-input-error :messages="$errors->get('course_description')" class="mt-2" />
                     </div>
+                    <div class="mb-4">
+                        <label for="course_unit" class="block text-gray-700 text-md font-bold mb-2">Course Description:</label>
+                        <input type="text" name="course_unit" id="course_unit" value="{{ old('course_unit', $course->course_unit) }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required autofocus>
+                        <x-input-error :messages="$errors->get('course_unit')" class="mt-2" />
+                    </div>
                     <div class="mt-4">
                         <label for="course_semester" class="block text-gray-700 text-md font-bold mb-2">Course Semester:</label>
                         <select id="course_semester" name="course_semester" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required >

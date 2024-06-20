@@ -43,6 +43,11 @@
                         <input type="text" name="course_description" id="course_description" value="{{ old('course_description') }}"  class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('dean_fullname') is-invalid @enderror" required autofocus>
                         <x-input-error :messages="$errors->get('course_description')" class="mt-2" />
                     </div>
+                    <div class="mb-4">
+                        <label for="course_unit" class="block text-gray-700 text-md font-bold mb-2">Course Unit:</label>
+                        <input type="text" name="course_unit" id="course_unit" value="{{ old('course_unit') }}"  class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('dean_fullname') is-invalid @enderror" required autofocus>
+                        <x-input-error :messages="$errors->get('course_unit')" class="mt-2" />
+                    </div>
                     <div class="mt-4">
                         <label for="course_semester" class="block text-gray-700 text-md font-bold mb-2">Course Semester:</label>
                         <select id="course_semester" name="course_semester" value="{{ old('course_semester') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('department_dean') is-invalid @enderror" required autocomplete="department_dean">

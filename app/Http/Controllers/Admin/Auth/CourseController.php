@@ -74,7 +74,7 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
 
         if ($request->course_code !== $course->course_code || $request->course_name!== $course->course_name 
-        || $request->course_description !== $course->course_description || $request->course_semester !== $course->course_semester) 
+        || $request->course_description !== $course->course_description || $request->course_unit !== $course->course_unit || $request->course_semester !== $course->course_semester) 
         {
             try {
                 $course->update($request->validated());

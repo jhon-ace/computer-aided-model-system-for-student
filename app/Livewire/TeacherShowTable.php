@@ -8,6 +8,7 @@ use \App\Models\CourseAssignment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class TeacherShowTable extends Component
 {
@@ -42,6 +43,20 @@ class TeacherShowTable extends Component
             ->get();
     }
 
+    public function showCourseTotalCount($teacherId)
+    {
+        return DB::table('course_assignments')
+        ->where('teacher_id', $teacherId)
+        ->count('course_id');
+    }
+
+    public function showCourseUnitTotal($teacherId)
+    {
+        return CourseAssignment::where('teacher_id', $teacherId)
+            ->join('courses', 'course_assignments.course_id', '=', 'courses.id')
+            ->sum('courses.course_unit');
+    }
+
     public function render()
     {
         $teachers = Teacher::with('department')
@@ -59,6 +74,8 @@ class TeacherShowTable extends Component
         // Fetch courses for each teacher
         foreach ($teachers as $teacher) {
             $teacher->courses = $this->getCoursesByTeacher($teacher->id);
+            $teacher->courseTotal = $this->showCourseTotalCount($teacher->id);
+            $teacher->totalUnits = $this->showCourseUnitTotal($teacher->id);
         }
 
         $courses = Course::all();
@@ -66,6 +83,7 @@ class TeacherShowTable extends Component
         return view('livewire.teacher-show-table', [
             'teachers' => $teachers,
             'courses' => $courses,
+
         ]);
     }
 }

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('course_code')->unique();
             $table->string('course_name');
             $table->string('course_description');
+            $table->string('course_unit'); // Define as string initially
             $table->string('course_semester');
             $table->unsignedBigInteger('program_id'); 
             $table->timestamps();

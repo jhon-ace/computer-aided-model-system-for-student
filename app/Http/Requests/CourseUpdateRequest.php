@@ -27,6 +27,7 @@ class CourseUpdateRequest extends FormRequest
             'course_code' => ['required', 'string', 'max:255'],
             'course_name' => ['required', 'string', 'max:255'],
             'course_description' => ['required', 'string', 'max:255'],
+            'course_unit' => ['required', 'numeric', 'regex:/^\d{1,6}(\.\d{1,2})?$/'],
             'course_semester' => ['required', 'string', 'max:255'],
             'program_id' => ['sometimes', 'required', 'exists:programs,id'],
         ];
@@ -41,6 +42,8 @@ class CourseUpdateRequest extends FormRequest
     {
         return [
             'department_id.exists' => 'The selected department is invalid.',
+            'course_unit.numeric' => 'The course unit must be a number.',
+            'course_unit.regex' => 'The course unit must be a decimal value with up to 8 digits in total and 2 decimal places.',
         ];
     }
 }

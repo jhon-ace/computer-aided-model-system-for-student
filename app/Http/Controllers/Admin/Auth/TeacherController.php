@@ -213,7 +213,7 @@ class TeacherController extends Controller
         // Delete the found course assignment
         $courseAssignment->delete();
 
-        return redirect()->back()->with('success', 'Course assigned deleted successfully');
+        return redirect()->back()->with('success', 'Course removed successfully');
     }
 
 

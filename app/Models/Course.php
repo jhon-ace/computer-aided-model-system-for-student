@@ -15,6 +15,7 @@ class Course extends Model
         'course_code',
         'course_name',
         'course_description',
+        'course_unit',
         'course_semester',
         'program_id',
     ];

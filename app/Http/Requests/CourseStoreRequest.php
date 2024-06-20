@@ -20,6 +20,7 @@ class CourseStoreRequest extends FormRequest
             'course_code' => ['required', 'string', 'max:255', 'unique:courses,course_code'],
             'course_name' => ['required', 'string', 'max:255'],
             'course_description' => ['required', 'string', 'max:255'],
+            'course_unit' => ['required', 'string', 'max:255'],
             'course_semester' => ['required', 'string', 'max:255'],
         ];
 

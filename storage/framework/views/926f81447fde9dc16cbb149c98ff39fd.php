@@ -139,6 +139,18 @@
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
+                                <button wire:click="sortBy('course_unit')" class="w-full h-full flex items-center justify-center">
+                                    Unit/s
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_unit'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
+                                            &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
+                                        <?php else: ?>
+                                            &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                </button>
+                            </th>
+                            <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('course_semester')" class="w-full h-full flex items-center justify-center">
                                     Course Semester
                                     <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_semester'): ?>
@@ -171,6 +183,7 @@
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_code); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_name); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_description); ?></td>
+                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_unit); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->course_semester); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($course->program->program_abbreviation); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2">
