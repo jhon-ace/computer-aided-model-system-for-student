@@ -104,7 +104,7 @@
                         <tbody>
                             @foreach ($teachers as $teacher)
                                 <tr>
-                                <form id="deleteSelectedForm" method="POST" action="{{ route('admin.course.deleteSelected') }}" onsubmit="return confirmDelete(event);">
+                                <form id="deleteSelectedForm" method="POST" action="{{ route('admin.teacher.deleteSelected', $teacher->id) }}" onsubmit="return confirmDelete(event);">
                                 @csrf
                                 @method('DELETE')
                                     <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="{{ $teacher->id }}"></td>
@@ -130,7 +130,7 @@
                                                 </div>
                                                 <div x-show="open" @click.away="open = false" class="absolute right-4 mt-1.5 w-40 bg-white text-left border-2 border-gray-400 rounded-sm shadow-lg py-2 z-20">
                                                     <a href="{{ route('admin.teacher.edit', $teacher->id) }}" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
-                                                        <i class="fa-solid fa-pen-to-square"></i> Edit
+                                                        <i class="fa-solid fa-pen-to-square"></i> Edit Teacher
                                                     </a>
                                                     <hr class="border-gray-200">
                                                     <div x-data="{ showModal: false, teacherId: {{ $teacher->id }}, teacherName: '{{ $teacher->name }}', selectedCourse: '' }">
@@ -156,15 +156,18 @@
                                                                 </div>
                                                                 <hr class="border-gray-200 mb-5">   
                                                                 <!-- Modal body -->
-                                                                <p>Teacher Name: <span x-text="teacherName " class="text-red-500 "></span></p>
+                                                                 
+                                                                <p>Teacher Name: <span x-text="teacherName " class="text-red-500 uppercase"></span></p>
                                                                 
                                                                 <table class="table-auto border-collapse border border-gray-400 w-full text-center mt-4">
+                                                                        <caption>Course to Handle</caption>
                                                                     <thead class="bg-gray-50">
                                                                         <tr>
                                                                             <th class="border border-gray-400 px-4 py-2">Course Code</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Course Description</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Section</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Schedule</th>
+                                                                            <th class="border border-gray-400 px-4 py-2">Action</th>
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody class="bg-white divide-y divide-gray-200">
@@ -178,14 +181,27 @@
                                                                             {{ date('h:i A', strtotime($courseAssignment->class_start_time)) }} - 
                                                                             {{ date('h:i A', strtotime($courseAssignment->class_end_time)) }}
                                                                             </td>
+                                                                            <td class="text-black border border-gray-400 px-4 py-2 ">
+                                                                                
+                                                                                
+                                                                            <form id="deleteAssignedCourse" method="POST" action="{{ route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id]) }}" onsubmit="return confirm('Are you sure you want to remove this course?')">
+                                                                                @csrf
+                                                                                @method('DELETE')
+                                                                                <button type="submit" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>
+                                                                            </form>
+                                                                            </td>
                                                                             <!-- Add more columns as needed -->
                                                                         </tr>
                                                                         @endforeach
                                                                     </tbody>
                                                                 </table>
-
-
-                                                            
+                                                                <div class="flex justify-end">
+                                                                    <p class="text-black mt-2">Total Units: 
+                                                                        <span class="text-red-500">
+                                                                            9 units
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>

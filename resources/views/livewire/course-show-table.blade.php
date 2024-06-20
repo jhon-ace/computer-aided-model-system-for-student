@@ -140,7 +140,7 @@
                                                     <!-- Modal dialog, show/hide based on modal state -->
                                                     <div x-show="showModal" class="w-full fixed inset-0 flex items-center justify-center z-50">
                                                         <!-- Modal content -->
-                                                        <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-xl max-w-xl">
+                                                        <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-2/6 max-w-7xl">
                                                             <!-- Modal header -->
                                                             <div class="flex justify-between items-center mb-4">
                                                                 <h3 class="text-lg font-semibold text-gray-900">Assign Course to Teacher</h3> 
@@ -176,24 +176,26 @@
                                                                 <input type="hidden" name="department_id" value="{{ $course->program->department_id }}">
 
                                                                 <label for="section" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Enter Section:</label>
-                                                                <input type="text" name="section" id="section" value="{{ old('section') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                                                                <input type="text" name="section" id="section" value="{{ old('section') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required placeholder="ex:BSIT-1-B-1ST-25">
                                                                 <!-- Multi-select box for days of the week -->
-                                                                <label for="days_of_week" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Select Days of the Week:</label>
-                                                                <select id="days_of_week" name="days_of_the_week" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('days_of_week') is-invalid @enderror" required>
-                                                                    <option value="M.W">M.W</option>
-                                                                    <option value="M.W.F">M.W.F</option>
-                                                                    <option value="T.Th">T.Th</option>
-
-                                                                </select>
-
-                                                                <!-- Input field for time slots -->
-                                                                <label for="time_slots" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Class Start Time:</label>
-                                                                <input type="time" id="time_slots" name="class_start_time" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('time_slots') is-invalid @enderror" placeholder="Enter time slots (e.g., 09:00-10:00, 10:00-11:00)" required>
-
-                                                                <!-- Input field for time slots -->
-                                                                <label for="time_slots" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Class End Time:</label>
-                                                                <input type="time" id="time_slots" name="class_end_time" class="shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline @error('time_slots') is-invalid @enderror" placeholder="Enter time slots (e.g., 09:00-10:00, 10:00-11:00)" required>
-
+                                                                <div class="max-w-xl mx-auto grid grid-cols-3 gap-4">
+                                                                    <div>
+                                                                        <label for="days_of_week" class="block text-gray-700 text-md font-bold mb-2 mt-4">Day:</label>
+                                                                        <select id="days_of_week" name="days_of_the_week" class="bg-gray-50 border leading-none border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-[13.7px] focus:outline-none focus:shadow-outline" required>
+                                                                            <option value="M.W">M.W</option>
+                                                                            <option value="M.W.F">M.W.F</option>
+                                                                            <option value="T.Th">T.Th</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="start-time" class="block text-gray-700 text-md font-bold mb-2 mt-4">Start time:</label>
+                                                                        <input type="time" id="start-time" name="class_start_time" class="bg-gray-50 border leading-none border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:shadow-outline" min="07:00" max="19:00" value="07:00" required />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label for="end-time" class="block text-gray-700 text-md font-bold mb-2 mt-4">End time:</label>                                                                         
+                                                                        <input type="time" id="end-time" name="class_end_time" class="bg-gray-50 border leading-none border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:shadow-outline" min="07:00" max="19:00" value="19:00" required />
+                                                                    </div>
+                                                                </div>
                                                                 <!-- Modal footer -->
                                                                 <div class="mt-6 flex justify-end">
                                                                     <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
@@ -209,11 +211,11 @@
                                                     </div>
                                                 </div>
                                                 <hr class="border-gray-200">
-                                                <form id="deleteForm" method="POST" action="{{ route('admin.course.deleteSelected', ['id' => $course->id]) }}" onsubmit="return confirmDelete(event, {{ $course->id }});">
+                                                <form id="deleteForm" method="POST" action="{{ route('admin.course.deleteSelected', ['id' => $course->id]) }}" onsubmit="return confirmDelete(event, {{ $course->id }}, '{{ addslashes($course->course_name) }}','{{ $course->course_code }}');">
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-200">
-                                                        <i class="fa-solid fa-trash"></i> Delete Course {{ $course->id }}
+                                                        <i class="fa-solid fa-trash"></i> Delete Course
                                                     </button>
                                                 </form>
                                             </div>
@@ -229,14 +231,20 @@
     </div>
 </div>
 
+<script>
+    document.getElementById('class_start_time').addEventListener('change', function() {
+        // Automatically focus on the end time input when start time is entered
+        document.getElementById('class_end_time').focus();
+    });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    function confirmDelete(event, courseId) {
+    function confirmDelete(event, courseId, courseName, courseCode) {
         event.preventDefault(); 
 
         Swal.fire({
-            title: `Are you sure you want to delete course ${courseId}?`,
+            title: `Are you sure you want to delete course ${courseCode} - ${courseName}?`,
             text: "You won't be able to revert this!",
             icon: 'warning',
             showCancelButton: true,

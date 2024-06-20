@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Teacher;
 use App\Models\User;
 use App\Models\Department;
+use App\Models\CourseAssignment;
 use Illuminate\Http\Request;
 use App\Http\Requests\TeacherStoreRequest;
 use App\Http\Requests\TeacherUpdateRequest;
@@ -202,7 +203,18 @@ class TeacherController extends Controller
         }
     }
 
+    public function deleteAssignCourse($teacher_id, $id)
+    {
+        // Find the specific course assignment by its ID and ensure it belongs to the given teacher_id
+        $courseAssignment = CourseAssignment::where('teacher_id', $teacher_id)
+                                        ->where('id', $id)
+                                        ->firstOrFail();
 
+        // Delete the found course assignment
+        $courseAssignment->delete();
+
+        return redirect()->back()->with('success', 'Course assigned deleted successfully');
+    }
 
 
 }

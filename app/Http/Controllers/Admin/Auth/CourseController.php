@@ -136,7 +136,7 @@ class CourseController extends Controller
             // Delete the course itself
             $course->delete();
     
-            return redirect()->route('admin.course.index')->with('success', 'Course '.$course->course_code.' deleted successfully');
+            return redirect()->route('admin.course.index')->with('success', 'Course '.$course->course_code.' - '. $course->course_name.' deleted successfully');
         } catch (ModelNotFoundException $e) {
             return redirect()->route('admin.course.index')->with('error', 'Course not found.');
         } catch (\Exception $e) {

@@ -77,9 +77,9 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
         'update' => 'teacher.update',
     ]);
     Route::delete('teacher', [TeacherController::class, 'deleteSelected'])->name('teacher.deleteSelected');
-    
+    Route::delete('/admin/teacher/deleteAssignCourse/{teacher_id}/{id}', [TeacherController::class, 'deleteAssignCourse'])->name('teacher.deleteAssignCourse');
   //  Route::get('teacher-course/id={id}', [TeacherController::class, 'assignCourse'])->name('teacher.assignCourse');
-    
+
 });
 
 require __DIR__.'/auth.php';
