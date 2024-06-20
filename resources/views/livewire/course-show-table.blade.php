@@ -108,7 +108,7 @@
                                 @csrf
                                 @method('DELETE')
                                 <td class="text-black border border-gray-400 px-4 py-2"><input type="checkbox" name="selected[]" value="{{ $course->id }}"></td>
-                                <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_code }}s</td>
+                                <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_code }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_name }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_description }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $course->course_semester }}</td>

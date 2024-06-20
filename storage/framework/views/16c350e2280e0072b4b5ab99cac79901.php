@@ -181,7 +181,7 @@
                                 </form>
                                     <td class="text-black border border-gray-400 px-4 py-2">
                                         <div class="flex justify-center items-center space-x-2">
-                                            <div class="relative" x-data="{ open: false }">
+                                            <div x-data="{ open: false }">
                                                 <div @click="open = !open" class="mr-5 cursor-pointer">
                                                     <a class="bg-slate-500 text-white text-sm mx-auto px-4 py-2 rig hover:bg-blue-700">Action <i class="fa-solid fa-caret-down" style="color: #ffffff;"></i></a>
                                                 </div>
@@ -203,7 +203,7 @@
                                                             <!-- Modal dialog, show/hide based on modal state -->
                                                         <div x-show="showModal" class="w-full fixed inset-0 flex items-center justify-center z-50">
                                                             <!-- Modal content -->
-                                                            <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-7xl">
+                                                            <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-5xl">
                                                                 <!-- Modal header -->
                                                                 <div class="flex justify-between items-center mb-4">
                                                                     <h3 class="text-lg font-semibold text-gray-900">Assign Courses</h3>
@@ -213,24 +213,34 @@
                                                                 </div>
                                                                 <hr class="border-gray-200 mb-5">   
                                                                 <!-- Modal body -->
-                                                                <p>Teacher Name: <span x-text="teacherName " class="text-red-500"></span></p>
+                                                                <p>Teacher Name: <span x-text="teacherName " class="text-red-500 "></span></p>
                                                                 
-                                                                <?php
-$__split = function ($name, $params = []) {
-    return [$name, $params];
-};
-[$__name, $__params] = $__split('course-assign-show-table', ['teacherId' => $teacher->id]);
+                                                                <table class="table-auto border-collapse border border-gray-400 w-full text-center mt-4">
+                                                                    <thead class="bg-gray-50">
+                                                                        <tr>
+                                                                            <th class="border border-gray-400 px-4 py-2">Course Code</th>
+                                                                            <th class="border border-gray-400 px-4 py-2">Course Description</th>
+                                                                            <th class="border border-gray-400 px-4 py-2">Section</th>
+                                                                            <th class="border border-gray-400 px-4 py-2">Schedule</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="bg-white divide-y divide-gray-200">
+                                                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teacher->courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $courseAssignment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                                        <tr>
+                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->course->course_code); ?></td>
+                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->course->course_name); ?></td>
+                                                                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->section); ?></td>
+                                                                            <td class="text-black border border-gray-400 px-4 py-2">
+                                                                            <?php echo e($courseAssignment->days_of_the_week); ?> | 
+                                                                            <?php echo e(date('h:i A', strtotime($courseAssignment->class_start_time))); ?> - 
+                                                                            <?php echo e(date('h:i A', strtotime($courseAssignment->class_end_time))); ?>
 
-$__html = app('livewire')->mount($__name, $__params, 'lw-1064071578-0', $__slots ?? [], get_defined_vars());
-
-echo $__html;
-
-unset($__html);
-unset($__name);
-unset($__params);
-unset($__split);
-if (isset($__slots)) unset($__slots);
-?>
+                                                                            </td>
+                                                                            <!-- Add more columns as needed -->
+                                                                        </tr>
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
+                                                                    </tbody>
+                                                                </table>
 
 
                                                             
