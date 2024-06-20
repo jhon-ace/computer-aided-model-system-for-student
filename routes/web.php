@@ -62,8 +62,10 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
         'store' => 'course.store',
         'edit' => 'course.edit',
         'update' => 'course.update',
+        'destroy' => 'course.destroy',
     ]);
-    Route::delete('course', [CourseController::class, 'deleteSelected'])->name('course.deleteSelected');
+    Route::delete('/admin/courses/delete-selected/{id}', [CourseController::class, 'deleteSelected'])->name('course.deleteSelected');
+    Route::delete('/admin/courses/delete-all', [CourseController::class, 'deleteAll'])->name('course.deleteAll');
     Route::post('course-assign-teacher/{id}', [CourseController::class, 'assignCourse'])->name('course.assignCourse'); // Updated route name
 
 // Teacher Routes

@@ -1,1 +1,0 @@
-<h1>Hello <?php echo e($course->course_code); ?> - <?php echo e($course->course_name); ?></h1><?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/admin/course/assign/assign-course.blade.php ENDPATH**/ ?>

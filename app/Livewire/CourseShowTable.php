@@ -15,7 +15,7 @@ class CourseShowTable extends Component
     public $deleteAllClicked = false;
     
     public $search = '';
-    public $sortField = 'course_name';
+    public $sortField = 'course_code';
     public $sortDirection = 'asc';
 
     public function updatingSearch()

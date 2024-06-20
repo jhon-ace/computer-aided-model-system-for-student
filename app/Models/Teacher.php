@@ -13,7 +13,7 @@ class Teacher extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    public $table = 'teachers';
+
     
     protected $guard = 'teacher';
 
@@ -55,8 +55,14 @@ class Teacher extends Authenticatable
     }
 
    
+    
     public function department()
     {
         return $this->belongsTo(Department::class);
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
     }
 }

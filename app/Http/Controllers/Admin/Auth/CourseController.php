@@ -10,6 +10,8 @@ use App\Models\CourseAssignment;
 use Illuminate\Http\Request;
 use App\Http\Requests\CourseStoreRequest;
 use App\Http\Requests\CourseUpdateRequest;
+use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CourseController extends Controller
 {
@@ -97,36 +99,54 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy()
     {
-        $course->delete();
-           
-        return redirect()->route('admin.course.index')
-                        ->with('success','Course deleted successfully');
+       
+    }
+    
+    public function deleteAll(Request $request)
+    {
+        // Get courses that do not have any related course assignments
+        $coursesToDelete = Course::whereDoesntHave('courseAssignments')->get();
+
+        // Check if there are courses to delete
+        if ($coursesToDelete->isEmpty()) {
+            return redirect()->back()->with('error', 'No courses found to delete.');
+        }
+
+        // Delete each course that does not have any related course assignments
+        foreach ($coursesToDelete as $course) {
+            $course->delete();
+        }
+        
+        // Redirect back with success message after deletion
+        return redirect()->back()->with('success', 'Courses deleted successfully.');
     }
 
 
-    public function deleteSelected(Request $request)
+    public function deleteSelected($id)
     {
-        // Get the IDs of the selected courses
-        $selectedCourses = $request->input('selected');
+        try {
+            // Find the course by ID
+            $course = Course::findOrFail($id);
+    
+            // Optionally, delete related course_assignments first
+            // $course->courseAssignments()->delete(); // Adjust according to your actual relationship
+    
+            // Delete the course itself
+            $course->delete();
+    
+            return redirect()->route('admin.course.index')->with('success', 'Course '.$course->course_code.' deleted successfully');
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('admin.course.index')->with('error', 'Course not found.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.course.index')->with('error', "Failed to delete course. Course is associated with a teacher.");
 
-        if ($selectedCourses) {
-            // Fetch faculties associated with the selected courses
-            $facultiesInUse = Course::whereIn('id', $selectedCourses)->exists();
-
-            // Attempt to delete courses if no faculties are associated
-            try {
-                Course::whereIn('id', $selectedCourses)->delete();
-                $message = 'Selected course' . (count($selectedCourses) > 1 ? 's' : '') . ' have been deleted successfully.';
-                return redirect()->route('admin.course.index')->with('success', $message);
-            } catch (\Exception $e) {
-                return redirect()->route('admin.course.index')->with('error', 'Failed to delete selected course' . (count($selectedCourses) > 1 ? 's' : '') . '.');
-            }
-        } else {
-            return redirect()->route('admin.course.index')->with('error', 'No course selected for deletion.');
         }
     }
+
+
+
 
     public function assignCourse(Request $request, $id)
     {
