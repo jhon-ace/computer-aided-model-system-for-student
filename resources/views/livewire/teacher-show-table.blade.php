@@ -149,7 +149,7 @@
                                                             <div class="bg-white shadow-lg rounded-lg p-6 sm:p-8 w-full max-w-5xl">
                                                                 <!-- Modal header -->
                                                                 <div class="flex justify-between items-center mb-4">
-                                                                    <h3 class="text-lg font-semibold text-gray-900">Assign Courses</h3>
+                                                                    <h3 class="text-lg font-semibold text-gray-900">Assigned Courses</h3>
                                                                     <a @click="showModal = false" class="cursor-pointer px-4 py-2 text-gray-400 rounded-md hover:text-blue-500">
                                                                         <i class="fa-solid fa-close"></i>
                                                                     </a>                                                           
@@ -225,7 +225,7 @@
                                                                 @if($teacher->courses->isEmpty())
                                                                     <p class="text-black mt-8 text-center">No courses assigned yet.</p>
                                                                 @endif
-                                                                
+
                                                                 <div class="flex justify-between">
                                                                     <div class="text-black mt-2">Total Course: 
                                                                         <span class="text-red-500">

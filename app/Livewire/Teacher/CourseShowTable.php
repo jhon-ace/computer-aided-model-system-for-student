@@ -15,7 +15,7 @@ class CourseShowTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $sortField = 'course_id';
+    public $sortField = 'section';
     public $sortDirection = 'desc';
     public $deleteAllClicked = false;
 
@@ -36,12 +36,13 @@ class CourseShowTable extends Component
         $this->sortField = $field;
     }
 
+
     public function render()
     {
         $teacherId = Auth::id();
 
         // Fetch the assigned courses for the teacher
-        $assignedCourses = CourseAssignment::with(['course'])
+        $assignedCourses = CourseAssignment::with('course')
             ->where('teacher_id', $teacherId)
             ->where(function ($query) {
                 $query->whereHas('course', function ($query) {
@@ -59,7 +60,7 @@ class CourseShowTable extends Component
             ->paginate(10);
 
         return view('livewire.teacher.course-show-table', [
-            'assignedCourses' => $assignedCourses
+            'assignedCourses' => $assignedCourses,
         ]);
     }
 }
