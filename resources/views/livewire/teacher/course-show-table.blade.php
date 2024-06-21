@@ -24,7 +24,7 @@
         @else
             <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
                 <thead class="bg-gray-200 text-black">
-                    <tr>
+                    <tr class="text-sm">
                         <th class="border border-gray-400 px-4 py-2">
                             <button wire:click="sortBy('course_code')" class="w-full h-full flex items-center justify-center">
                                 Course Code
@@ -102,7 +102,7 @@
                 </thead>
                 <tbody>
                     @foreach ($assignedCourses as $assignedCourse)
-                        <tr>
+                        <tr  class="text-sm">
                             @if ($assignedCourse->course)
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_code }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_name }}</td>

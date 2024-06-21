@@ -81,7 +81,7 @@
         <?php else: ?>
             <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
                 <thead class="bg-gray-200 text-black">
-                    <tr>
+                    <tr class="text-sm">
                         <th class="border border-gray-400 px-4 py-2">
                             <button wire:click="sortBy('course_code')" class="w-full h-full flex items-center justify-center">
                                 Course Code
@@ -159,7 +159,7 @@
                 </thead>
                 <tbody>
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $assignedCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $assignedCourse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <tr>
+                        <tr  class="text-sm">
                             <!--[if BLOCK]><![endif]--><?php if($assignedCourse->course): ?>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_code); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_name); ?></td>
