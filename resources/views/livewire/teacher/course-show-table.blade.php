@@ -22,35 +22,30 @@
         @elseif(!$search && $assignedCourses->isEmpty())
             <p class="text-black mt-8 text-center">No data available in table</p>
         @else
-            <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
+            <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-2">
                 <thead class="bg-gray-200 text-black">
-                    <tr class="text-sm">
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('course_code')" class="w-full h-full flex items-center justify-center">
+                    <tr>
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('courses.course_code')">
                                 Course Code
-                                @if ($sortField == 'course_code')
+                                @if ($sortField == 'courses.course_code')
                                     @if ($sortDirection == 'asc')
                                         &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
                                     @else
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     @endif
                                 @endif
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('course_name')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('courses.course_name')">
                                 Course Description
-                                @if ($sortField == 'course_name')
+                                @if ($sortField == 'courses.course_name')
                                     @if ($sortDirection == 'asc')
                                         &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
                                     @else
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     @endif
                                 @endif
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('section')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('section')">
                                 Section
                                 @if ($sortField == 'section')
                                     @if ($sortDirection == 'asc')
@@ -59,22 +54,18 @@
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     @endif
                                 @endif
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('course_unit')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('courses.course_unit')">
                                 Unit/s
-                                @if ($sortField == 'course_unit')
+                                @if ($sortField == 'courses.course_unit')
                                     @if ($sortDirection == 'asc')
                                         &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
                                     @else
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     @endif
                                 @endif
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('days_of_the_week')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400" wire:click="sortBy('days_of_the_week')">
                                 Schedule
                                 @if ($sortField == 'days_of_the_week')
                                     @if ($sortDirection == 'asc')
@@ -83,10 +74,8 @@
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     @endif
                                 @endif
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('room')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400" wire:click="sortBy('room')">
                                 Room
                                 @if ($sortField == 'room')
                                     @if ($sortDirection == 'asc')
@@ -95,14 +84,13 @@
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     @endif
                                 @endif
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">Action</th>
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($assignedCourses as $assignedCourse)
-                        <tr  class="text-sm">
+                        <tr>
                             @if ($assignedCourse->course)
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_code }}</td>
                                 <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_name }}</td>
@@ -148,6 +136,19 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <div class="flex justify-between">
+                <div class="text-black mt-2">Total Course: 
+                    <span class="text-red-500">
+                        {{ $teacher->courseTotal }}
+                    </span>
+                </div>
+                <div class="text-black mt-2">Total Units Acquired: 
+                    <span class="text-red-500">
+                        {{ $teacher->totalUnits }}
+                    </span>
+                </div>
+            </div>
             {{ $assignedCourses->links() }}
         @endif
     </div>

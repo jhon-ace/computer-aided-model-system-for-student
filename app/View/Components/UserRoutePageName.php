@@ -68,7 +68,7 @@ class UserRoutePageName extends Component
 
             // This is Teacher Route Page Name
             'teacher.dashboard' => __('Teacher | Dashboard'),
-            'teacher.teacher-courses' => __('Teacher | List of Courses'),
+            'teacher.teacher-courses' => __('My Courses'),
 
             // Add more titles as needed
         ];

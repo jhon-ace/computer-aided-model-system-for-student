@@ -79,35 +79,30 @@
         <?php elseif(!$search && $assignedCourses->isEmpty()): ?>
             <p class="text-black mt-8 text-center">No data available in table</p>
         <?php else: ?>
-            <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4">
+            <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-2">
                 <thead class="bg-gray-200 text-black">
-                    <tr class="text-sm">
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('course_code')" class="w-full h-full flex items-center justify-center">
+                    <tr>
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('courses.course_code')">
                                 Course Code
-                                <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_code'): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($sortField == 'courses.course_code'): ?>
                                     <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                         &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
                                     <?php else: ?>
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('course_name')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('courses.course_name')">
                                 Course Description
-                                <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_name'): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($sortField == 'courses.course_name'): ?>
                                     <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                         &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
                                     <?php else: ?>
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('section')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('section')">
                                 Section
                                 <!--[if BLOCK]><![endif]--><?php if($sortField == 'section'): ?>
                                     <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
@@ -116,22 +111,18 @@
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('course_unit')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400 " wire:click="sortBy('courses.course_unit')">
                                 Unit/s
-                                <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_unit'): ?>
+                                <!--[if BLOCK]><![endif]--><?php if($sortField == 'courses.course_unit'): ?>
                                     <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                         &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
                                     <?php else: ?>
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('days_of_the_week')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400" wire:click="sortBy('days_of_the_week')">
                                 Schedule
                                 <!--[if BLOCK]><![endif]--><?php if($sortField == 'days_of_the_week'): ?>
                                     <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
@@ -140,10 +131,8 @@
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">
-                            <button wire:click="sortBy('room')" class="w-full h-full flex items-center justify-center">
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400" wire:click="sortBy('room')">
                                 Room
                                 <!--[if BLOCK]><![endif]--><?php if($sortField == 'room'): ?>
                                     <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
@@ -152,14 +141,13 @@
                                         &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                            </button>
                         </th>
-                        <th class="border border-gray-400 px-4 py-2">Action</th>
+                        <th class="cursor-pointer px-4 py-2 border border-gray-400">Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $assignedCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $assignedCourse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                        <tr  class="text-sm">
+                        <tr>
                             <!--[if BLOCK]><![endif]--><?php if($assignedCourse->course): ?>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_code); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_name); ?></td>
@@ -205,6 +193,21 @@
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
+
+            <div class="flex justify-between">
+                <div class="text-black mt-2">Total Course: 
+                    <span class="text-red-500">
+                        <?php echo e($teacher->courseTotal); ?>
+
+                    </span>
+                </div>
+                <div class="text-black mt-2">Total Units Acquired: 
+                    <span class="text-red-500">
+                        <?php echo e($teacher->totalUnits); ?>
+
+                    </span>
+                </div>
+            </div>
             <?php echo e($assignedCourses->links()); ?>
 
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
