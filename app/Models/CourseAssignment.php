@@ -19,6 +19,7 @@ class CourseAssignment extends Model
         'days_of_the_week',
         'class_start_time',
         'class_end_time',
+        'room',
         'teacher_id',
         'program_id',
         'department_id',

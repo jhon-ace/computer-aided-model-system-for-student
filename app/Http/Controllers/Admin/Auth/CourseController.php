@@ -157,6 +157,7 @@ class CourseController extends Controller
             'days_of_the_week' => 'required|string|in:M.W,M.W.F,T.Th',
             'class_start_time' => 'required|date_format:H:i',
             'class_end_time' => 'required|date_format:H:i|after:class_start_time',
+            'room' => 'nullable|string|max:255',
         ], [
             'teacher_id.exists' => 'The selected teacher does not exist.',
             'days_of_the_week.in' => 'Invalid days of the week selection.',
@@ -173,6 +174,7 @@ class CourseController extends Controller
             $days_of_the_week = $request->input('days_of_the_week');
             $class_start_time = $request->input('class_start_time');
             $class_end_time = $request->input('class_end_time');
+            $room = $request->input('room');
     
             // Find the teacher
             $teacher = Teacher::findOrFail($teacherId);
@@ -184,6 +186,7 @@ class CourseController extends Controller
                 'days_of_the_week' => $days_of_the_week,
                 'class_start_time' => $class_start_time,
                 'class_end_time' => $class_end_time,
+                'room' => $room,
                 'teacher_id' => $teacherId,
                 'program_id' => $course->program_id,
                 'department_id' => $course->program->department_id,

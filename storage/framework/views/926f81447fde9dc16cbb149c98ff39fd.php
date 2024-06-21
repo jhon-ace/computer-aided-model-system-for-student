@@ -254,6 +254,9 @@ unset($__errorArgs, $__bag); ?>" required>
 
                                                                 <label for="section" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Enter Section:</label>
                                                                 <input type="text" name="section" id="section" value="<?php echo e(old('section')); ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required placeholder="ex:BSIT-1-B-1ST-25">
+                                                                
+                                                                <label for="room" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Assign Room:</label>
+                                                                <input type="text" name="room" id="room" value="<?php echo e(old('room')); ?>" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="ex:NH201">
                                                                 <!-- Multi-select box for days of the week -->
                                                                 <div class="max-w-xl mx-auto grid grid-cols-3 gap-4">
                                                                     <div>
@@ -271,8 +274,9 @@ unset($__errorArgs, $__bag); ?>" required>
                                                                     <div>
                                                                         <label for="end-time" class="block text-gray-700 text-md font-bold mb-2 mt-4">End time:</label>                                                                         
                                                                         <input type="time" id="end-time" name="class_end_time" class="bg-gray-50 border leading-none border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:shadow-outline" min="07:00" max="19:00" value="19:00" required />
-                                                                    </div>
+                                                                    </div>                                                                   
                                                                 </div>
+                                                                                                                             
                                                                 <!-- Modal footer -->
                                                                 <div class="mt-6 flex justify-end">
                                                                     <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">

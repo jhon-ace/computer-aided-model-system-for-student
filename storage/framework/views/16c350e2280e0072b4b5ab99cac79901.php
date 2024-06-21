@@ -225,6 +225,7 @@
                                                                             <th class="border border-gray-400 px-4 py-2">Section</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Unit/s</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Schedule</th>
+                                                                            <th class="border border-gray-400 px-4 py-2">Room</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Action</th>
                                                                         </tr>
                                                                     </thead>
@@ -241,6 +242,15 @@
                                                                                 <?php echo e(date('h:i A', strtotime($courseAssignment->class_end_time))); ?>
 
                                                                                 </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    <!--[if BLOCK]><![endif]--><?php if($courseAssignment->room): ?>
+                                                                                        <?php echo e($courseAssignment->room); ?>
+
+                                                                                    <?php else: ?>
+                                                                                        <span class="text-gray-500 text-sm">Room not assigned</span>
+                                                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                                </td>
+
                                                                                 <td class="text-black border border-gray-400 px-4 py-2 ">
                                                                                     
                                                                                     

@@ -168,6 +168,7 @@
                                                                             <th class="border border-gray-400 px-4 py-2">Section</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Unit/s</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Schedule</th>
+                                                                            <th class="border border-gray-400 px-4 py-2">Room</th>
                                                                             <th class="border border-gray-400 px-4 py-2">Action</th>
                                                                         </tr>
                                                                     </thead>
@@ -183,6 +184,14 @@
                                                                                 {{ date('h:i A', strtotime($courseAssignment->class_start_time)) }} - 
                                                                                 {{ date('h:i A', strtotime($courseAssignment->class_end_time)) }}
                                                                                 </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    @if ($courseAssignment->room)
+                                                                                        {{ $courseAssignment->room }}
+                                                                                    @else
+                                                                                        <span class="text-gray-500 text-sm">Room not assigned</span>
+                                                                                    @endif
+                                                                                </td>
+
                                                                                 <td class="text-black border border-gray-400 px-4 py-2 ">
                                                                                     
                                                                                     
