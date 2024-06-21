@@ -77,7 +77,7 @@
         <!--[if BLOCK]><![endif]--><?php if($search && $assignedCourses->isEmpty()): ?>
             <p class="text-black mt-8 text-center">No course found for matching "<?php echo e($search); ?>"</p>
         <?php elseif(!$search && $assignedCourses->isEmpty()): ?>
-            <p class="text-black mt-8 text-center">No data available in table</p>
+            <p class="text-black mt-8 text-center">No assigned course yet</p>
         <?php else: ?>
             <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-2">
                 <thead class="bg-gray-200 text-black">
