@@ -1,19 +1,76 @@
 <div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-8 text-black font-medium">
-    @if (session('success'))
-        <x-sweetalert type="success" :message="session('success')" />
-    @endif
+    <!--[if BLOCK]><![endif]--><?php if(session('success')): ?>
+        <?php if (isset($component)) { $__componentOriginal54e362747f6a5fcdcf7fd32363698818 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal54e362747f6a5fcdcf7fd32363698818 = $attributes; } ?>
+<?php $component = App\View\Components\Sweetalert::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sweetalert'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\Sweetalert::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['type' => 'success','message' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(session('success'))]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal54e362747f6a5fcdcf7fd32363698818)): ?>
+<?php $attributes = $__attributesOriginal54e362747f6a5fcdcf7fd32363698818; ?>
+<?php unset($__attributesOriginal54e362747f6a5fcdcf7fd32363698818); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal54e362747f6a5fcdcf7fd32363698818)): ?>
+<?php $component = $__componentOriginal54e362747f6a5fcdcf7fd32363698818; ?>
+<?php unset($__componentOriginal54e362747f6a5fcdcf7fd32363698818); ?>
+<?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-    @if (session('info'))
-        <x-sweetalert type="info" :message="session('info')" />
-    @endif
+    <!--[if BLOCK]><![endif]--><?php if(session('info')): ?>
+        <?php if (isset($component)) { $__componentOriginal54e362747f6a5fcdcf7fd32363698818 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal54e362747f6a5fcdcf7fd32363698818 = $attributes; } ?>
+<?php $component = App\View\Components\Sweetalert::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sweetalert'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\Sweetalert::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['type' => 'info','message' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(session('info'))]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal54e362747f6a5fcdcf7fd32363698818)): ?>
+<?php $attributes = $__attributesOriginal54e362747f6a5fcdcf7fd32363698818; ?>
+<?php unset($__attributesOriginal54e362747f6a5fcdcf7fd32363698818); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal54e362747f6a5fcdcf7fd32363698818)): ?>
+<?php $component = $__componentOriginal54e362747f6a5fcdcf7fd32363698818; ?>
+<?php unset($__componentOriginal54e362747f6a5fcdcf7fd32363698818); ?>
+<?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-    @if (session('error'))
-        <x-sweetalert type="error" :message="session('error')" />
-    @endif
+    <!--[if BLOCK]><![endif]--><?php if(session('error')): ?>
+        <?php if (isset($component)) { $__componentOriginal54e362747f6a5fcdcf7fd32363698818 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal54e362747f6a5fcdcf7fd32363698818 = $attributes; } ?>
+<?php $component = App\View\Components\Sweetalert::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('sweetalert'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\Sweetalert::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['type' => 'error','message' => \Illuminate\View\Compilers\BladeCompiler::sanitizeComponentAttribute(session('error'))]); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal54e362747f6a5fcdcf7fd32363698818)): ?>
+<?php $attributes = $__attributesOriginal54e362747f6a5fcdcf7fd32363698818; ?>
+<?php unset($__attributesOriginal54e362747f6a5fcdcf7fd32363698818); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal54e362747f6a5fcdcf7fd32363698818)): ?>
+<?php $component = $__componentOriginal54e362747f6a5fcdcf7fd32363698818; ?>
+<?php unset($__componentOriginal54e362747f6a5fcdcf7fd32363698818); ?>
+<?php endif; ?>
+    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
     <div class="flex justify-between mb-4 sm:-mt-4">
         <div class="font-bold text-md tracking-tight text-black mt-2">Admin / Manage Courddses</div>
-        <a href="{{ route('admin.course.create') }}">
+        <a href="<?php echo e(route('admin.course.create')); ?>">
             <button class="bg-blue-500 text-white text-sm px-3 py-2 rounded hover:bg-blue-700">
                 <i class="fa-solid fa-plus fa-xs" style="color: #ffffff;"></i> Add Course
             </button>
@@ -21,9 +78,9 @@
     </div>
     <hr class="border-gray-200 my-4">
     <div class="flex justify-between mb-4">
-        <form id="deleteAllForm" method="POST" action="{{ route('admin.course.deleteAll')}}" onsubmit="return confirmDeleteAll(event);">
-            @csrf
-            @method('DELETE')
+        <form id="deleteAllForm" method="POST" action="<?php echo e(route('admin.course.deleteAll')); ?>" onsubmit="return confirmDeleteAll(event);">
+            <?php echo csrf_field(); ?>
+            <?php echo method_field('DELETE'); ?>
             <button type="submit" class="block w-full text-left px-4 py-2 text-sm rounded text-white bg-red-500 hover:bg-red-800">
             <i class="fa-solid fa-trash"></i> Delete All
         </button>
@@ -37,107 +94,107 @@
                     <i class="fa-solid fa-trash fa-xs" style="color: #ffffff;"></i> Delete Selected
                 </button> -->
     <div class="overflow-x-auto">
-        @if($search && $$assignedCourses->isEmpty())
-            <p class="text-black mt-8 text-center">No course found for matching "{{ $search }}"</p>
-        @elseif(!$search && $assignedCourses->isEmpty())
+        <!--[if BLOCK]><![endif]--><?php if($search && $$assignedCourses->isEmpty()): ?>
+            <p class="text-black mt-8 text-center">No course found for matching "<?php echo e($search); ?>"</p>
+        <?php elseif(!$search && $assignedCourses->isEmpty()): ?>
             <p class="text-black mt-8 text-center">No data available in table</p>
-        @else
+        <?php else: ?>
                 <table class="table-auto border-collapse border border-gray-400 w-full text-center mb-4 ">
                     <thead class="bg-gray-200 text-black">
                         <tr>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('course_code')" class="w-full h-full flex items-center justify-center">
                                     Course Code
-                                    @if ($sortField == 'course_code')
-                                        @if ($sortDirection == 'asc')
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_code'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                        @else
+                                        <?php else: ?>
                                             &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
-                                        @endif
-                                    @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('course_name')" class="w-full h-full flex items-center justify-center">
                                     Course Description
-                                    @if ($sortField == 'course_name')
-                                        @if ($sortDirection == 'asc')
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_name'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                        @else
+                                        <?php else: ?>
                                             &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
-                                        @endif
-                                    @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('section')" class="w-full h-full flex items-center justify-center">
                                     Section
-                                    @if ($sortField == 'section')
-                                        @if ($sortDirection == 'asc')
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'section'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                        @else
+                                        <?php else: ?>
                                             &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
-                                        @endif
-                                    @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('course_unit')" class="w-full h-full flex items-center justify-center">
                                     Unit/s
-                                    @if ($sortField == 'course_unit')
-                                        @if ($sortDirection == 'asc')
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'course_unit'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                        @else
+                                        <?php else: ?>
                                             &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
-                                        @endif
-                                    @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('days_of_the_week')" class="w-full h-full flex items-center justify-center">
                                     Schedule
-                                    @if ($sortField == 'days_of_the_week')
-                                        @if ($sortDirection == 'asc')
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'days_of_the_week'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                        @else
+                                        <?php else: ?>
                                             &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
-                                        @endif
-                                    @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">
                                 <button wire:click="sortBy('room')" class="w-full h-full flex items-center justify-center">
                                     Room
-                                    @if ($sortField == 'program_id')
-                                        @if ($sortDirection == 'asc')
+                                    <!--[if BLOCK]><![endif]--><?php if($sortField == 'program_id'): ?>
+                                        <!--[if BLOCK]><![endif]--><?php if($sortDirection == 'asc'): ?>
                                             &nbsp;<i class="fa-solid fa-down-long fa-xs"></i>
-                                        @else
+                                        <?php else: ?>
                                             &nbsp;<i class="fa-solid fa-up-long fa-xs"></i>
-                                        @endif
-                                    @endif
+                                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                 </button>
                             </th>
                             <th class="border border-gray-400 px-4 py-2">Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($assignedCourses as $assignedCourse)
-                        @if ($assignedCourse->course)
-                            <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_code }}</td>
-                            <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_name }}</td>
-                        @else
+                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $assignedCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $assignedCourse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                        <!--[if BLOCK]><![endif]--><?php if($assignedCourse->course): ?>
+                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_code); ?></td>
+                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_name); ?></td>
+                        <?php else: ?>
                             <td class="text-black border border-gray-400 px-4 py-2">Course Not Found</td>
                             <td class="text-black border border-gray-400 px-4 py-2">Course Not Found</td>
-                        @endif
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
 
-                        <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->section }}</td>
-                        @if ($assignedCourse->course)
-                            <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_unit }}</td>
-                        @else
+                        <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->section); ?></td>
+                        <!--[if BLOCK]><![endif]--><?php if($assignedCourse->course): ?>
+                            <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_unit); ?></td>
+                        <?php else: ?>
                             <td class="text-black border border-gray-400 px-4 py-2">Course Not Found</td>
-                        @endif
-                        <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->days_of_the_week }} | {{ $assignedCourse->class_start_time }} - {{ $assignedCourse->class_end_time }}</td>
-                        <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->room }}</td>
+                        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                        <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->days_of_the_week); ?> | <?php echo e($assignedCourse->class_start_time); ?> - <?php echo e($assignedCourse->class_end_time); ?></td>
+                        <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->room); ?></td>
                                 <td class="text-black border border-gray-400 px-4 py-2">
                                     <div class="flex justify-center items-center space-x-2">
                                         <div x-data="{ open: false, showModal: false }">
@@ -181,8 +238,8 @@
                                                 </div>
                                                 <hr class="border-gray-200">
                                                 <form id="deleteForm" method="POST" action="#" >
-                                                    @csrf
-                                                    @method('DELETE')
+                                                    <?php echo csrf_field(); ?>
+                                                    <?php echo method_field('DELETE'); ?>
                                                     <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-500 hover:bg-gray-200">
                                                         <i class="fa-solid fa-trash"></i> Delete Course
                                                     </button>
@@ -192,11 +249,12 @@
                                     </div>
                                 </td>
                             </tr>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                     </tbody>
                 </table>
-                {{ $assignedCourses->links() }}
-        @endif
+                <?php echo e($assignedCourses->links()); ?>
+
+        <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
     </div>
 </div>
 
@@ -223,7 +281,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 const form = document.getElementById('deleteForm');
-                form.action = "{{ route('admin.course.deleteSelected', ['id' => ':courseId']) }}".replace(':courseId', courseId);
+                form.action = "<?php echo e(route('admin.course.deleteSelected', ['id' => ':courseId'])); ?>".replace(':courseId', courseId);
                 form.submit();
             }
         });
@@ -256,3 +314,4 @@
 
 </script>
 
+<?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/livewire/teacher/course-show-table.blade.php ENDPATH**/ ?>

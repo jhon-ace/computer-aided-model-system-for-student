@@ -173,16 +173,35 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody class="bg-slate-100 divide-y divide-gray-200">
-                                                                            @foreach ($teacher->courses as $courseAssignment)
+
+                                                                        @foreach ($teacher->courses as $courseAssignment)
                                                                             <tr>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2">{{ $courseAssignment->course->course_code }}</td>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2">{{ $courseAssignment->course->course_name }}</td>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2">{{ $courseAssignment->section }}</td>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2">{{ $courseAssignment->course->course_unit }}</td>
                                                                                 <td class="text-black border border-gray-400 px-4 py-2">
-                                                                                {{ $courseAssignment->days_of_the_week }} | 
-                                                                                {{ date('h:i A', strtotime($courseAssignment->class_start_time)) }} - 
-                                                                                {{ date('h:i A', strtotime($courseAssignment->class_end_time)) }}
+                                                                                    @if ($courseAssignment->course)
+                                                                                        {{ $courseAssignment->course->course_code }}
+                                                                                    @else
+                                                                                        <span class="text-red-500">Course not found</span>
+                                                                                    @endif
+                                                                                </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    @if ($courseAssignment->course)
+                                                                                        {{ $courseAssignment->course->course_name }}
+                                                                                    @else
+                                                                                        <span class="text-red-500">Course not found</span>
+                                                                                    @endif
+                                                                                </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">{{ $courseAssignment->section }}</td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    @if ($courseAssignment->course)
+                                                                                        {{ $courseAssignment->course->course_unit }}
+                                                                                    @else
+                                                                                        <span class="text-red-500">Course not found</span>
+                                                                                    @endif
+                                                                                </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    {{ $courseAssignment->days_of_the_week }} | 
+                                                                                    {{ date('h:i A', strtotime($courseAssignment->class_start_time)) }} - 
+                                                                                    {{ date('h:i A', strtotime($courseAssignment->class_end_time)) }}
                                                                                 </td>
                                                                                 <td class="text-black border border-gray-400 px-4 py-2">
                                                                                     @if ($courseAssignment->room)
@@ -191,25 +210,22 @@
                                                                                         <span class="text-gray-500 text-sm">Room not assigned</span>
                                                                                     @endif
                                                                                 </td>
-
-                                                                                <td class="text-black border border-gray-400 px-4 py-2 ">
-                                                                                    
-                                                                                    
-                                                                                <form id="deleteAssignedCourse" method="POST" action="{{ route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id]) }}" onsubmit="return confirmDeleteAssignedCourse(event, {{ $courseAssignment->id }}, '{{ addslashes($courseAssignment->course->course_name) }}','{{ $courseAssignment->course->course_code }}', '{{ $teacher->id }}');">
-                                                                                    @csrf
-                                                                                    @method('DELETE')
-                                                                                    <button type="submit" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>
-                                                                                </form>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    <form id="deleteAssignedCourse" method="POST" action="{{ route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id]) }}" onsubmit="return confirmDeleteAssignedCourse(event, {{ $courseAssignment->id }}, '{{ addslashes($courseAssignment->course->course_name ?? '') }}','{{ addslashes($courseAssignment->course->course_code ?? '') }}', '{{ $teacher->id }}');">
+                                                                                        @csrf
+                                                                                        @method('DELETE')
+                                                                                        <button type="submit" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>
+                                                                                    </form>
                                                                                 </td>
-                                                                                <!-- Add more columns as needed -->
                                                                             </tr>
-                                                                            @endforeach
-                                                                            
+                                                                        @endforeach 
                                                                     </tbody>
                                                                 </table>
-                                                                            @if($teacher->courses->isEmpty())
-                                                                                <p class="text-black mt-8 text-center">No courses assigned yet.</p>
-                                                                            @endif
+
+                                                                @if($teacher->courses->isEmpty())
+                                                                    <p class="text-black mt-8 text-center">No courses assigned yet.</p>
+                                                                @endif
+                                                                
                                                                 <div class="flex justify-between">
                                                                     <div class="text-black mt-2">Total Course: 
                                                                         <span class="text-red-500">

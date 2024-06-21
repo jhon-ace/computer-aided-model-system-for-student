@@ -8,13 +8,14 @@ use \App\Models\CourseAssignment;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class CourseShowTable extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $sortField = 'course_code';
+    public $sortField = 'course_id';
     public $sortDirection = 'desc';
     public $deleteAllClicked = false;
 
@@ -37,26 +38,28 @@ class CourseShowTable extends Component
 
     public function render()
     {
-        
-            $assignedCourses = CourseAssignment::with(['course'])
-            ->where(function (Builder $query) {
-                $query->where('course_code', 'like', '%' . $this->search . '%')
-                    ->orWhere('course_name', 'like', '%' . $this->search . '%')
-                    ->orWhere('course_description', 'like', '%' . $this->search . '%')
-                    ->orWhere('course_semester', 'like', '%' . $this->search . '%')
-                    ->orWhereHas('program', function (Builder $query) {
-                        $query->where('program_abbreviation', 'like', '%' . $this->search . '%');
-                    });
+        $teacherId = Auth::id();
+
+        // Fetch the assigned courses for the teacher
+        $assignedCourses = CourseAssignment::with(['course'])
+            ->where('teacher_id', $teacherId)
+            ->where(function ($query) {
+                $query->whereHas('course', function ($query) {
+                    $query->where('course_code', 'like', '%' . $this->search . '%')
+                          ->orWhere('course_name', 'like', '%' . $this->search . '%')
+                          ->orWhere('course_unit', 'like', '%' . $this->search . '%');;
+                })
+                ->orWhere('section', 'like', '%' . $this->search . '%')
+                ->orWhere('days_of_the_week', 'like', '%' . $this->search . '%')
+                ->orWhere('class_start_time', 'like', '%' . $this->search . '%')
+                ->orWhere('class_end_time', 'like', '%' . $this->search . '%')
+                ->orWhere('room', 'like', '%' . $this->search . '%');
             })
             ->orderBy($this->sortField, $this->sortDirection)
             ->paginate(10);
 
-
-
         return view('livewire.teacher.course-show-table', [
-            'assignedCourse' => $assignedCourses,
-
+            'assignedCourses' => $assignedCourses
         ]);
-
     }
 }

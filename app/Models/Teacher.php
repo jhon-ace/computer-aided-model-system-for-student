@@ -65,4 +65,9 @@ class Teacher extends Authenticatable
     {
         return $this->belongsToMany(Course::class);
     }
+
+    public function courseAssignments()
+    {
+        return $this->hasMany(CourseAssignment::class);
+    }
 }

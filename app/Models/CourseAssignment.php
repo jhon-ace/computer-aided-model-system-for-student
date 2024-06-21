@@ -13,6 +13,8 @@ class CourseAssignment extends Model
 {
     use HasFactory;
 
+    protected $table = 'course_assignments';
+
     protected $fillable = [
         'course_id',
         'section',

@@ -230,16 +230,38 @@
                                                                         </tr>
                                                                     </thead>
                                                                     <tbody class="bg-slate-100 divide-y divide-gray-200">
-                                                                            <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teacher->courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $courseAssignment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+
+                                                                        <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $teacher->courses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $courseAssignment): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                                             <tr>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->course->course_code); ?></td>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->course->course_name); ?></td>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->section); ?></td>
-                                                                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->course->course_unit); ?></td>
                                                                                 <td class="text-black border border-gray-400 px-4 py-2">
-                                                                                <?php echo e($courseAssignment->days_of_the_week); ?> | 
-                                                                                <?php echo e(date('h:i A', strtotime($courseAssignment->class_start_time))); ?> - 
-                                                                                <?php echo e(date('h:i A', strtotime($courseAssignment->class_end_time))); ?>
+                                                                                    <!--[if BLOCK]><![endif]--><?php if($courseAssignment->course): ?>
+                                                                                        <?php echo e($courseAssignment->course->course_code); ?>
+
+                                                                                    <?php else: ?>
+                                                                                        <span class="text-red-500">Course not found</span>
+                                                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                                </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    <!--[if BLOCK]><![endif]--><?php if($courseAssignment->course): ?>
+                                                                                        <?php echo e($courseAssignment->course->course_name); ?>
+
+                                                                                    <?php else: ?>
+                                                                                        <span class="text-red-500">Course not found</span>
+                                                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                                </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($courseAssignment->section); ?></td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    <!--[if BLOCK]><![endif]--><?php if($courseAssignment->course): ?>
+                                                                                        <?php echo e($courseAssignment->course->course_unit); ?>
+
+                                                                                    <?php else: ?>
+                                                                                        <span class="text-red-500">Course not found</span>
+                                                                                    <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                                </td>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    <?php echo e($courseAssignment->days_of_the_week); ?> | 
+                                                                                    <?php echo e(date('h:i A', strtotime($courseAssignment->class_start_time))); ?> - 
+                                                                                    <?php echo e(date('h:i A', strtotime($courseAssignment->class_end_time))); ?>
 
                                                                                 </td>
                                                                                 <td class="text-black border border-gray-400 px-4 py-2">
@@ -250,25 +272,22 @@
                                                                                         <span class="text-gray-500 text-sm">Room not assigned</span>
                                                                                     <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
                                                                                 </td>
-
-                                                                                <td class="text-black border border-gray-400 px-4 py-2 ">
-                                                                                    
-                                                                                    
-                                                                                <form id="deleteAssignedCourse" method="POST" action="<?php echo e(route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id])); ?>" onsubmit="return confirmDeleteAssignedCourse(event, <?php echo e($courseAssignment->id); ?>, '<?php echo e(addslashes($courseAssignment->course->course_name)); ?>','<?php echo e($courseAssignment->course->course_code); ?>', '<?php echo e($teacher->id); ?>');">
-                                                                                    <?php echo csrf_field(); ?>
-                                                                                    <?php echo method_field('DELETE'); ?>
-                                                                                    <button type="submit" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>
-                                                                                </form>
+                                                                                <td class="text-black border border-gray-400 px-4 py-2">
+                                                                                    <form id="deleteAssignedCourse" method="POST" action="<?php echo e(route('admin.teacher.deleteAssignCourse', ['teacher_id' => $teacher->id, 'id' => $courseAssignment->id])); ?>" onsubmit="return confirmDeleteAssignedCourse(event, <?php echo e($courseAssignment->id); ?>, '<?php echo e(addslashes($courseAssignment->course->course_name ?? '')); ?>','<?php echo e(addslashes($courseAssignment->course->course_code ?? '')); ?>', '<?php echo e($teacher->id); ?>');">
+                                                                                        <?php echo csrf_field(); ?>
+                                                                                        <?php echo method_field('DELETE'); ?>
+                                                                                        <button type="submit" class="bg-red-500 text-white text-sm px-3 py-2 rounded hover:bg-red-700"><i class="fa-solid fa-trash"></i></button>
+                                                                                    </form>
                                                                                 </td>
-                                                                                <!-- Add more columns as needed -->
                                                                             </tr>
-                                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
-                                                                            
+                                                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]--> 
                                                                     </tbody>
                                                                 </table>
-                                                                            <!--[if BLOCK]><![endif]--><?php if($teacher->courses->isEmpty()): ?>
-                                                                                <p class="text-black mt-8 text-center">No courses assigned yet.</p>
-                                                                            <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+
+                                                                <!--[if BLOCK]><![endif]--><?php if($teacher->courses->isEmpty()): ?>
+                                                                    <p class="text-black mt-8 text-center">No courses assigned yet.</p>
+                                                                <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+                                                                
                                                                 <div class="flex justify-between">
                                                                     <div class="text-black mt-2">Total Course: 
                                                                         <span class="text-red-500">

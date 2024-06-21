@@ -39,12 +39,22 @@
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
         <div class="container mx-auto p-4 ">
-            <div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-8 lg:p-10 text-black font-medium mx-auto">
-                <div class="flex justify-between mb-4 sm:-mt-4">
-                    <div class="font-bold text-md tracking-tight text-black  -ml-3 px-3 py-2">My Courses</div>
-                </div>
-                
-            </div>
+            <?php
+$__split = function ($name, $params = []) {
+    return [$name, $params];
+};
+[$__name, $__params] = $__split('teacher.course-show-table', []);
+
+$__html = app('livewire')->mount($__name, $__params, 'lw-321032316-0', $__slots ?? [], get_defined_vars());
+
+echo $__html;
+
+unset($__html);
+unset($__name);
+unset($__params);
+unset($__split);
+if (isset($__slots)) unset($__slots);
+?>
         </div>
      <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
