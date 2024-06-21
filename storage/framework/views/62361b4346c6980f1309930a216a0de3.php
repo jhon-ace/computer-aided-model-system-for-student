@@ -1,0 +1,1 @@
+<h1>Hi my Courses</h1><?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/teacher/courses/index.blade.php ENDPATH**/ ?>

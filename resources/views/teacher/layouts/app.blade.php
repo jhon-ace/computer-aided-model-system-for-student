@@ -22,6 +22,10 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen ">
+            @php
+            $teacher_details = Auth::user();
+            @endphp
+
             @include('teacher.layouts.side-bar-navigation')
 
             <main>
