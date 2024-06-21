@@ -24,7 +24,12 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
         return view('teacher.dashboard');
     })->name('dashboard');
 
+    //Teacher-assign courses controller
     Route::get('/my-courses', [TeacherCourseController::class, 'index'])->name('teacher-courses.index');
+    
+
+
+
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -13,6 +13,8 @@ use App\Http\Requests\TeacherStoreRequest;
 use App\Http\Requests\TeacherUpdateRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+
 
 
 class TeacherController extends Controller
@@ -205,6 +207,13 @@ class TeacherController extends Controller
 
     public function deleteAssignCourse($teacher_id, $id)
     {
+
+        // $courseCount = DB::table('course_assignments')
+        // ->where('teacher_id', $teacher_id)
+        // ->count('course_id');
+
+        // return view('course_count', ['courseCount' => $courseCount]);
+
         // Find the specific course assignment by its ID and ensure it belongs to the given teacher_id
         $courseAssignment = CourseAssignment::where('teacher_id', $teacher_id)
                                         ->where('id', $id)
