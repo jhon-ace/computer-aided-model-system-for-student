@@ -1,4 +1,3 @@
-
 <div id="sidebarContainer" class="fixed flex flex-col left-0 w-14 hover:w-48 md:w-48 bg-gray-900 h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-10 sidebar">
     <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow mr-0.5">
         <ul class="flex flex-col py-2 space-y-1 text-gray-800" >
@@ -10,10 +9,10 @@
                 @endif
             </a>
             <label class="relative flex flex-row justify-center items-center h-2  focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent  pr-3 ">
-                <span class=" text-sm tracking-wide truncate text-white">{{ Auth::user()->name }}</span>
+                <span class=" text-sm tracking-wide truncate text-white">{{ $teacher_details->name }}</span>
             </label>
             <label class="relative flex flex-row justify-center h-6 focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent   ">
-                <span class=" text-xs tracking-wide truncate text-white">{{ Auth::user()->email }}</span>
+                <span class=" text-xs tracking-wide truncate text-white">{{ $teacher_details->email }}</span>
             </label>
             <div class="border-t"></div>
             <li>
@@ -32,7 +31,7 @@
             <li>
                 <a  href="{{ route('teacher.teacher-courses.index') }}"  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
-                        {{ request()->routeIs('admin.department.index') || request()->routeIs('admin.department.edit') || request()->routeIs('admin.department.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
+                        {{ request()->routeIs('teacher.teacher-courses.index') || request()->routeIs('admin.department.edit') || request()->routeIs('admin.department.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
                     <span class="inline-flex justify-center items-center ml-4">
                         <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-md text-white" style="color: #fffff;"></i>
                     </span>

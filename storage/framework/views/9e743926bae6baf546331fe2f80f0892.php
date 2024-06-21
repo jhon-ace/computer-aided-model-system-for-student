@@ -83,4 +83,25 @@
 <?php $component = $__componentOriginal15a72a62debbe72bfa7a4f1dc73a4a07; ?>
 <?php unset($__componentOriginal15a72a62debbe72bfa7a4f1dc73a4a07); ?>
 <?php endif; ?>
+
+<?php if (isset($component)) { $__componentOriginal7f83d574ebf694838d71081ed65bad7b = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginal7f83d574ebf694838d71081ed65bad7b = $attributes; } ?>
+<?php $component = App\View\Components\ShowHideSidebar::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('show-hide-sidebar'); ?>
+<?php if ($component->shouldRender()): ?>
+<?php $__env->startComponent($component->resolveView(), $component->data()); ?>
+<?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
+<?php $attributes = $attributes->except(\App\View\Components\ShowHideSidebar::ignoredParameterNames()); ?>
+<?php endif; ?>
+<?php $component->withAttributes(['toggleButtonId' => 'toggleButton','sidebarContainerId' => 'sidebarContainer','dashboardContentId' => 'dashboardContent','toggleIconId' => 'toggleIcon']); ?>
+<?php echo $__env->renderComponent(); ?>
+<?php endif; ?>
+<?php if (isset($__attributesOriginal7f83d574ebf694838d71081ed65bad7b)): ?>
+<?php $attributes = $__attributesOriginal7f83d574ebf694838d71081ed65bad7b; ?>
+<?php unset($__attributesOriginal7f83d574ebf694838d71081ed65bad7b); ?>
+<?php endif; ?>
+<?php if (isset($__componentOriginal7f83d574ebf694838d71081ed65bad7b)): ?>
+<?php $component = $__componentOriginal7f83d574ebf694838d71081ed65bad7b; ?>
+<?php unset($__componentOriginal7f83d574ebf694838d71081ed65bad7b); ?>
+<?php endif; ?>
 <?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/admin/profile/edit.blade.php ENDPATH**/ ?>

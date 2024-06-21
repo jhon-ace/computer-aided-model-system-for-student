@@ -67,8 +67,8 @@ class UserRoutePageName extends Component
             'admin.profile.edit' => __('Edit Admin Profile'),
 
             // This is Teacher Route Page Name
-            'teacher.dashboard' => __('Teacher Dashboard'),
-            'admin.teacher.assignCourse' => __('Course for Teacher'),
+            'teacher.dashboard' => __('Teacher | Dashboard'),
+            'teacher.teacher-courses' => __('Teacher | List of Courses'),
 
             // Add more titles as needed
         ];

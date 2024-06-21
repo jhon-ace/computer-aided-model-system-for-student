@@ -28,3 +28,10 @@
         </div>
     </x-section-div-style>
 </x-admin-app-layout>
+
+<x-show-hide-sidebar
+    toggleButtonId="toggleButton"
+    sidebarContainerId="sidebarContainer"
+    dashboardContentId="dashboardContent"
+    toggleIconId="toggleIcon"
+/>

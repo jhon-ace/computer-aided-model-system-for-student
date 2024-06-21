@@ -23,9 +23,8 @@
     <body class="font-sans antialiased">
         <div class="min-h-screen ">
             <?php
-            $teacher_details = Auth::user();
+                $teacher_details = Auth::user();
             ?>
-
             <?php echo $__env->make('teacher.layouts.side-bar-navigation', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
 
             <main>
