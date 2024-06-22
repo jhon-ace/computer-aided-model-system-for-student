@@ -6,3 +6,27 @@
 .highlight-row {
     background-color: #E5E7EB; /* Choose your highlight color */
 }
+
+.custom-tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+    white-space: nowrap;
+}
+
+
+/* .custom-tooltip {
+    position: absolute;
+    display: none;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+} */

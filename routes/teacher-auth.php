@@ -21,11 +21,11 @@ Route::middleware('guest:teacher')->prefix('teacher')->name('teacher.')->group(f
 Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teacher.')->group(function () {
     
     Route::get('/dashboard', function () {
-        return view('teacher.dashboard');
+        return view('teacher.dashboard')->with('success', 'Welcome to your dashboard!');
     })->name('dashboard');
 
     //Teacher-assign courses controller
-    Route::get('/my-courses', [TeacherCourseController::class, 'index'])->name('teacher-courses.index');
+    Route::get('/my-courses', [TeacherCourseController::class, 'index'])->name('teachercourses.index');
     
 
 

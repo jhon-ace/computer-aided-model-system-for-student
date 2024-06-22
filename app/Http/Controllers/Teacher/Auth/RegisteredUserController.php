@@ -45,6 +45,6 @@ class RegisteredUserController extends Controller
 
         Auth::guard('teacher')->login($Teacher);
 
-        return redirect(route('teacher.dashboard', absolute: false));
+        return redirect(route('teacher.dashboard', absolute: false))->with('success', 'You have successfully logged in.');
     }
 }

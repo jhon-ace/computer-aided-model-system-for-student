@@ -16,8 +16,8 @@ class CourseShowTable extends Component
     use WithPagination;
 
     public $search = '';
-    public $sortField = 'courses.course_code';
-    public $sortDirection = 'desc';
+    public $sortField = 'days_of_the_week';
+    public $sortDirection = 'asc';
     public $deleteAllClicked = false;
 
     public function updatingSearch()
@@ -57,6 +57,15 @@ class CourseShowTable extends Component
             ->join('courses', 'course_assignments.course_id', '=', 'courses.id')
             ->sum('courses.course_unit');
     }
+
+
+    public function manageCourse($courseId)
+    {
+        // Perform any necessary logic here
+
+        // Emit event to update sidebar
+        $this->emit('courseClicked', $courseId);
+    }   
 
     public function render()
     {

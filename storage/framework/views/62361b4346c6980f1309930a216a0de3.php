@@ -38,7 +38,7 @@
 <?php $attributes = $attributes->except(\App\View\Components\Teacher\sectionDivStyle::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
-        <div class="container mx-auto p-4 ">
+        <div class="container mx-auto p-4 mt-2">
             <?php
 $__split = function ($name, $params = []) {
     return [$name, $params];
