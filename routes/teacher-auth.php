@@ -4,6 +4,7 @@ use App\Http\Controllers\Teacher\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Teacher\Auth\RegisteredUserController;
 use App\Http\Controllers\Teacher\ProfileController;
 use App\Http\Controllers\Teacher\TeacherCourseController;
+use App\Http\Controllers\Teacher\ManageCourseController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:teacher')->prefix('teacher')->name('teacher.')->group(function () {
@@ -25,9 +26,9 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
     })->name('dashboard');
 
     //Teacher-assign courses controller
-    Route::get('/my-courses', [TeacherCourseController::class, 'index'])->name('teachercourses.index');
-    
-
+    Route::get('/my-courses', [TeacherCourseController::class, 'class_load'])->name('teachercourses.index');
+    // ManageCourse for Teacher
+    Route::get('/manage-course/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'index'])->name('teacher.index');
 
 
     

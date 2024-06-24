@@ -158,9 +158,8 @@
                 </thead>
                 <tbody>
                     <!--[if BLOCK]><![endif]--><?php $__currentLoopData = $assignedCourses; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $assignedCourse): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                    <tr class="hover:bg-gray-200 cursor-pointer" 
-                        onclick="window.location='<?php echo e(route('teacher.dashboard', ['course' => $assignedCourse->course->id])); ?>'">
-
+                    <tr class="hover:bg-gray-200 cursor-pointer"
+                    onclick="window.location='<?php echo e(route('teacher.teacher.index', ['userID' => auth()->user()->id, 'assignmentTableID' => $assignedCourse->id, 'courseID' => $assignedCourse->course_id])); ?>'">
                         <!--[if BLOCK]><![endif]--><?php if($assignedCourse->course): ?>
                             <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_code); ?></td>
                             <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->course->course_name); ?></td>
@@ -174,36 +173,34 @@
                         <?php else: ?>
                             <td class="text-black border border-gray-400 px-4 py-2">Course Not Found</td>
                         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
-                        <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->days_of_the_week); ?> | <?php echo e($assignedCourse->class_start_time); ?> - <?php echo e($assignedCourse->class_end_time); ?></td>
+                        <td class="text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->days_of_the_week); ?> | <?php echo e(date('g:i A', strtotime($assignedCourse->class_start_time))); ?> - <?php echo e(date('g:i A', strtotime($assignedCourse->class_end_time))); ?></td>
                         <td class="room-cell text-black border border-gray-400 px-4 py-2"><?php echo e($assignedCourse->room); ?></td>
                     </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?><!--[if ENDBLOCK]><![endif]-->
                 </tbody>
             </table>
             <div id="tooltip" class="custom-tooltip"></div>
-                <div class="flex justify-between">
-                    <div class="mt-1">
-                        <span class="text-red-500">Note: </span>Select the course to manage.
-                    </div>
-                    <div class="flex justify-start">
-                        <div class="text-black mt-1">Courses: 
-                            <span class="text-red-500">
-                                <?php echo e($teacher->courseTotal); ?>
-
-                            </span> | &nbsp;
-                        </div>
-                        <div class="text-black mt-1">Total Units: 
-                            <span class="text-red-500">
-                                <?php echo e($teacher->totalUnits); ?>
-
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-            <?php echo e($assignedCourses->links()); ?>
-
+            <?php echo e($assignedCourses->links()); ?><br>
         <?php endif; ?><!--[if ENDBLOCK]><![endif]-->
+    </div>
+    <div class="flex justify-between">
+        <div class="mt-1">
+            <span class="text-red-500">Note: </span>Select the course to manage.
+        </div>
+        <div class="flex justify-start">
+            <div class="text-black mt-1">Courses: 
+                <span class="text-red-500">
+                    <?php echo e($teacher->courseTotal); ?>
+
+                </span> | &nbsp;
+            </div>
+            <div class="text-black mt-1">Total Units: 
+                <span class="text-red-500">
+                    <?php echo e($teacher->totalUnits); ?>
+
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 

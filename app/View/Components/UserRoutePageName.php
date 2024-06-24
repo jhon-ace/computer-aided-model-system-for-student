@@ -16,14 +16,22 @@ class UserRoutePageName extends Component
      */
     public $title;
 
+        /**
+     * The course name for the current page.
+     *
+     * @var string|null
+     */
+    public $courseDetails;
+
     /**
      * Create a new component instance.
      *
      * @param string $routeName
      * @return void
      */
-    public function __construct(string $routeName)
+    public function __construct(string $routeName, array $courseDetails = [])
     {
+        $this->courseDetails = $courseDetails;
         $this->setTitle($routeName);
     }
 
@@ -70,11 +78,32 @@ class UserRoutePageName extends Component
             'teacher.dashboard' => __('Teacher | Dashboard'),
             'teacher.teacher-courses' => __('My Courses'),
 
+            //Teacher Manage Courses page name
+            'teacher.teacher.index' => __(':courseName'),
+
             // Add more titles as needed
         ];
 
         // Set default title if route name is not found
         $this->title = $titles[$routeName] ?? __('Student Classroom Management System');
+
+        // Replace the placeholder with the actual course name, if provided
+        if (isset($this->courseDetails['course_name'])) {
+            $this->title = str_replace(':courseName', $this->courseDetails['course_name'], $this->title);
+        }
+
+         // Append section with line break if available
+        if (isset($this->courseDetails['section'])) {
+            $this->title .= ' | ' . $this->courseDetails['section'];
+        }
+        // Append time, days_of_the_week, and section if available
+        if (isset($this->courseDetails['time'])) {
+            $this->title .= ' - ' . $this->courseDetails['time'];
+        }
+        if (isset($this->courseDetails['days_of_the_week'])) {
+            $this->title .= ' - ' . $this->courseDetails['days_of_the_week'];
+        }
+
     }
 
     /**

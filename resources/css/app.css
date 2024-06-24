@@ -19,7 +19,9 @@
     white-space: nowrap;
 }
 
-
+#userIcon:hover {
+    color: red; /* Change the color to red on hover */
+}
 /* .custom-tooltip {
     position: absolute;
     display: none;

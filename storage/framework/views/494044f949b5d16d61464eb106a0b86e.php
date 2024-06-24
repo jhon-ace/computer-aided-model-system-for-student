@@ -1,15 +1,3 @@
-<?php
-    $teacher_details = Auth::user();
-    $courseData = [
-        'labels' => ['1ST', '2ND'], // School years
-        'data' => [
-            \Illuminate\Support\Facades\DB::table('course_assignments')->where('teacher_id', $teacher_details->id)->count('course_id'),
-            0, // Placeholder for future data
-            0, // Placeholder for future data
-            0  // Placeholder for future data
-        ]
-    ];
-?>
 <?php if (isset($component)) { $__componentOriginalbf020ec425b6d0b9fddc69f3baf70e3e = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginalbf020ec425b6d0b9fddc69f3baf70e3e = $attributes; } ?>
 <?php $component = App\View\Components\TeacherAppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
@@ -22,7 +10,12 @@
 <?php $component->withAttributes([]); ?>
     <?php if (isset($component)) { $__componentOriginal8a863ae962bbf3c4907cbf5446e54179 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8a863ae962bbf3c4907cbf5446e54179 = $attributes; } ?>
-<?php $component = App\View\Components\UserRoutePageName::resolve(['routeName' => 'teacher.dashboard'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = App\View\Components\UserRoutePageName::resolve(['routeName' => 'teacher.teacher.index','courseDetails' => [
+            'course_name' => $manageCourse->course->course_name,
+            'time' => date('g:i A', strtotime($manageCourse->class_start_time)) . ' - ' . date('g:i A', strtotime($manageCourse->class_end_time)),
+            'days_of_the_week' => $manageCourse->days_of_the_week,
+            'section' => $manageCourse->section,
+        ]] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('user-route-page-name'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -50,29 +43,48 @@
 <?php $attributes = $attributes->except(\App\View\Components\Teacher\sectionDivStyle::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
+        <div class="container mx-auto p-4 relative"> <!-- Added relative positioning -->
+            <div class="rounded-md p-3 sm:p-4 md:p-6 lg:p-2 w-full h-18 sm:h-20 md:h-28 lg:h-24 lg:pt-4 bg-blue-500 mb-4 truncate">
+                <span class="text-lg sm:text-sm md:text-2xl lg:text-3xl lg:ml-3 font-bold">
+                    <?php echo e($manageCourse->course->course_code); ?> - <?php echo e($manageCourse->course->course_name); ?>
 
-        <div class="container mx-auto p-4 uppercase -mb-8">
-            <p class="mb-2 xl:text-3xl text-black font-bold">Welcome teacher, <span class="text-red-500"><?php echo e(Auth::user()->name); ?></span>!</p>
-            <div class="border-t border-gray-600"></div>
-        </div>
+                </span><br>
+                <span class="text-sm sm:text-md md:text-lg lg:text-xl lg:ml-3">
+                    <?php echo e($manageCourse->section); ?> | <?php echo e(date('g:i A', strtotime($manageCourse->class_start_time))); ?> - <?php echo e(date('g:i A', strtotime($manageCourse->class_end_time))); ?> <?php echo e($manageCourse->days_of_the_week); ?>
 
-        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 p-4 gap-4">
-            <a href="<?php echo e(route('teacher.teachercourses.index')); ?>">
-                <div class="bg-white rounded-md shadow-md flex items-center justify-between p-10 text-black font-medium group">
-                    <div class="flex justify-center items-center w-14 h-14 bg-white rounded-full transition-all duration-300 transform group-hover:rotate-12">
-                        <i class="fa-sharp fa-solid fa-rectangle-list fa-flip-vertical fa-2xl z-0" style="color: #24a0ff;"></i>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-4xl"><?php echo e($courseData['data'][0]); ?></p>
-                        <p>My Courses</p>
-                    </div>
+                </span>
+            </div>
+            <!-- Menu's -->
+            <div id="floatingMenu" class="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-3 border-2 border-gray-400 text-black font-medium opacity-0 pointer-events-none transition-all duration-500">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                    <i class="fa-solid fa-pen-to-square"></i> Classwork
+                </a>
+                <hr class="border-gray-300">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                    <i class="fa-solid fa-pen-to-square"></i> People
+                </a>
+                <hr class="border-gray-300">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                    <i class="fa-solid fa-pen-to-square"></i> Scores
+                </a>
+                <hr class="border-gray-300">
+                <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                    <i class="fa-solid fa-file-pen"></i> Enroll Student
+                </a>
+            </div>
+            <!-- Toggle Button for Adding of Components -->
+            <div id="toggleButton2" class="fixed -right-1 top-1/2 transform -translate-y-1/2 z-50 bg-white text-gray-500 p-2 rounded-full shadow-md cursor-pointer">
+                <svg id="toggleIcon2" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+            </div>
+
+            <div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-8 text-black font-medium">
+                <div class="flex justify-start mb-4">
+                    <div class="font-bold text-md tracking-tight text-black mt-2">My Courses</div>
                 </div>
-            </a>
-        </div>
-
-        <div class="container mx-auto p-4">
-            <div class="bg-white rounded  p-6 shadow-md w-full sm:w-72 md:w-3/4 lg:w-full">
-                <canvas id="coursesChart" class="w-full h-auto sm:w-72 md:w-3/4 lg:w-full"></canvas>
+                <div class="overflow-x-auto">
+                
             </div>
         </div>
      <?php echo $__env->renderComponent(); ?>
@@ -117,48 +129,32 @@
 <?php unset($__componentOriginal7f83d574ebf694838d71081ed65bad7b); ?>
 <?php endif; ?>
 
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var ctx = document.getElementById('coursesChart').getContext('2d');
-        var coursesChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: <?php echo json_encode($courseData['labels'], 15, 512) ?>, // Convert PHP array to JSON
-                datasets: [{
-                    label: 'My Courses',
-                    data: <?php echo json_encode($courseData['data'], 15, 512) ?>, // Convert PHP array to JSON
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.5
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Semester',
-                            font: {
-                                size: 16
-                            }
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        title: {
-                            display: true,
-                            text: 'Number of Courses Assigned', // Change the label here
-                            font: {
-                                size: 16
-                            }
-                        }
-                    }
-                }
-            }
+    document.addEventListener('DOMContentLoaded', function () {
+        var toggleButton = document.getElementById('toggleButton2');
+        var menu = document.getElementById('floatingMenu');
+
+        toggleButton.addEventListener('mouseover', function() {
+            menu.classList.remove('opacity-0', 'pointer-events-none');
+            menu.classList.add('opacity-100', 'pointer-events-auto');
+            toggleButton.style.opacity = '0'; // Hide toggleButton when menu is shown
+        });
+
+        menu.addEventListener('mouseleave', function() {
+            menu.classList.remove('opacity-100', 'pointer-events-auto');
+            menu.classList.add('opacity-0', 'pointer-events-none');
+            toggleButton.style.opacity = '1'; // Show toggleButton when menu is hidden
         });
     });
 </script>
-<?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/teacher/dashboard.blade.php ENDPATH**/ ?>
+
+<style>
+    #floatingMenu {
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    #toggleButton2 {
+        transition: opacity 0.5s ease-in-out;
+    }
+</style>
+<?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/teacher/courses/manage-course/index.blade.php ENDPATH**/ ?>

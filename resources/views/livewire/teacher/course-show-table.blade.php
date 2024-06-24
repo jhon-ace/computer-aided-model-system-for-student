@@ -101,9 +101,8 @@
                 </thead>
                 <tbody>
                     @foreach ($assignedCourses as $assignedCourse)
-                    <tr class="hover:bg-gray-200 cursor-pointer" 
-                        onclick="window.location='{{ route('teacher.dashboard', ['course' => $assignedCourse->course->id]) }}'">
-
+                    <tr class="hover:bg-gray-200 cursor-pointer"
+                    onclick="window.location='{{ route('teacher.teacher.index', ['userID' => auth()->user()->id, 'assignmentTableID' => $assignedCourse->id, 'courseID' => $assignedCourse->course_id]) }}'">
                         @if ($assignedCourse->course)
                             <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_code }}</td>
                             <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->course->course_name }}</td>
@@ -117,33 +116,32 @@
                         @else
                             <td class="text-black border border-gray-400 px-4 py-2">Course Not Found</td>
                         @endif
-                        <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->days_of_the_week }} | {{ $assignedCourse->class_start_time }} - {{ $assignedCourse->class_end_time }}</td>
+                        <td class="text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->days_of_the_week }} | {{ date('g:i A', strtotime($assignedCourse->class_start_time)) }} - {{ date('g:i A', strtotime($assignedCourse->class_end_time)) }}</td>
                         <td class="room-cell text-black border border-gray-400 px-4 py-2">{{ $assignedCourse->room }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
             <div id="tooltip" class="custom-tooltip"></div>
-                <div class="flex justify-between">
-                    <div class="mt-1">
-                        <span class="text-red-500">Note: </span>Select the course to manage.
-                    </div>
-                    <div class="flex justify-start">
-                        <div class="text-black mt-1">Courses: 
-                            <span class="text-red-500">
-                                {{ $teacher->courseTotal }}
-                            </span> | &nbsp;
-                        </div>
-                        <div class="text-black mt-1">Total Units: 
-                            <span class="text-red-500">
-                                {{ $teacher->totalUnits }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-                
-            {{ $assignedCourses->links() }}
+            {{ $assignedCourses->links() }}<br>
         @endif
+    </div>
+    <div class="flex justify-between">
+        <div class="mt-1">
+            <span class="text-red-500">Note: </span>Select the course to manage.
+        </div>
+        <div class="flex justify-start">
+            <div class="text-black mt-1">Courses: 
+                <span class="text-red-500">
+                    {{ $teacher->courseTotal }}
+                </span> | &nbsp;
+            </div>
+            <div class="text-black mt-1">Total Units: 
+                <span class="text-red-500">
+                    {{ $teacher->totalUnits }}
+                </span>
+            </div>
+        </div>
     </div>
 </div>
 

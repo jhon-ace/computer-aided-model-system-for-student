@@ -35,7 +35,7 @@
 
         <div class="container mx-auto p-4">
             <div class="bg-white rounded  p-6 shadow-md w-full sm:w-72 md:w-3/4 lg:w-full">
-                <canvas id="coursesChart" class="w-full h-auto"></canvas>
+                <canvas id="coursesChart" class="w-full h-auto sm:w-72 md:w-3/4 lg:w-full"></canvas>
             </div>
         </div>
     </x-teacher.section-div-style>

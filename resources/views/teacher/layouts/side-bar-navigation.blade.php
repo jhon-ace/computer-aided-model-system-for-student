@@ -1,26 +1,22 @@
-<div id="sidebarContainer" class="fixed flex flex-col left-0 w-14 hover:w-48 md:w-48 bg-gray-900 h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-50 sidebar">
+<div id="sidebarContainer" class="fixed flex flex-col left-0 w-[68px] hover:w-48 md:w-48 bg-gray-900 h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-50 sidebar">
     <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow mr-0.5">
         <ul class="flex flex-col py-2 space-y-1 text-gray-800" >
-            <a href="#" class="flex justify-center mt-5 mb-5">
-                @if (Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo))
-                    <img src="{{ asset('storage/teacher_photos/' . Auth::user()->teacher_photo) }}" class=" rounded-full  w-28 h-auto object-contain">
-                @else
-                    <img id="imagePreview" src="{{ asset('assets/img/user.png') }}" class="rounded-lg w-9 h-9">
-                @endif
+            <a href="#" class="flex justify-center mt-5 mb-2">
+                <img id="imagePreview" src="{{ asset('assets/img/logo.png') }}" class="rounded-lg w-24 h-auto object-contain">
             </a>
-            <label class="relative flex flex-row justify-center items-center h-2  focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent  pr-3 ">
+            <!-- <label class="relative flex flex-row justify-center items-center h-2  focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent  pr-3 ">
                 <span class=" text-sm tracking-wide truncate text-white">{{ $teacher_details->name }}</span>
             </label>
             <label class="relative flex flex-row justify-center h-6 focus:outline-none   text-white-600 hover:text-white-800 border-l-4 border-transparent   ">
                 <span class=" text-xs tracking-wide truncate text-white">{{ $teacher_details->email }}</span>
             </label>
-            <div class="border-t"></div>
+            <div class="border-t"></div> -->
             <li>
             <a href="{{route('teacher.dashboard')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 {{ request()->routeIs('teacher.dashboard') ? ' rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white' }}">
                 <span class="inline-flex justify-center items-center ml-4">
                     <i class="fa-solid fa-gauge-high fa-lg text-white" style="color: #fffff;"></i>
                 </span>
-                <span class="ml-2 text-sm tracking-wide truncate text-white">Dashboard</span>
+                <span class="ml-2 text-sm tracking-wide truncate text-white">My Dashboard</span>
                 </a>
             </li>
             <li>
@@ -92,18 +88,18 @@
                                         @endif
                                     </span>
                                     <!-- for sm -->
-                                    <span class="ml-2 text-xs tracking-wide truncate sm:hidden ">
+                                    <span class="ml-2 text-sm tracking-wide truncate sm:hidden ">
                                         <ul>
                                             <li><span class="text-white">{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}</span></li>
-                                            <li class="text-xs ">{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}</li>
+                                            <li class="text-xs">{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}</li>
                                         </ul>
                                         
                                     </span>
                                     <!-- for md -->
-                                    <span class="ml-2 text-xs tracking-wide truncate hidden sm:inline-block">
+                                    <span class="ml-2 text-sm tracking-wide truncate hidden sm:inline-block">
                                         <ul>
-                                        <li>{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}</li>
-                                        <li class="text-xs">{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}</li>
+                                            <li>{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}</li>
+                                            <li class="text-xs">{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}</li>
                                         </ul>
                                     </span>
 

@@ -9,20 +9,16 @@ use Illuminate\Support\Facades\Auth;
 
 class TeacherCourseController extends Controller
 {
-    public function index()
+    public function class_load()
     {
-        // Retrieve the authenticated teacher's ID
+
         $teacherId = Auth::id();
     
-        // Log the retrieved teacher ID to Laravel's default log file (storage/logs/laravel.log)
-        \Log::info("Authenticated Teacher ID: $teacherId");
-    
-        // Retrieve the authenticated teacher's assigned courses
         $assignedCoursesNav = CourseAssignment::where('teacher_id', $teacherId)
-                            ->with('course') // Assuming you have a 'course' relationship in CourseAssignment
+                            ->with('course') 
                             ->get();
     
-        return view('teacher.courses.index', compact('assignedCoursesNav'));
+        return view('teacher.courses.course_load', compact('assignedCoursesNav'));
     }
     
 }
