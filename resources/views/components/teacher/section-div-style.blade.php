@@ -19,9 +19,7 @@
                                         <div class="absolute bottom-auto left-0 right-auto top-0 z-10 inline-block -translate-y-1/2 -translate-x-2/4 rotate-0 skew-x-0 skew-y-0 mt-[1px] scale-x-100 scale-y-100 whitespace-nowrap rounded-full  bg-teal-500 px-2.5 py-1 text-center align-baseline text-xs font-bold leading-none text-white">
                                             99+
                                         </div>
-
-                                        <i id="userIcon" class="fa-solid fa-user-gear px-3 py-2 rounded-md " style="color: #ffffff;"
-                                        ></i>
+                                        <i id="userIcon" class="fa-solid fa-bell fa-white px-3 py-2 rounded-md "></i>
                                     </div>
                                     <li>
                                         <a href="#" class="block">

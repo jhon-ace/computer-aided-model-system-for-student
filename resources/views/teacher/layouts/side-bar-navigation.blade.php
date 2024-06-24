@@ -30,10 +30,17 @@
                 </a>
             </li>
             @php
+                $currentUserID = request()->route('userID');
+                $currentAssignmentTableID = request()->route('assignmentTableID');
+                $currentCourseID = request()->route('courseID');
 
                 $assignedCoursesNav = \App\Models\CourseAssignment::where('teacher_id', Auth::id())
-                                        ->with('course')
-                                        ->get();
+                            ->where('id', $currentAssignmentTableID)  // additional condition
+                            ->where('course_id', $currentCourseID)
+                            ->with('course')
+                            ->get();
+
+                                        
             @endphp
 
             @if($assignedCoursesNav->isEmpty())
@@ -78,8 +85,14 @@
                     @endphp
 
                     @foreach($assignedCoursesNav as $courseAssignment)
-                        <li>
-                            <a  href="#" class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-white hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 "
+                        @php
+                            $isActive = $currentAssignmentTableID;
+                        @endphp
+                        <script>
+                        console.log(@json($isActive));
+                    </script>
+                        <li class="">
+                            <a  href="{{ route('teacher.teacher.index', ['userID' => $currentUserID, 'assignmentTableID' => $currentAssignmentTableID, 'courseID' => $courseAssignment->course->id]) }}" class="{{ $isActive ? 'rounded-e-3xl border-l-green-500 text-red-500 bg-slate-700  dark:text-gray-200' : '' }} relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-white hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 "
                                 data-tippy-content="{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}<br>{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}">
 
                                     <span class="inline-flex justify-center items-center ml-4 {{ isset($colorMap[$courseAssignment->course->course_code]) ? $colorMap[$courseAssignment->course->course_code] : 'text-white' }}">
