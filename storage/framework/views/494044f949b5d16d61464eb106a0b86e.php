@@ -94,19 +94,58 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 13l-6-6m6 6L13 6m0 0l-3 3"/>
                 </svg>
             </div>
-
-            <div class="flex rounded-[5px]  md:p-7 lg:p-0 text-black font-medium">
+            <!-- Content Area -->
+            <div class="flex rounded-[5px] lg:p-0 text-black font-medium">
                 <div class="flex flex-col hidden sm:hidden md:block mb-5">
-                    <div class="flex justify-start w-72 h-24 mb-5 pl-5 bg-white rounded-[5px] md:w-52 lg:w-72">
-                            hhiii
+                    <div class="flex flex-col justify-start w-72 h-24 mb-5 p-2 bg-white rounded-[5px] md:w-52 lg:w-72">
+                        <div class="w-full h-6">
+                            <i class="fa-solid fa-check" style="color: #000000;"></i>
+                            Completed
+                        </div>
+                        <hr  class="w-full border border-gray-500">
+                        <div class="p-2">Module</div>
                     </div>
-                    <div class="flex justify-start w-72 h-24 pl-5 bg-white rounded-[5px] hidden sm:block md:w-52 lg:w-72">
-                            hhiiiloooo
+                    <div class="flex justify-start w-72 h-24 p-2 bg-white rounded-[5px] hidden sm:block md:w-52 lg:w-72">
+                        <div class="w-full h-6">
+                            <i class="fa-solid fa-check" style="color: #000000;"></i>
+                            On-going
+                        </div>
+                        <hr  class="w-full border border-gray-500">
                     </div>   
                 </div>
-                <div class="flex bg-white w-full rounded-[5px]  md:ml-5 mb-5">cdcd</div>
+                <div class="flex flex-col w-full md:ml-5 mb-5 space-y-5">
+                    <div x-data="{ expanded: false, content: '' }" class="w-full   " >
+                        <div @click="expanded = !expanded" class="rounded-[5px] p-4 bg-white  cursor-pointer" :class="expanded ? 'hidden' : 'h-20'">
+                            <div  class="flex items-center">
+                                <a href="#" class="block">
+                                    <!-- User Image Logic -->
+                                    <img id="userImage" src="<?php echo e(Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png')); ?>" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-11 object-contain mx-auto">
+                                </a>
+                                <div class="flex justify-center p-3.5 ml-2 text-sm text-gray-500">Announce something to your class</div>
+                            </div>
+                        </div>
+                        <div x-show="expanded" class="bg-gray-100 p-4 rounded-lg relative" x-cloak>
+                            <div class="">
+                                Announcement for your student..
+                            </div>
+                            <div id="editor" contenteditable="true" class="border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
+                                placeholder="Enter your announcement here..." oninput="checkContent()"></div>
+                            <div class="editor-toolbar">
+                                <button onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+                                <button onclick="formatText('italic')" title="Italic"><em>I</em></button>
+                                <button onclick="formatText('underline')" title="Underline"><u>U</u></button>
+                            </div>
+                            <div class="flex justify-end mt-2">
+                                <button @click="expanded = false; content=''" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                                <button onclick="postContent()" id="postButton" disabled class="bg-blue-500 text-white px-4 py-2 rounded disabled">Post</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
+                        fdfd
+                    </div>
+                </div>
             </div>
-
             <!-- MODAL -->
             <div id="inviteCodeModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 opacity-0 pointer-events-none transition-opacity duration-500">
                 <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
@@ -251,6 +290,25 @@
     #inviteCodeModal {
         transition: opacity 0.5s ease-in-out;
     }
+
+    .editor-toolbar button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+    div[contenteditable][placeholder]:empty::before {
+    content: attr(placeholder);
+    color: #a0aec0; /* Adjust color to your preference */
+    pointer-events: none; /* Ensures the placeholder text is not selectable */
+    display: block;
+    /* Other styles like font size, padding, etc. can be adjusted as needed */
+}
+
+ .editor-toolbar button.active {
+        background-color: #eaeaea; /* Light gray background when active */
+    }
 </style>
 
 <script>
@@ -263,4 +321,62 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+function checkContent() {
+    var content = document.getElementById('editor').innerText.trim();
+    var postButton = document.getElementById('postButton');
+    postButton.disabled = content === '';
+    postButton.classList.toggle('disabled', content === ''); // Add or remove 'disabled' class based on content
+}
+
+// Function to clear editor content
+function clearEditor() {
+    var editor = document.getElementById('editor');
+    editor.innerText = '';
+    checkContent(); // Update button state after clearing
+}
+
+// Function to handle posting content (example alert)
+function postContent() {
+    var content = document.getElementById('editor').innerText.trim();
+    alert(content);
+}
+
+
+    function formatText(command) {
+        document.execCommand(command, false, null);
+        // Update button state (e.g., toggle class to indicate active state)
+        updateButtonState(command);
+    }
+
+    function updateButtonState(command) {
+        const button = document.querySelector(`button[onclick="formatText('${command}')"]`);
+        if (document.queryCommandState(command)) {
+            button.classList.add('active');
+        } else {
+            button.classList.remove('active');
+        }
+    }
+
+    function checkContent() {
+    var content = document.getElementById('editor').innerText.trim();
+    var postButton = document.getElementById('postButton');
+    postButton.disabled = content === '';
+    postButton.classList.toggle('disabled', content === ''); // Add or remove 'disabled' class based on content
+}
+
+
+
+// Function to handle posting content (example alert)
+function postContent() {
+    var content = document.getElementById('editor').innerText.trim();
+    alert(content);
+}
+
+
+    document.addEventListener('selectionchange', () => {
+        updateButtonState('bold');
+        updateButtonState('italic');
+        updateButtonState('underline');
+    });
 </script><?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/teacher/courses/manage-course/index.blade.php ENDPATH**/ ?>

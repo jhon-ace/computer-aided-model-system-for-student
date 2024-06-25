@@ -7,6 +7,22 @@
     background-color: #E5E7EB; /* Choose your highlight color */
 }
 
+::-webkit-scrollbar{
+    width: 8px;
+    background-color: #E5E5E5;
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: gray;
+    border-radius: 4px;
+}
+
+
+/* ::-webkit-scrollbar-thumb:hover{
+    background-color: ;
+} */
+
+
 .custom-tooltip {
     position: absolute;
     display: none;
@@ -19,6 +35,10 @@
     white-space: nowrap;
 }
 
+button.disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
 
 /* .custom-tooltip {
     position: absolute;
