@@ -9,10 +9,11 @@
         ]"
     />
     <x-teacher.section-div-style>
-        <div class="container mx-auto p-4 relative"> <!-- Added relative positioning -->
+        <div class="container ml-1.5 sm:mx-auto p-4 relative">
+                <!-- heading -->
             <div class="rounded-md p-3 sm:p-4 md:p-6 lg:p-2 w-full h-18 sm:h-20 md:h-28 lg:h-24 lg:pt-4  mb-4 truncate" style="background: linear-gradient(to right, #3b82f6, #1e40af);">
                 <div class="flex justify-between">
-                    <span class="text-lg sm:text-sm md:text-2xl lg:text-3xl lg:ml-3 font-bold">
+                    <span class="text-lg truncate sm:text-sm md:text-2xl lg:text-3xl lg:ml-3 font-bold">
                         {{ $manageCourse->course->course_code }} - {{ $manageCourse->course->course_name }}
                     </span>
                     <span class="mr-5 text-lg sm:text-sm md:text-2xl lg:text-xl lg:ml-3 font-bold relative">
@@ -27,7 +28,7 @@
                 <div class="text-center font-bold">Class</div>
                 <hr class="border-gray-300">
                 <a id="inviteCodeLink" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200  cursor-pointer">
-                    <i class="fa-solid fa-file"></i> Invite Code
+                    <i class="fa-solid fa-file"></i> Code
                 </a>
             </div>
             <!-- Menu's -->
@@ -58,16 +59,19 @@
                 </svg>
             </div>
 
-            <div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-8 text-black font-medium">
-                <div class="flex justify-start mb-4">
-                    <div class="font-bold text-md tracking-tight text-black mt-2">My Courses</div>
+            <div class="flex rounded-[5px]  md:p-7 lg:p-0 text-black font-medium">
+                <div class="flex flex-col hidden sm:hidden md:block mb-5">
+                    <div class="flex justify-start w-72 h-24 mb-5 pl-5 bg-white rounded-[5px] md:w-52 lg:w-72">
+                            hhiii
+                    </div>
+                    <div class="flex justify-start w-72 h-24 pl-5 bg-white rounded-[5px] hidden sm:block md:w-52 lg:w-72">
+                            hhiiiloooo
+                    </div>   
                 </div>
-                <div class="overflow-x-auto">
-                
+                <div class="flex bg-white w-full rounded-[5px]  md:ml-5 mb-5">cdcd</div>
             </div>
 
             <!-- MODAL -->
-             <!-- Modal -->
             <div id="inviteCodeModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 opacity-0 pointer-events-none transition-opacity duration-500">
                 <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
                     <div class="flex justify-between items-center mb-4">
