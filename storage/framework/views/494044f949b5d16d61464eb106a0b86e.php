@@ -68,7 +68,7 @@
                 </a>
             </div>
             <!-- Menu's -->
-            <div id="floatingMenu" class="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-3 border-2 border-gray-400 text-black font-medium opacity-0 pointer-events-none transition-all duration-500">
+            <div id="floatingMenu" class="z-10 fixed right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-3 border-2 border-gray-400 text-black font-medium opacity-0 pointer-events-none transition-all duration-500">
                 <div class="text-center font-bold">View</div>
                 <hr class="border-gray-300">
                 <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
@@ -119,13 +119,13 @@
                             <div  class="flex items-center">
                                 <a href="#" class="block">
                                     <!-- User Image Logic -->
-                                    <img id="userImage" src="<?php echo e(Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png')); ?>" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-11 object-contain mx-auto">
+                                    <img  src="<?php echo e(Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png')); ?>" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto">
                                 </a>
                                 <div class="flex justify-center p-3.5 ml-2 text-sm text-gray-500">Announce something to your class</div>
                             </div>
                         </div>
                         <div x-show="expanded" class="bg-gray-100 p-4 rounded-lg relative" x-cloak>
-                            <div class="">
+                            <div class="text-gray-500">
                                 Announcement for your student..
                             </div>
                             <div id="editor" contenteditable="true" class="border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
@@ -141,9 +141,72 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
-                        fdfd
+                    <?php if(count($announcements) > 0): ?>
+                        <?php $__currentLoopData = $announcements; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $announcement): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
+                                <div class="flex items-center">
+                                    <img  src="<?php echo e(Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png')); ?>" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto">
+                                </div>
+                                <div class="flex justify-between w-full">
+                                    <div class="text-md mt-2 text-tight md:mt-2.5  lg:mt-2 lg:p-1.5 lg:text-md ml-2 text-md text-black w-full">
+                                        Posted an announcement
+                                    </div>
+                                    <div x-data="{ showModal: false, announcementId: <?php echo e($announcement->id); ?> }">
+                                        <div class="p-2.5 w-28 ml-2 mr-3 text-sm text-center text-gray-500 border rounded-md cursor-pointer  border-gray-400 hover:border-green-500 hover:text-black"
+                                            @click="showModal = true">Click to view</div>
+
+                                        <!-- Modal -->
+                                        <div x-show="showModal"
+                                            x-transition:enter="transition ease-out duration-300"
+                                            x-transition:enter-start="opacity-0 transform scale-95"
+                                            x-transition:enter-end="opacity-100 transform scale-100"
+                                            x-transition:leave="transition ease-in duration-200"
+                                            x-transition:leave-start="opacity-100 transform scale-100"
+                                            x-transition:leave-end="opacity-0 transform scale-95"
+                                            @click.away="showModal = false"
+                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                                            <!-- Modal content -->
+                                            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md">
+                                                <!-- Modal header -->
+                                                <div class="flex justify-between items-center border-b mb-4">
+                                                    <h2 class="text-xl font-semibold">Announcement # 1<?php echo e($announcement->id); ?></h2>
+                                                    <button @click="showModal = false" class="text-lg hover:text-red-500">×</button>
+                                                </div>
+
+                                                <!-- Modal body -->
+                                                <div class="text-sm text-gray-700">
+                                                    <!-- Modal content goes here -->
+                                                    <span class="text-black text-lg"><?php echo e($announcement->announcement); ?></span>
+                                                </div>
+                                                <div class="flex justify-end mt-4">
+                                                    <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white text-gray-700 rounded-md"
+                                                            @click="showModal = false">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div x-data="{ open: false }" class="relative inline-block text-left">
+                                        <div class="dropdown">
+                                            <button @click="open = !open" type="button" class="z-50 inline-flex items-center p-2.5 ml-2 mt-2 text-sm text-gray-500 rounded-md cursor-pointer hover:text-black hover:shadow-xl focus:outline-none">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <div x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:rounded-md hover:text-black hover:bg-gray-100">Remove</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php else: ?>
+                    <div class="flex bg-white w-full h-20 rounded-[5px] p-4 ">
+                        <div class="flex items-center mx-auto">
+                            <div class="p-3.5 w-full ml-2 text-md text-black">No posted announcement / materials or modules</div>
+                        </div>
                     </div>
+
+
+                    <?php endif; ?>
                 </div>
             </div>
             <!-- MODAL -->

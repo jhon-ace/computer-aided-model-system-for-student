@@ -8,6 +8,7 @@ use App\Models\Teacher;
 use App\Models\Course;
 use App\Models\Program;
 use App\Models\Department;
+use App\Models\AssignCourse;
 
 class CourseAssignment extends Model
 {
@@ -47,4 +48,7 @@ class CourseAssignment extends Model
     {
         return $this->belongsTo(Department::class);
     }
+
+
+
 }

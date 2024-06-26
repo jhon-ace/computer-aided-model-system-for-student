@@ -63,23 +63,20 @@
                             }
                         }
 
-                        // Step 2: Assign unique icons and text colors to each course code with duplicates
                         $iconMap = [];
                         $colorMap = [];
                         $icons = ['fa-file', 'fa-file', 'fa-file', 'fa-file-alt', 'fa-book']; // List of different icons
                         $colors = ['text-red-400', 'text-green-400', 'text-blue-400', 'text-yellow-400', 'text-purple-500']; // List of different text colors
                         $iconIndex = 0;
                         $colorIndex = 0;
+
                         foreach ($courseCounts as $courseCode => $count) {
-                            if ($count > 1) {
-                                $iconMap[$courseCode] = $icons[$iconIndex % count($icons)];
-                                $colorMap[$courseCode] = $colors[$colorIndex % count($colors)];
-                                $iconIndex++;
-                                $colorIndex++;
-                            }
+                            $iconMap[$courseCode] = $icons[$iconIndex % count($icons)];
+                            $colorMap[$courseCode] = $colors[$colorIndex % count($colors)];
+                            $iconIndex++;
+                            $colorIndex++;
                         }
 
-                    
                     @endphp
 
                     @foreach($assignedCoursesNav as $courseAssignment)

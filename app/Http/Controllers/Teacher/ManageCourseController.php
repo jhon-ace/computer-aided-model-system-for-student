@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CourseAssignment;
+use App\Models\AssignCourseContent;
+use App\Models\AssignCourseAnnouncement;
 
 class ManageCourseController extends Controller
 {
@@ -21,8 +23,26 @@ class ManageCourseController extends Controller
                             ->where('course_id', $courseID)
                             ->with('course')
                             ->firstOrFail();
+
+            
+
+        $courseContent = AssignCourseContent::where('course_assignments_id', $assignmentTableID)
+                            ->with('courseAssignment')
+                            ->with('courseAnnouncements')
+                            ->get();
+
+        $announcements = [];
+
+            foreach ($courseContent as $content) {
+                foreach ($content->courseAnnouncements as $announcement) {
+                    $announcements[] = $announcement;
+                }
+            }
+ 
+
                         
-        return view('teacher.courses.manage-course.index', ['manageCourse' => $manageCourse]);
+        return view('teacher.courses.manage-course.index', ['manageCourse' => $manageCourse, 
+                                                            'announcements' => $announcements]);
     }
 
     /**
