@@ -22,7 +22,10 @@
     background-color: ;
 } */
 
-
+  [x-cloak] {
+    display: none !important;
+   }
+   
 .custom-tooltip {
     position: absolute;
     display: none;

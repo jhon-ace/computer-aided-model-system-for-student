@@ -1,5 +1,5 @@
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.0/cdn.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.6.0/cdn.js" defer></script>
 
 <div class="transition-all duration-300 min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-zinc-300 text-black dark:text-white">
     <div id="dashboardContent" class="h-full ml-14 mb-5 md:ml-48 transition-all duration-300">
@@ -11,7 +11,7 @@
                         </button>
                         Computer - Aided Instructional Module System
                     </div>
-                    <div class="relative" x-data="{ open: false }">
+                    <div class="relative" x-cloak x-data="{ open: false }">
                         <div @click="open = !open" class="mr-5 cursor-pointer">
                             <div class="flex justify-center p-1">
                                 <ul class="flex">

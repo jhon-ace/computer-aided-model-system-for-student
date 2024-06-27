@@ -31,19 +31,85 @@ class ManageCourseController extends Controller
                             ->with('courseAnnouncements')
                             ->get();
 
-        $announcements = [];
 
-            foreach ($courseContent as $content) {
-                foreach ($content->courseAnnouncements as $announcement) {
-                    $announcements[] = $announcement;
-                }
+        $announcementsByAssignment = [];
+
+        foreach ($courseContent as $content) {
+            $contentId = $content->id;
+
+            foreach ($content->courseAnnouncements as $announcement) {
+                $announcementsByAssignment[$contentId][] = [
+                    'announcement_id' => $announcement->id,
+                    'announcement' => $announcement->announcement,
+                ];
             }
- 
-
-                        
-        return view('teacher.courses.manage-course.index', ['manageCourse' => $manageCourse, 
-                                                            'announcements' => $announcements]);
+        }
+   
+        return view('teacher.courses.manage-course.index', [
+            'manageCourse' => $manageCourse, 
+            'announcementsByAssignment' => $announcementsByAssignment]);
     }
+
+    public function postAnnouncement(Request $request, $userID, $assignmentTableID, $courseID)
+    {
+        $request->validate([
+            'content' => 'required|string', 
+        ]);
+
+        // Check if there's an existing record with null announcement_id
+        $content = AssignCourseContent::where('course_assignments_id', $assignmentTableID)
+            ->whereNull('announcement_id')
+            ->first();
+
+        if ($content) {
+            // Update existing record with the new announcement
+            $announcement = AssignCourseAnnouncement::create([
+                'announcement' => $request->input('content'),
+            ]);
+
+            $content->announcement_id = $announcement->id;
+            $content->save();
+        } else {
+            // Create a new record
+            $announcement = AssignCourseAnnouncement::create([
+                'announcement' => $request->input('content'),
+            ]);
+
+            AssignCourseContent::create([
+                'course_assignments_id' => $assignmentTableID,
+                'announcement_id' => $announcement->id,
+            ]);
+        }
+
+        return redirect()->route('teacher.teacher.index', [
+            'userID' => $userID,
+            'assignmentTableID' => $assignmentTableID,
+            'courseID' => $courseID,
+        ])->with('success', 'Announcement added successfully.');
+    }
+
+
+   public function removeAnnouncement($userID, $assignmentTableID, $courseID, $contentID, $announcementID)
+    {
+
+        
+
+        $content = AssignCourseContent::findOrFail($contentID);
+        // Update the announcement_id to null
+        $content->announcement_id = null;
+        $content->save();
+
+        $announcement = AssignCourseAnnouncement::findOrFail($announcementID);
+        $announcement->delete();
+
+        return redirect()->route('teacher.teacher.index', [
+            'userID' => $userID,
+            'assignmentTableID' => $assignmentTableID,
+            'courseID' => $courseID,
+        ])->with('success', 'Announcement removed successfully.');
+    }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -58,7 +124,7 @@ class ManageCourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

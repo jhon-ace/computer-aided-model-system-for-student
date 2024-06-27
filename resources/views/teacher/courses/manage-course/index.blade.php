@@ -77,9 +77,20 @@
                         <hr  class="w-full border border-gray-500">
                     </div>   
                 </div>
+                    @if (session('success'))
+                        <x-sweetalert type="success" :message="session('success')" />
+                    @endif
+
+                    @if (session('info'))
+                        <x-sweetalert type="info" :message="session('info')" />
+                    @endif
+
+                    @if (session('error'))
+                        <x-sweetalert type="error" :message="session('error')" />
+                    @endif
                 <div class="flex flex-col w-full md:ml-5 mb-5 space-y-5">
                     <div x-data="{ expanded: false, content: '' }" class="w-full   " >
-                        <div @click="expanded = !expanded" class="rounded-[5px] p-4 bg-white  cursor-pointer" :class="expanded ? 'hidden' : 'h-20'">
+                        <div @click="expanded = !expanded" class="rounded-[5px] p-4 bg-white  cursor-pointer hover:bg-neutral-100" :class="expanded ? 'hidden' : 'h-20'">
                             <div  class="flex items-center">
                                 <a href="#" class="block">
                                     <!-- User Image Logic -->
@@ -89,87 +100,104 @@
                             </div>
                         </div>
                         <div x-show="expanded" class="bg-gray-100 p-4 rounded-lg relative" x-cloak>
-                            <div class="text-gray-500">
-                                Announcement for your student..
-                            </div>
-                            <div id="editor" contenteditable="true" class="border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
-                                placeholder="Enter your announcement here..." oninput="checkContent()"></div>
-                            <div class="editor-toolbar">
-                                <button onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
-                                <button onclick="formatText('italic')" title="Italic"><em>I</em></button>
-                                <button onclick="formatText('underline')" title="Underline"><u>U</u></button>
-                            </div>
-                            <div class="flex justify-end mt-2">
-                                <button @click="expanded = false; content=''" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
-                                <button onclick="postContent()" id="postButton" disabled class="bg-blue-500 text-white px-4 py-2 rounded disabled">Post</button>
-                            </div>
+                            <form id="announcementForm" action="{{ route('teacher.teacher.postAnnouncement', ['userID' => auth()->user()->id, 'assignmentTableID' => $manageCourse->id, 'courseID' => $manageCourse->course_id])}}" method="POST" onsubmit="logAnnouncement(event)">
+                                @csrf
+                                <div class="text-gray-500">
+                                    Announcement for your student..
+                                </div>
+                                <div id="editor" contenteditable="true" class="border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
+                                    placeholder="Enter your announcement here..." oninput="checkContent()" ></div>
+                                <input type="hidden" name="content" id="content">
+                                <div class="editor-toolbar">
+                                    <button type="button" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+                                    <button type="button" onclick="formatText('italic')" title="Italic"><em>I</em></button>
+                                    <button type="button" onclick="formatText('underline')" title="Underline"><u>U</u></button>
+                                </div>
+                                <div class="flex justify-end mt-2">
+                                    <button type="button" @click="expanded = false; document.getElementById('editor').innerText=''" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                                    <button type="submit" id="postButton" disabled class="bg-blue-500 text-white px-4 py-2 rounded disabled">Post</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
-                    @if(count($announcements) > 0)
-                        @foreach($announcements as $announcement)
-                            <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
-                                <div class="flex items-center">
-                                    <img  src="{{ Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png') }}" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto">
-                                </div>
-                                <div class="flex justify-between w-full">
-                                    <div class="text-md mt-2 text-tight md:mt-2.5  lg:mt-2 lg:p-1.5 lg:text-md ml-2 text-md text-black w-full">
-                                        Posted an announcement
+                    @if(count($announcementsByAssignment) > 0)
+                        @foreach($announcementsByAssignment as $contentId => $announcements)
+                            @foreach($announcements as $announcement)
+                                <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
+                                    <div class="flex items-center">
+                                        <img src="{{ Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png') }}" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto">
                                     </div>
-                                    <div x-data="{ showModal: false, announcementId: {{ $announcement->id }} }">
-                                        <div class="p-2.5 w-28 ml-2 mr-3 text-sm text-center text-gray-500 border rounded-md cursor-pointer  border-gray-400 hover:border-green-500 hover:text-black"
-                                            @click="showModal = true">Click to view</div>
+                                    <div class="flex justify-between w-full">
+                                        <div class="text-md sm:mt-3 text-tight md:mt-2.5 lg:mt-2 lg:p-1 lg:text-md ml-2 text-md text-black w-full">
+                                            Posted an announcement
+                                        </div>
+                                        <div x-cloak x-data="{ showModal: false, announcementId: {{ $announcement['announcement_id'] }} }">
+                                            <div class="p-3 w-28 ml-3 mr-3 text-sm text-center text-gray-500 border rounded-md cursor-pointer border-gray-400 hover:border-blue-500 hover:text-black"
+                                                @click="showModal = true">Click to view</div>
 
-                                        <!-- Modal -->
-                                        <div x-show="showModal"
-                                            x-transition:enter="transition ease-out duration-300"
-                                            x-transition:enter-start="opacity-0 transform scale-95"
-                                            x-transition:enter-end="opacity-100 transform scale-100"
-                                            x-transition:leave="transition ease-in duration-200"
-                                            x-transition:leave-start="opacity-100 transform scale-100"
-                                            x-transition:leave-end="opacity-0 transform scale-95"
-                                            @click.away="showModal = false"
-                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                                            <!-- Modal content -->
-                                            <div class="bg-white p-6 rounded-lg shadow-lg max-w-md">
-                                                <!-- Modal header -->
-                                                <div class="flex justify-between items-center border-b mb-4">
-                                                    <h2 class="text-xl font-semibold">Announcement # 1{{ $announcement->id }}</h2>
-                                                    <button @click="showModal = false" class="text-lg hover:text-red-500">×</button>
-                                                </div>
+                                            <!-- Modal -->
+                                            <div x-show="showModal" x-cloak
+                                                x-transition:enter="transition ease-out duration-300"
+                                                x-transition:enter-start="opacity-0 transform scale-95"
+                                                x-transition:enter-end="opacity-100 transform scale-100"
+                                                x-transition:leave="transition ease-in duration-200"
+                                                x-transition:leave-start="opacity-100 transform scale-100"
+                                                x-transition:leave-end="opacity-0 transform scale-95"
+                                                @click.away="showModal = false"
+                                                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-                                                <!-- Modal body -->
-                                                <div class="text-sm text-gray-700">
-                                                    <!-- Modal content goes here -->
-                                                    <span class="text-black text-lg">{{ $announcement->announcement }}</span>
+                                                <div class="bg-white p-6 rounded-lg shadow-lg max-w-md">
+
+                                                    <div x-cloak class="flex justify-between items-center border-b mb-4">
+                                                        <h2 class="text-xl font-semibold">Announcement # {{ $announcement['announcement_id'] }}</h2>
+                                                        <button @click="showModal = false" class="text-lg hover:text-red-500">×</button>
+                                                    </div>
+
+                                                    <div class="text-sm text-gray-700">
+                                                        <span class="text-black text-lg">{{ $announcement['announcement'] }}</span>
+                                                    </div>
+                                                    <div class="flex justify-end mt-4">
+                                                        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white text-gray-700 rounded-md"
+                                                                @click="showModal = false">Close</button>
+                                                    </div>
                                                 </div>
-                                                <div class="flex justify-end mt-4">
-                                                    <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white text-gray-700 rounded-md"
-                                                            @click="showModal = false">Close</button>
+                                            </div>
+                                        </div>
+                                        <div x-data="{ open: false }" class="relative inline-block text-left">
+                                            <div class="dropdown">
+                                                <button @click="open = !open" type="button" class="z-50 inline-flex items-center p-2.5 ml-2 mt-2 text-sm text-gray-500 rounded-md cursor-pointer hover:text-black hover:shadow-xl focus:outline-none">
+                                                    <i class="fas fa-ellipsis-v"></i>
+                                                </button>
+                                                <div x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                                                    <form action="{{ route('teacher.teacher.removeAnnouncement', [
+                                                                    'userID' => auth()->user()->id,
+                                                                    'assignmentTableID' => $manageCourse->id,
+                                                                    'courseID' => $manageCourse->course_id,
+                                                                    'contentID' => $contentId,
+                                                                    'announcementID' => $announcement['announcement_id'],
+                                                                ]) }}" method="POST">
+                                                        @csrf
+                                                        @method('PUT')
+
+                                                        <input type="hidden" name="announcement_id" value="{{ $announcement['announcement_id'] }}">
+
+                                                        <button type="submit" class="block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none"> 
+                                                            Remove 
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div x-data="{ open: false }" class="relative inline-block text-left">
-                                        <div class="dropdown">
-                                            <button @click="open = !open" type="button" class="z-50 inline-flex items-center p-2.5 ml-2 mt-2 text-sm text-gray-500 rounded-md cursor-pointer hover:text-black hover:shadow-xl focus:outline-none">
-                                                <i class="fas fa-ellipsis-v"></i>
-                                            </button>
-                                            <div x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
-                                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:rounded-md hover:text-black hover:bg-gray-100">Remove</a>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
-                            </div>
+                            @endforeach
                         @endforeach
                     @else
-                    <div class="flex bg-white w-full h-20 rounded-[5px] p-4 ">
-                        <div class="flex items-center mx-auto">
-                            <div class="p-3.5 w-full ml-2 text-md text-black">No posted announcement / materials or modules</div>
+                        <div class="flex bg-white w-full h-20 rounded-[5px] p-4 ">
+                            <div class="flex items-center mx-auto">
+                                <div class="p-3.5 w-full ml-2 text-md text-black">No posted announcement / materials or modules</div>
+                            </div>
                         </div>
-                    </div>
-
-
                     @endif
                 </div>
             </div>
@@ -198,8 +226,20 @@
     dashboardContentId="dashboardContent"
     toggleIconId="toggleIcon"
 />
-
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
+   
+    function logAnnouncement(event) {
+        event.preventDefault();
+        // Get the content from the editor
+        const editorContent = document.getElementById('editor').innerHTML;
+        // Set the value of the hidden input field
+        document.getElementById('content').value = editorContent;
+        // Submit the form
+        document.getElementById('announcementForm').submit();
+    }
+
+    
     document.addEventListener('DOMContentLoaded', function () {
         var toggleButton = document.getElementById('toggleButton2');
         var menu = document.getElementById('floatingMenu');
@@ -219,6 +259,7 @@
 </script>
 
 <style>
+
     #floatingMenu {
         transition: opacity 0.5s ease-in-out;
     }
@@ -229,49 +270,54 @@
 </style>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        var settingsIcon = document.getElementById('settingsIcon');
-        var menu = document.getElementById('floatingMenu1');
-        var inviteCodeLink = document.getElementById('inviteCodeLink');
-        var inviteCodeModal = document.getElementById('inviteCodeModal');
-        var closeModalButtons = document.querySelectorAll('#closeModal, #closeModalBottom');
+    document.addEventListener('DOMContentLoaded', function() {
+    var settingsIcon = document.getElementById('settingsIcon');
+    var menu = document.getElementById('floatingMenu1');
+    var inviteCodeLink = document.getElementById('inviteCodeLink');
+    var inviteCodeModal = document.getElementById('inviteCodeModal');
+    var closeModalButtons = document.querySelectorAll('#closeModal, #closeModalBottom');
 
-        settingsIcon.addEventListener('mouseover', function() {
-            menu.classList.remove('opacity-0', 'pointer-events-none');
-            menu.classList.add('opacity-100', 'pointer-events-auto');
-        });
+    // Handle settingsIcon and menu interactions
+    settingsIcon.addEventListener('mouseover', function() {
+        menu.classList.remove('opacity-0', 'pointer-events-none');
+        menu.classList.add('opacity-100', 'pointer-events-auto');
+    });
 
-        menu.addEventListener('mouseleave', function() {
-            menu.classList.remove('opacity-100', 'pointer-events-auto');
-            menu.classList.add('opacity-0', 'pointer-events-none');
-        });
+    settingsIcon.addEventListener('mouseleave', function() {
+        setTimeout(function() {
+            if (!menu.matches(':hover')) {
+                menu.classList.remove('opacity-100', 'pointer-events-auto');
+                menu.classList.add('opacity-0', 'pointer-events-none');
+            }
+        }, 300);
+    });
 
-        menu.addEventListener('mouseover', function() {
-            menu.classList.remove('opacity-0', 'pointer-events-none');
-            menu.classList.add('opacity-100', 'pointer-events-auto');
-        });
+    menu.addEventListener('mouseover', function() {
+        menu.classList.remove('opacity-0', 'pointer-events-none');
+        menu.classList.add('opacity-100', 'pointer-events-auto');
+    });
 
-        settingsIcon.addEventListener('mouseleave', function() {
-            setTimeout(function() {
-                if (!menu.matches(':hover')) {
-                    menu.classList.remove('opacity-100', 'pointer-events-auto');
-                    menu.classList.add('opacity-0', 'pointer-events-none');
-                }
-            }, 300);
-        });
-        inviteCodeLink.addEventListener('click', function(event) {
-            event.preventDefault();
-            inviteCodeModal.classList.remove('opacity-0', 'pointer-events-none');
-            inviteCodeModal.classList.add('opacity-100', 'pointer-events-auto');
-        });
+    menu.addEventListener('mouseleave', function() {
+        menu.classList.remove('opacity-100', 'pointer-events-auto');
+        menu.classList.add('opacity-0', 'pointer-events-none');
+    });
 
-        closeModalButtons.forEach(function(button) {
-            button.addEventListener('click', function() {
-                inviteCodeModal.classList.remove('opacity-100', 'pointer-events-auto');
-                inviteCodeModal.classList.add('opacity-0', 'pointer-events-none');
-            });
+    // Handle inviteCodeLink click
+    inviteCodeLink.addEventListener('click', function(event) {
+        event.preventDefault();
+        inviteCodeModal.classList.remove('opacity-0', 'pointer-events-none');
+        inviteCodeModal.classList.add('opacity-100', 'pointer-events-auto');
+    });
+
+    // Handle close modal buttons
+    closeModalButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            inviteCodeModal.classList.remove('opacity-100', 'pointer-events-auto');
+            inviteCodeModal.classList.add('opacity-0', 'pointer-events-none');
         });
     });
+});
+
 </script>
 
 <style>

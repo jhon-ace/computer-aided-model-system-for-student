@@ -28,9 +28,12 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
     //Teacher-assign courses controller
     Route::get('/my-courses', [TeacherCourseController::class, 'class_load'])->name('teachercourses.index');
     // ManageCourse for Teacher
-    Route::get('/manage-course/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'index'])->name('teacher.index');
-
-
+    Route::get('/manage-course/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'index'])
+    ->name('teacher.index');
+    Route::post('/post-announcement/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'postAnnouncement'])
+    ->name('teacher.postAnnouncement');
+    Route::put('/remove-announcement/{userID}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'removeAnnouncement'])
+    ->name('teacher.removeAnnouncement');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
