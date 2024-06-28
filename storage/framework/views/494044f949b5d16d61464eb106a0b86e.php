@@ -222,7 +222,7 @@
                                     </div>
                                     <div class="flex justify-between w-full">
                                         <div class="text-md sm:mt-3 text-tight md:mt-2.5 lg:mt-2 lg:p-1 lg:text-md ml-2 text-md text-black w-full">
-                                            Posted an announcement
+                                            Posted an announcement <span class="ml-5 text-gray-500 text-sm"><?php echo e(date('l, g:i A', strtotime($announcement['created_at']))); ?></span>
                                         </div>
                                         <div x-cloak x-data="{ showModal: false, announcementId: <?php echo e($announcement['announcement_id']); ?> }">
                                             <div class="p-3 w-28 ml-3 mr-3 text-sm text-center text-gray-500 border rounded-md cursor-pointer border-gray-400 hover:border-blue-500 hover:text-black"
@@ -239,19 +239,26 @@
                                                 @click.away="showModal = false"
                                                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
 
-                                                <div class="bg-white p-6 rounded-lg shadow-lg max-w-md">
-
-                                                    <div x-cloak class="flex justify-between items-center border-b mb-4">
-                                                        <h2 class="text-xl font-semibold">Announcement # <?php echo e($announcement['announcement_id']); ?></h2>
-                                                        <button @click="showModal = false" class="text-lg hover:text-red-500">×</button>
+                                                <div class="bg-white p-6 rounded-lg shadow-lg -mt-32 max-w-3xl w-full">
+                                                    <div x-cloak class="flex justify-between items-center border-b mb-4 w-full">
+                                                    <h2 class="text-xl font-semibold">Announcement # <?php echo e($announcement['announcement_id']); ?></h2>
+                                                    <div class="flex items-center">
+                                                        <img src="<?php echo e(Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png')); ?>" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto mr-2">
+                                                        <p><?php echo e(Auth::user()->name); ?></p>
                                                     </div>
+                                                </div>
 
-                                                    <div class="text-sm text-gray-700">
-                                                        <span class="text-black text-lg"><?php echo e($announcement['announcement']); ?></span>
+
+                                                    <div class=" p-2 rounded h-auto text-lg bg-white overflow-y-auto"
+                                                        placeholder="Enter your announcement here..." oninput="checkContentUpdate()" >
+                                                    <?php echo $announcement['announcement']; ?>
+
                                                     </div>
                                                     <div class="flex justify-end mt-4">
-                                                        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white text-gray-700 rounded-md"
-                                                                @click="showModal = false">Close</button>
+                                                        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+                                                                @click="showModal = false">
+                                                                Close
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -261,7 +268,74 @@
                                                 <button @click="open = !open" type="button" class="z-50 inline-flex items-center p-2.5 ml-2 mt-2 text-sm text-gray-500 rounded-md cursor-pointer hover:text-black hover:shadow-xl focus:outline-none">
                                                     <i class="fas fa-ellipsis-v"></i>
                                                 </button>
-                                                <div x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                                                <div x-cloak x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                                                    <div x-data="{ open: false }" class="relative">
+                                                        <a href="#"  id="openModalButton" @click.prevent="open = true" class="block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none">
+                                                            Edit
+                                                        </a>
+
+                                                        <!-- Modal -->
+                                                        <div x-cloak x-show="open" id="updateModal" class="fixed inset-0 flex items-center justify-center z-50">
+                                                            <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
+                                                            <div class="bg-white p-6 rounded-lg shadow-lg -mt-32 max-w-3xl w-full z-50">
+                                                                <div x-cloak class="flex justify-between items-center">
+                                                                    <h2 class="text-xl font-semibold">Edit Announcement</h2>
+                                                                    <button @click="open = false" class="text-lg text-hover:text-red-500">×</button>
+                                                                </div>
+
+                                                                <!-- Modal body -->
+                                                                <form id="updateAnnouncementForm" action="<?php echo e(route('teacher.teacher.updateAnnouncement', [
+                                                                    'userID' => auth()->user()->id, 
+                                                                    'assignmentTableID' => $manageCourse->id,
+                                                                    'courseID' => $manageCourse->course_id,
+                                                                    'contentID' => $contentId,
+                                                                    'announcementID' => $announcement['announcement_id']
+                                                                ])); ?>" method="POST">
+                                                                    <?php echo csrf_field(); ?>
+                                                                    <?php echo method_field('PUT'); ?>
+
+                                                                    <div x-data="{ 
+                                                                        message: `<?php echo $announcement['announcement']; ?>`, 
+                                                                        initialMessage: `<?php echo $announcement['announcement']; ?>`, 
+                                                                        isEdited: false
+                                                                    }">
+                                                                        <!-- Editable content -->
+                                                                        <div 
+                                                                            contenteditable="true" 
+                                                                            @input="message = $event.target.innerHTML; isEdited = true" 
+                                                                            x-ref="editable" 
+                                                                            class="w-full border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
+                                                                        ><?php echo $announcement['announcement']; ?></div>
+
+                                                                        <!-- Hidden textarea to hold the content -->
+                                                                        <textarea hidden name="content" x-text="message"></textarea>
+
+                                                                        <!-- Editor toolbar (assuming formatText function exists elsewhere) -->
+                                                                        <div class="editor-toolbar mt-2">
+                                                                            <button type="button" @click="formatText('bold')" title="Bold"><strong>B</strong></button>
+                                                                            <button type="button" @click="formatText('italic')" title="Italic"><em>I</em></button>
+                                                                            <button type="button" @click="formatText('underline')" title="Underline"><u>U</u></button>
+                                                                        </div>
+
+                                                                        <!-- Buttons for cancel and save -->
+                                                                        <div class="flex justify-end mt-2">
+                                                                            <button type="button" @click="open = false;" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                                                                            <button type="submit" id="updateButton"
+                                                                                class="text-white px-4 py-2 rounded"
+                                                                                :class="{
+                                                                                    'bg-blue-500 cursor-pointer': isEdited,
+                                                                                    'bg-blue-300 cursor-not-allowed': !isEdited
+                                                                                }"
+                                                                                x-text="isEdited ? 'Save changes' : 'Save changes'"
+                                                                                :disabled="!isEdited"
+                                                                            ></button>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                     <form action="<?php echo e(route('teacher.teacher.removeAnnouncement', [
                                                                     'userID' => auth()->user()->id,
                                                                     'assignmentTableID' => $manageCourse->id,
@@ -273,8 +347,8 @@
                                                         <?php echo method_field('PUT'); ?>
 
                                                         <input type="hidden" name="announcement_id" value="<?php echo e($announcement['announcement_id']); ?>">
-
-                                                        <button type="submit" class="block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none"> 
+                                                        
+                                                        <button type="submit" class="text-left block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none"> 
                                                             Remove 
                                                         </button>
                                                     </form>
@@ -351,9 +425,21 @@
 <?php $component = $__componentOriginal7f83d574ebf694838d71081ed65bad7b; ?>
 <?php unset($__componentOriginal7f83d574ebf694838d71081ed65bad7b); ?>
 <?php endif; ?>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
 <script>
-   
+
+function updateInput() {
+        // Get the content of the div
+        var announcementContent = document.getElementById('update').innerHTML;
+        // Set the value of the input field
+        document.getElementById('content').value = announcementContent;
+
+        document.getElementById('updateAnnouncementForm').submit();
+    }
+
+
+
+        // code for adding announcement                                                
     function logAnnouncement(event) {
         event.preventDefault();
         // Get the content from the editor
@@ -364,6 +450,8 @@
         document.getElementById('announcementForm').submit();
     }
 
+
+ // code for toggleButton floating menu
     
     document.addEventListener('DOMContentLoaded', function () {
         var toggleButton = document.getElementById('toggleButton2');
@@ -384,7 +472,7 @@
 </script>
 
 <style>
-
+/* css for toggleButton floating menu */
     #floatingMenu {
         transition: opacity 0.5s ease-in-out;
     }
@@ -395,6 +483,7 @@
 </style>
 
 <script>
+    // Javascript Modal code for Invite
     document.addEventListener('DOMContentLoaded', function() {
     var settingsIcon = document.getElementById('settingsIcon');
     var menu = document.getElementById('floatingMenu1');
@@ -488,6 +577,8 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
+// add announcement
 function checkContent() {
     var content = document.getElementById('editor').innerText.trim();
     var postButton = document.getElementById('postButton');
@@ -500,12 +591,6 @@ function clearEditor() {
     var editor = document.getElementById('editor');
     editor.innerText = '';
     checkContent(); // Update button state after clearing
-}
-
-// Function to handle posting content (example alert)
-function postContent() {
-    var content = document.getElementById('editor').innerText.trim();
-    alert(content);
 }
 
 
@@ -545,4 +630,20 @@ function postContent() {
         updateButtonState('italic');
         updateButtonState('underline');
     });
+
+
+
+
+//  UPDATE ANNOUNCEMENT
+
+
+ 
+
+    // function formatText(command) {
+    //     document.execCommand(command, false, null);
+    // }
+
+
+
+
 </script><?php /**PATH C:\Users\Jhon Ace\Desktop\guide\resources\views/teacher/courses/manage-course/index.blade.php ENDPATH**/ ?>

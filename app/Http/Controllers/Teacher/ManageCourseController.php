@@ -41,6 +41,8 @@ class ManageCourseController extends Controller
                 $announcementsByAssignment[$contentId][] = [
                     'announcement_id' => $announcement->id,
                     'announcement' => $announcement->announcement,
+                    'created_at' => $announcement->created_at,
+                    'updated_at' => $announcement->updated_at,
                 ];
             }
         }
@@ -107,6 +109,35 @@ class ManageCourseController extends Controller
             'assignmentTableID' => $assignmentTableID,
             'courseID' => $courseID,
         ])->with('success', 'Announcement removed successfully.');
+    }
+
+    public function updateAnnouncement(Request $request, $userID, $assignmentTableID, $courseID, $contentID, $announcementID)
+    {
+        // Validate request data
+
+
+        if ($request->input('content')) {
+            $announcement = AssignCourseAnnouncement::findOrFail($announcementID);
+
+            // Update the announcement content from the request
+            $announcement->announcement = $request->input('content');
+
+            // Save the updated announcement
+            $announcement->save();
+
+            // Redirect back with success message
+            return redirect()->route('teacher.teacher.index', [
+                'userID' => $userID,
+                'assignmentTableID' => $assignmentTableID,
+                'courseID' => $courseID,
+            ])->with('success', 'Announcement updated successfully.');
+        } else {
+            return redirect()->route('teacher.teacher.index', [
+                'userID' => $userID,
+                'assignmentTableID' => $assignmentTableID,
+                'courseID' => $courseID,
+            ])->with('error', 'Unable to update.');
+        }
     }
 
 

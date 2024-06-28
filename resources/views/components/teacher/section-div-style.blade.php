@@ -1,5 +1,5 @@
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.6.0/cdn.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.14.0/cdn.js" defer></script>
 
 <div class="transition-all duration-300 min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-zinc-300 text-black dark:text-white">
     <div id="dashboardContent" class="h-full ml-14 mb-5 md:ml-48 transition-all duration-300">

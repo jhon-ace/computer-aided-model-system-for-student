@@ -43,6 +43,16 @@ button.disabled {
     cursor: not-allowed;
 }
 
+textarea.no-resize {
+    resize: none; /* Prevent resizing */
+    border: 1px solid #ccc; /* Default border color */
+    transition: border-color 0.2s ease; /* Smooth transition for border color */
+}
+
+textarea.focused {
+    border-color: black; /* Border color when focused */
+}
+
 /* .custom-tooltip {
     position: absolute;
     display: none;

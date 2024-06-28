@@ -34,6 +34,7 @@
             </main>
         </div>
 
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.min.js"></script>
         <script src="https://unpkg.com/tippy.js@6/dist/tippy-bundle.umd.js"></script>

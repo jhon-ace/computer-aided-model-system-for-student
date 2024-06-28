@@ -31,9 +31,11 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
     Route::get('/manage-course/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'index'])
     ->name('teacher.index');
     Route::post('/post-announcement/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'postAnnouncement'])
-    ->name('teacher.postAnnouncement');
+    ->name('teacher.postAnnouncement');// add announcement
     Route::put('/remove-announcement/{userID}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'removeAnnouncement'])
-    ->name('teacher.removeAnnouncement');
+    ->name('teacher.removeAnnouncement');//remove announcement
+    Route::put('/update-announcement/{userID}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'updateAnnouncement'])
+    ->name('teacher.updateAnnouncement'); //update announcement
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
