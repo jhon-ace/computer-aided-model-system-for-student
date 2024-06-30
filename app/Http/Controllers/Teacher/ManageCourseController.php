@@ -29,6 +29,7 @@ class ManageCourseController extends Controller
         $courseContent = AssignCourseContent::where('course_assignments_id', $assignmentTableID)
                             ->with('courseAssignment')
                             ->with('courseAnnouncements')
+                            ->orderBy('created_at', 'desc')
                             ->get();
 
 
