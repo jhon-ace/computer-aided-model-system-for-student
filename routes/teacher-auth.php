@@ -5,6 +5,7 @@ use App\Http\Controllers\Teacher\Auth\RegisteredUserController;
 use App\Http\Controllers\Teacher\ProfileController;
 use App\Http\Controllers\Teacher\TeacherCourseController;
 use App\Http\Controllers\Teacher\ManageCourseController;
+use App\Http\Controllers\Teacher\ManageClassworkController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest:teacher')->prefix('teacher')->name('teacher.')->group(function () {
@@ -36,6 +37,18 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
     ->name('teacher.removeAnnouncement');//remove announcement
     Route::put('/update-announcement/{userID}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'updateAnnouncement'])
     ->name('teacher.updateAnnouncement'); //update announcement
+
+    //     Classwork Routes
+    // Route::resource('classwork/{userID}/{assignmentTableID}/{courseID}', ManageClassworkController::class)->names([
+    //     'index' => 'classwork.index',
+    //     'create' => 'classwork.create',
+    //     'store' => 'classwork.store',
+    //     'edit' => 'classwork.edit',
+    //     'update' => 'classwork.update'
+    // ]);
+
+    Route::get('/manage-classwork/{userID}/{assignmentTableID}/{courseID}', [ManageClassworkController::class, 'index'])
+    ->name('classwork.index');
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

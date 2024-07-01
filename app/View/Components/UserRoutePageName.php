@@ -80,6 +80,7 @@ class UserRoutePageName extends Component
 
             //Teacher Manage Courses page name
             'teacher.teacher.index' => __(':courseName'),
+            'teacher.classwork.index' => __(':courseName'),
 
             // Add more titles as needed
         ];

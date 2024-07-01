@@ -71,7 +71,11 @@
             <div id="floatingMenu" class="z-10 fixed right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-3 border-2 border-gray-400 text-black font-medium opacity-0 pointer-events-none transition-all duration-500">
                 <div class="text-center font-bold">View</div>
                 <hr class="border-gray-300">
-                <a href="#" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                <a href="<?php echo e(route('teacher.classwork.index', [
+                    'userID' => auth()->user()->id, 
+                    'assignmentTableID' => $manageCourse->id,
+                    'courseID' => $manageCourse->course_id])); ?>" 
+                class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
                     <i class="fa-solid fa-file"></i> Classwork
                 </a>
                 <hr class="border-gray-300">
