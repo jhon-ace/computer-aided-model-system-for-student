@@ -35,11 +35,7 @@
             <div id="floatingMenu" class="z-10 fixed right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-3 border-2 border-gray-400 text-black font-medium opacity-0 pointer-events-none transition-all duration-500">
                 <div class="text-center font-bold">View</div>
                 <hr class="border-gray-300">
-                <a href="{{ route('teacher.classwork.index', [
-                    'userID' => auth()->user()->id, 
-                    'assignmentTableID' => $manageCourse->id,
-                    'courseID' => $manageCourse->course_id])}}" 
-                class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                <a href="#" @click.prevent="openClassworkModal()" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
                     <i class="fa-solid fa-file"></i> Classwork
                 </a>
                 <hr class="border-gray-300">
@@ -55,6 +51,77 @@
                     <i class="fa-solid fa-file-pen"></i> Student
                 </a>
             </div>
+            <!-- Classwork Modal -->
+            <div id="classworkModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+                <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
+                <div class="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full z-50">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-black">Add Classwork</h2>
+                        <button id="closeClassworkModal" class="text-lg text-black">X</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    
+                    <form id="announcementForm" action="{{ route('teacher.teacher.postAnnouncement', ['userID' => auth()->user()->id, 'assignmentTableID' => $manageCourse->id, 'courseID' => $manageCourse->course_id])}}" method="POST" onsubmit="logAnnouncement(event)">
+                        @csrf
+                        <div class="text-gray-500">
+                            Classwork Content
+                        </div>
+                        <div id="editor1" contenteditable="true" class="border p-2 mt-2 rounded h-40 bg-white overflow-y-auto text-black"
+                            placeholder="Enter your Classwork Content here..." ></div>
+                        <input type="hidden" name="content" id="content">
+                        <div class="editor-toolbar">
+                            <button class="text-black" type="button" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+                            <button class="text-black" type="button" onclick="formatText('italic')" title="Italic"><em>I</em></button>
+                            <button class="text-black" type="button" onclick="formatText('underline')" title="Underline"><u>U</u></button>
+                        </div>
+                        {{-- Select --}}
+                        <div class="relative">
+                            <select id="underline_select" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2.5 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 hover:bg-gray-100">
+                              <option >Practice Problems</option>
+                              <option >Assignments</option>
+                              <option >Module</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9 11l3 3 3-3h-6z"/></svg>
+                            </div>
+                        </div>
+                        {{-- Upload File --}}
+                        <div class="max-w-sm">
+                            <label class="block">
+                              <span class="sr-only">Choose profile photo</span>
+                              Choose profile photo
+                              <input id="fileInput" type="file" class="block w-full text-sm text-gray-500
+                                file:me-4 file:py-2 file:px-4
+                                file:rounded-lg file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-blue-600 file:text-white
+                                hover:file:bg-blue-700
+                                file:disabled:opacity-50 file:disabled:pointer-events-none
+                                dark:text-neutral-500
+                                dark:file:bg-blue-500
+                                dark:hover:file:bg-blue-400
+                                "
+                                multiple
+                                onchange="displaySelectedFiles(this)"
+                              >
+                            </label>
+                          </div>
+                        
+                          <div id="fileList" class="mt-4 text-black">
+                             {{-- File names will be displayed here --}}
+                          </div>
+                          
+                                 
+                          
+                        <div class="flex justify-end mt-2">
+                            <button type="submit" id="addButton" disabled class="bg-blue-500 text-white px-4 py-2 rounded disabled">Add</button>
+                        </div>
+                    </form>
+                   
+                </div>
+            </div>
+
             <!-- Toggle Button for Adding of Components -->
             <div id="toggleButton2" class="fixed -right-1 top-1/2 transform -translate-y-1/2 z-50 bg-white text-gray-500 p-2 rounded-full shadow-md cursor-pointer">
                 <svg id="toggleIcon2" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -349,6 +416,25 @@ function updateInput() {
     });
 </script>
 
+
+<script>
+    //code for toggling Classwork Modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const classworkModal = document.getElementById('classworkModal');
+        const openClassworkModalButton = document.querySelector('#floatingMenu a[href="#"]');
+        const closeClassworkModalButton = document.getElementById('closeClassworkModal');
+
+        openClassworkModalButton.addEventListener('click', function() {
+            classworkModal.classList.remove('hidden');
+        });
+
+        closeClassworkModalButton.addEventListener('click', function() {
+            classworkModal.classList.add('hidden');
+        });
+    });
+</script>
+
+
 <style>
 /* css for toggleButton floating menu */
     #floatingMenu {
@@ -411,6 +497,21 @@ function updateInput() {
 });
 
 </script>
+
+<script>
+    //upload multiple files display
+    function displaySelectedFiles(input) {
+      const fileList = document.getElementById('fileList');
+      fileList.innerHTML = ''; // Clear previous content
+
+      for (let i = 0; i < input.files.length; i++) {
+        const fileName = input.files[i].name;
+        const listItem = document.createElement('div');
+        listItem.textContent = fileName;
+        fileList.appendChild(listItem);
+      }
+    }
+  </script>
 
 <style>
     #floatingMenu2 {
