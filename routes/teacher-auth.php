@@ -33,9 +33,10 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
     ->name('teacher.index');
     Route::post('/post-announcement/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'postAnnouncement'])
     ->name('teacher.postAnnouncement');// add announcement
-    Route::put('/remove-announcement/{userID}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'removeAnnouncement'])
+   
+    Route::put('/remove-announcement/{userID}/{type}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'removeAnnouncement'])
     ->name('teacher.removeAnnouncement');//remove announcement
-    Route::put('/update-announcement/{userID}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'updateAnnouncement'])
+    Route::put('/update-announcement/{userID}/{type}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'updateAnnouncement'])
     ->name('teacher.updateAnnouncement'); //update announcement
 
     //     Classwork Routes
@@ -49,6 +50,9 @@ Route::middleware(['auth:teacher', 'verified'])->prefix('teacher')->name('teache
 
     Route::get('/manage-classwork/{userID}/{assignmentTableID}/{courseID}', [ManageClassworkController::class, 'index'])
     ->name('classwork.index');
+
+    Route::post('/post-classwork/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'postClasswork'])
+    ->name('teacher.postClasswork');// add classwork
     
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
