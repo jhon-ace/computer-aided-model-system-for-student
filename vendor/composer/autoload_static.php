@@ -354,13 +354,13 @@ class ComposerStaticInit84c61af57b4c8d8b767caf42ec360a3d
         ),
         'Spatie\\LaravelIgnition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/laravel-ignition',
+            1 => __DIR__ . '/..' . '/spatie/laravel-ignition/src',
         ),
         'Spatie\\Ignition\\' => 
         array (
-            0 => __DIR__ . '/..' . '/spatie/ignition/src',
-            1 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            0 => __DIR__ . '/..' . '/spatie/error-solutions/legacy/ignition',
+            1 => __DIR__ . '/..' . '/spatie/ignition/src',
         ),
         'Spatie\\FlareClient\\' => 
         array (
@@ -646,6 +646,7 @@ class ComposerStaticInit84c61af57b4c8d8b767caf42ec360a3d
         'App\\Http\\Requests\\Auth\\AdminLoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/AdminLoginRequest.php',
         'App\\Http\\Requests\\Auth\\LoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/LoginRequest.php',
         'App\\Http\\Requests\\Auth\\TeacherLoginRequest' => __DIR__ . '/../..' . '/app/Http/Requests/Auth/TeacherLoginRequest.php',
+        'App\\Http\\Requests\\CourseStoreFile' => __DIR__ . '/../..' . '/app/Http/Requests/CourseStoreFile.php',
         'App\\Http\\Requests\\CourseStoreRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CourseStoreRequest.php',
         'App\\Http\\Requests\\CourseUpdateRequest' => __DIR__ . '/../..' . '/app/Http/Requests/CourseUpdateRequest.php',
         'App\\Http\\Requests\\DeanStoreRequest' => __DIR__ . '/../..' . '/app/Http/Requests/DeanStoreRequest.php',
@@ -669,6 +670,8 @@ class ComposerStaticInit84c61af57b4c8d8b767caf42ec360a3d
         'App\\Models\\AssignCourseContent' => __DIR__ . '/../..' . '/app/Models/AssignCourseContent.php',
         'App\\Models\\Course' => __DIR__ . '/../..' . '/app/Models/Course.php',
         'App\\Models\\CourseAssignment' => __DIR__ . '/../..' . '/app/Models/CourseAssignment.php',
+        'App\\Models\\CourseClassworkFiles' => __DIR__ . '/../..' . '/app/Models/CourseClassworkFiles.php',
+        'App\\Models\\CourseContentClasswork' => __DIR__ . '/../..' . '/app/Models/CourseContentClasswork.php',
         'App\\Models\\Dean' => __DIR__ . '/../..' . '/app/Models/Dean.php',
         'App\\Models\\Department' => __DIR__ . '/../..' . '/app/Models/Department.php',
         'App\\Models\\Program' => __DIR__ . '/../..' . '/app/Models/Program.php',

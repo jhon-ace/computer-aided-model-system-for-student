@@ -11,14 +11,14 @@
                 <span class=" text-xs tracking-wide truncate text-white">{{ $teacher_details->email }}</span>
             </label>
             <div class="border-t"></div> -->
-            {{-- <li>
+            <li>
             <a href="{{route('teacher.dashboard')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 {{ request()->routeIs('teacher.dashboard') ? ' rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white' }}">
                 <span class="inline-flex justify-center items-center ml-4">
                     <i class="fa-solid fa-gauge-high fa-lg text-white" style="color: #fffff;"></i>
                 </span>
                 <span class="ml-2 text-sm tracking-wide truncate text-white">My Dashboard</span>
                 </a>
-            </li> --}}
+            </li>
             <li>
                 <a  href="{{ route('teacher.teachercourses.index') }}"  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
@@ -26,9 +26,9 @@
                     <span class="inline-flex justify-center items-center ml-4">
                         <i class="fa-sharp fa-solid fa-file fa-md text-white" style="color: #fffff;"></i>
                     </span>
-                    <span class="ml-2 text-sm tracking-wide truncate text-white">Courses</span>
+                    <span class="ml-2 text-sm tracking-wide truncate text-white">Course</span>
                 </a>
-            {{-- </li>
+            </li>
             @php
                 $currentUserID = request()->route('userID');
                 $currentAssignmentTableID = request()->route('assignmentTableID');
@@ -110,9 +110,9 @@
 
                             </a>
                         </li>
-                    @endforeach --}}
+                    @endforeach
                 </ul>
-            {{-- @endif --}}
+            @endif
         </ul>
             <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs text-white">Copyright @2024</p>
     </div>

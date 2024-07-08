@@ -339,6 +339,22 @@
                                                             <?php echo $content['content']; ?>
 
                                                         </div>
+                                                        <?php if($type ==="Classwork"): ?>
+                                                            <?php $__currentLoopData = $file; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $files): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                                            
+
+                                                            <li class="mb-2 flex items-center border rounded p-2">
+                                                                
+                                                                <div>
+                                                                    <a href="<?php echo e(url('/classroom/files/' . $files->id)); ?>" class="text-blue-500 hover:underline"><?php echo e($files->classwork_file); ?></a>
+                                                                    <div class="text-gray-500 text-sm"><?php echo e(strtoupper(pathinfo($files->classwork_file, PATHINFO_EXTENSION))); ?></div>
+                                                                </div>
+                                                            </li>
+                                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                                        <?php else: ?>
+                                                            
+                                                        <?php endif; ?>
+                                                        
                                                         <div class="flex justify-end mt-4">
                                                             <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
                                                                     @click="showModal = false">
@@ -460,12 +476,12 @@
             <div id="inviteCodeModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 opacity-0 pointer-events-none transition-opacity duration-500">
                 <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold">Invite Code</h3>
+                        <h3 class="text-xl font-semibold text-black">Invite Code</h3>
                         <button id="closeModal" class="text-gray-500 hover:text-gray-800">
                             <i class="fa-solid fa-times"></i>
                         </button>
                     </div>
-                    <p>Your invite code is: <strong>XYZ123</strong></p>
+                    <p class="text-black">Your invite code is: <strong><?php echo e($class_code->class_code); ?></strong></p>
                     <button id="closeModalBottom" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                         Close
                     </button>

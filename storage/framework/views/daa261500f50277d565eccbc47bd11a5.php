@@ -10,19 +10,19 @@
         ]
     ];
 ?>
-<?php if (isset($component)) { $__componentOriginalbf020ec425b6d0b9fddc69f3baf70e3e = $component; } ?>
-<?php if (isset($attributes)) { $__attributesOriginalbf020ec425b6d0b9fddc69f3baf70e3e = $attributes; } ?>
-<?php $component = App\View\Components\TeacherAppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
-<?php $component->withName('teacher-app-layout'); ?>
+<?php if (isset($component)) { $__componentOriginalcc67118e210132cf50b1c183d70505e3 = $component; } ?>
+<?php if (isset($attributes)) { $__attributesOriginalcc67118e210132cf50b1c183d70505e3 = $attributes; } ?>
+<?php $component = App\View\Components\StudentAppLayout::resolve([] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component->withName('student-app-layout'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
 <?php if (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag): ?>
-<?php $attributes = $attributes->except(\App\View\Components\TeacherAppLayout::ignoredParameterNames()); ?>
+<?php $attributes = $attributes->except(\App\View\Components\StudentAppLayout::ignoredParameterNames()); ?>
 <?php endif; ?>
 <?php $component->withAttributes([]); ?>
     <?php if (isset($component)) { $__componentOriginal8a863ae962bbf3c4907cbf5446e54179 = $component; } ?>
 <?php if (isset($attributes)) { $__attributesOriginal8a863ae962bbf3c4907cbf5446e54179 = $attributes; } ?>
-<?php $component = App\View\Components\UserRoutePageName::resolve(['routeName' => 'teacher.dashboard'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
+<?php $component = App\View\Components\UserRoutePageName::resolve(['routeName' => 'student.dashboard'] + (isset($attributes) && $attributes instanceof Illuminate\View\ComponentAttributeBag ? $attributes->all() : [])); ?>
 <?php $component->withName('user-route-page-name'); ?>
 <?php if ($component->shouldRender()): ?>
 <?php $__env->startComponent($component->resolveView(), $component->data()); ?>
@@ -59,7 +59,7 @@
         
         
 
-        <div class="flex flex-wrap -mx-4 ml-4 mt-2">
+        <div class="flex flex-wrap gap- 4 mt-2">
             <!-- Repeat this card for each class -->
             <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
                 <div class="bg-white rounded-lg shadow-lg p-6 h-full">
@@ -111,6 +111,10 @@
                 </div>
             </div>
             <!-- End of card -->
+
+            <button class="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-base shadow-md">
+            Add Class Code
+        </button>
         </div>
         
 
@@ -126,13 +130,13 @@
 <?php endif; ?>
  <?php echo $__env->renderComponent(); ?>
 <?php endif; ?>
-<?php if (isset($__attributesOriginalbf020ec425b6d0b9fddc69f3baf70e3e)): ?>
-<?php $attributes = $__attributesOriginalbf020ec425b6d0b9fddc69f3baf70e3e; ?>
-<?php unset($__attributesOriginalbf020ec425b6d0b9fddc69f3baf70e3e); ?>
+<?php if (isset($__attributesOriginalcc67118e210132cf50b1c183d70505e3)): ?>
+<?php $attributes = $__attributesOriginalcc67118e210132cf50b1c183d70505e3; ?>
+<?php unset($__attributesOriginalcc67118e210132cf50b1c183d70505e3); ?>
 <?php endif; ?>
-<?php if (isset($__componentOriginalbf020ec425b6d0b9fddc69f3baf70e3e)): ?>
-<?php $component = $__componentOriginalbf020ec425b6d0b9fddc69f3baf70e3e; ?>
-<?php unset($__componentOriginalbf020ec425b6d0b9fddc69f3baf70e3e); ?>
+<?php if (isset($__componentOriginalcc67118e210132cf50b1c183d70505e3)): ?>
+<?php $component = $__componentOriginalcc67118e210132cf50b1c183d70505e3; ?>
+<?php unset($__componentOriginalcc67118e210132cf50b1c183d70505e3); ?>
 <?php endif; ?>
 
 <?php if (isset($component)) { $__componentOriginal7f83d574ebf694838d71081ed65bad7b = $component; } ?>

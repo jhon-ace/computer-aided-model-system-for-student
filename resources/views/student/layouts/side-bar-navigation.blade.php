@@ -28,7 +28,7 @@
                     </span>
                     <span class="ml-2 text-sm tracking-wide truncate text-white">Courses</span>
                 </a>
-            </li>
+            {{-- </li>
             @php
                 $currentUserID = request()->route('userID');
                 $currentAssignmentTableID = request()->route('assignmentTableID');
@@ -110,9 +110,9 @@
 
                             </a>
                         </li>
-                    @endforeach
+                    @endforeach --}}
                 </ul>
-            @endif
+            {{-- @endif --}}
         </ul>
             <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs text-white">Copyright @2024</p>
     </div>

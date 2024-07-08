@@ -10,8 +10,8 @@
         ]
     ];
 @endphp
-<x-teacher-app-layout>
-    <x-user-route-page-name :routeName="'teacher.dashboard'" />
+<x-student-app-layout>
+    <x-user-route-page-name :routeName="'student.dashboard'" />
     <x-teacher.section-div-style>
 
         <div class="container mx-auto p-4 uppercase -mb-8">
@@ -39,7 +39,7 @@
             <button type="submit" id="addButton"  class="bg-blue-500 text-white px-4 py-2 rounded ">Add Courses</button>
         </div> --}}
 
-        <div class="flex flex-wrap -mx-4 ml-4 mt-2">
+        <div class="flex flex-wrap gap- 4 mt-2">
             <!-- Repeat this card for each class -->
             <div class="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4">
                 <div class="bg-white rounded-lg shadow-lg p-6 h-full">
@@ -91,6 +91,10 @@
                 </div>
             </div>
             <!-- End of card -->
+
+            <button class="absolute bottom-4 right-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-base shadow-md">
+            Add Class Code
+        </button>
         </div>
         
 {{-- 
@@ -99,8 +103,8 @@
                 <canvas id="coursesChart" class="w-full h-auto sm:w-72 md:w-3/4 lg:w-full"></canvas>
             </div>
         </div> --}}
-    </x-teacher.section-div-style>
-</x-teacher-app-layout>
+    </x-student.section-div-style>
+</x-student-app-layout>
 
 <x-show-hide-sidebar
     toggleButtonId="toggleButton"

@@ -10,7 +10,6 @@ use App\Models\AssignCourseContent;
 use App\Models\AssignCourseAnnouncement;
 use App\Models\CourseContentClasswork;
 use App\Models\CourseClassworkFiles;
-use App\Models\Course;
 
 
 class ManageCourseController extends Controller
@@ -22,9 +21,6 @@ class ManageCourseController extends Controller
     {
         $teacherId = Auth::id();
 
-        
-
-        $course_code = Course::where('id',$courseID)->firstOrFail();
         $manageCourse = CourseAssignment::where('teacher_id', $teacherId)
                             ->where('id', $assignmentTableID)  // additional condition
                             ->where('course_id', $courseID)
@@ -39,18 +35,17 @@ class ManageCourseController extends Controller
                             ->with('courseClasswork')
                             ->orderBy('created_at', 'desc')
                             ->get();
-        $classwork_files = CourseClassworkFiles::all();
-                          
 
-                    
+
+        
+
+
         $announcementsByAssignment = [];
         $classworkByAssignment = [];
-        
-  
-    
+        $contentNum = [];
+
         foreach ($courseContent as $content) {
             $contentId = $content->id;
-            
 
             foreach ($content->courseAnnouncements as $announcement) {
 
@@ -76,11 +71,10 @@ class ManageCourseController extends Controller
         }
    
         return view('teacher.courses.manage-course.index', [
-            'class_code' => $course_code,
+            'contentNum' => $contentNum,
             'manageCourse' => $manageCourse, 
             'announcementsByAssignment' => $announcementsByAssignment,
-            'classworkByAssignment' => $classworkByAssignment,
-            'file' => $classwork_files]);
+            'classworkByAssignment' => $classworkByAssignment]);
     }
 
     public function postAnnouncement(Request $request, $userID, $assignmentTableID, $courseID)
@@ -90,19 +84,19 @@ class ManageCourseController extends Controller
         ]);
 
         // Check if there's an existing record with null announcement_id
-        // $content = AssignCourseContent::where('course_assignments_id', $assignmentTableID)
-        //     ->whereNull('announcement_id')
-        //     ->first();
+        $content = AssignCourseContent::where('course_assignments_id', $assignmentTableID)
+            ->whereNull('announcement_id')
+            ->first();
 
-        // if ($content) {
-        //     // Update existing record with the new announcement
-        //     $announcement = AssignCourseAnnouncement::create([
-        //         'announcement' => $request->input('content'),
-        //     ]);
+        if ($content) {
+            // Update existing record with the new announcement
+            $announcement = AssignCourseAnnouncement::create([
+                'announcement' => $request->input('content'),
+            ]);
 
-        //     $content->announcement_id = $announcement->id;
-        //     $content->save();
-        // } else {
+            $content->announcement_id = $announcement->id;
+            $content->save();
+        } else {
             // Create a new record
             $announcement = AssignCourseAnnouncement::create([
                 'announcement' => $request->input('content'),
@@ -112,7 +106,7 @@ class ManageCourseController extends Controller
                 'course_assignments_id' => $assignmentTableID,
                 'announcement_id' => $announcement->id,
             ]);
-        // }
+        }
 
         return redirect()->route('teacher.teacher.index', [
             'userID' => $userID,
@@ -121,7 +115,7 @@ class ManageCourseController extends Controller
         ])->with('success', 'Announcement added successfully.');
     }
 
-    public function postClasswork(Request $request, $userID, $assignmentTableID, $courseID,)
+    public function postClasswork(Request $request, $userID, $assignmentTableID, $courseID)
     {
        
 
@@ -130,21 +124,20 @@ class ManageCourseController extends Controller
             'content2' => 'required|string',
             'files.*' => 'required||mimes:pdf'
         ]);
-        
-       
-        // // Check if there's an existing record with the assignment ID
-        // $content = CourseContentClasswork::where('id', $assignmentTableID)
-        //     ->whereNull('classwork')
-        //     ->first();
+    
+        // Check if there's an existing record with the assignment ID
+        $content = CourseContentClasswork::where('id', $assignmentTableID)
+            ->whereNull('classwork')
+            ->first();
 
     
-        // if ($content) {
-        //     // Update existing record with the new classwork
-        //     $content->update([
-        //         'classwork' => $request->input('content1'),
-        //         'type' => $request->input('content2'),
-        //     ]);
-        // } else {
+        if ($content) {
+            // Update existing record with the new classwork
+            $content->update([
+                'classwork' => $request->input('content1'),
+                'type' => $request->input('content2'),
+            ]);
+        } else {
             // Create a new record
             $classwork = CourseContentClasswork::create([
                 'classwork' => $request->input('content1'),
@@ -163,7 +156,7 @@ class ManageCourseController extends Controller
                    
                     $fileData[] = [
                         'classwork_file' => $fileNameToStore,
-                        'classwork_id' => $classwork->id,             
+                        'classwork_id' => $content+1,             
                     ];
                 }
                 
@@ -176,7 +169,7 @@ class ManageCourseController extends Controller
                 'course_assignments_id' => $assignmentTableID,
                 'classwork_id' => $classwork->id,
             ]);
-        // }
+        }
     
         return redirect()->route('teacher.teacher.index', [
             'userID' => $userID,
@@ -305,22 +298,9 @@ public function removeAnnouncement($userID, $type, $assignmentTableID, $courseID
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(string $id)
     {
-        $file = CourseClassworkFiles::findOrFail($id);
-
-        $path = storage_path("app/public/classwork_files/{$file->classwork_file}");
-
-        if (!file_exists($path)) {
-            abort(404);
-        }
-
-        $fileContent = file_get_contents($path);
-        $mimeType = mime_content_type($path);
-
-        return response($fileContent, 200)
-            ->header('Content-Type', $mimeType)
-            ->header('Content-Disposition', 'inline; filename="' . basename($path) . '"');
+        //
     }
 
     /**

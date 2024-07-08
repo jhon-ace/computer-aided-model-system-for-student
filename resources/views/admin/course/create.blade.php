@@ -57,6 +57,8 @@
                         </select>
                         <x-input-error :messages="$errors->get('course_semester')" class="mt-2" />
                     </div>
+                    <input type="text" id="class_code" name="class_code" class="">
+
                     <div class="flex mb-4 mt-5 justify-center">
                         <button type="submit" class="w-80 bg-blue-500 text-white px-4 py-2 rounded-md">
                             Save
@@ -74,3 +76,43 @@
     dashboardContentId="dashboardContent"
     toggleIconId="toggleIcon"
 />
+
+<script>
+    function generateRandomString() {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        
+        let result = '';
+        
+        for (let i = 0; i < 3; i++) {
+            // Get a random letter
+            result += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        
+        for (let i = 0; i < 3; i++) {
+            // Get a random number
+            result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        }
+        
+        // Convert result string to an array to shuffle
+        let resultArray = result.split('');
+        
+        // Shuffle the array to mix letters and numbers
+        for (let i = resultArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [resultArray[i], resultArray[j]] = [resultArray[j], resultArray[i]];
+        }
+        
+        // Join the array back into a string
+        result = resultArray.join('');
+        
+        // Set the value of the input element with ID 'class_code'
+        document.getElementById('class_code').value = result;
+        console.log(result);
+    }
+
+    // Run the function when the page loads
+    window.onload = generateRandomString;
+
+   
+</script>
