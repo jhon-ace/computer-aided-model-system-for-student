@@ -16,6 +16,8 @@ class Teacher extends Authenticatable
 
     
     protected $guard = 'teacher';
+    protected $table = 'teachers';
+
 
     /**
      * The attributes that are mass assignable.

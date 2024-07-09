@@ -6,8 +6,11 @@ use App\Http\Controllers\Admin\Auth\DeanController;
 use App\Http\Controllers\Admin\Auth\ProgramController;
 use App\Http\Controllers\Admin\Auth\CourseController;
 use App\Http\Controllers\Admin\Auth\TeacherController;
+use App\Http\Controllers\StudentController;
 use App\Http\Controllers\Admin\Auth\TeacherCourseController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FileController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -17,7 +20,11 @@ Route::get('/dashboard', function () {
     return view('student.dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('classwork_files/thumbnails/{filename}', [FileController::class, 'showThumbnail'])->name('thumbnails.show');
+Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
+
 Route::middleware('auth')->group(function () {
+   
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -87,6 +94,7 @@ Route::middleware(['auth:web', 'verified'])->prefix('web')->name('student.')->gr
     Route::get('/dashboard', function () {
         return view('student.dashboard')->with('success', 'Welcome to your dashboard!');
     })->name('dashboard');
+    Route::get('web/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
 
     //Teacher-assign courses controller
     Route::get('/my-courses', [TeacherCourseController::class, 'class_load'])->name('teachercourses.index');

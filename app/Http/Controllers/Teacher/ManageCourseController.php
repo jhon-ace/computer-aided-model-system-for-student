@@ -10,7 +10,10 @@ use App\Models\AssignCourseContent;
 use App\Models\AssignCourseAnnouncement;
 use App\Models\CourseContentClasswork;
 use App\Models\CourseClassworkFiles;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\Facades\Image;
 use App\Models\Course;
+use Imagick;
 
 
 class ManageCourseController extends Controller
@@ -128,7 +131,7 @@ class ManageCourseController extends Controller
         $request->validate([
             'content1' => 'required|string', 
             'content2' => 'required|string',
-            'files.*' => 'required||mimes:pdf'
+            'files.*' => 'required|mimes:pdf,jpeg,png,jpg,gif,svg,doc,docx,xls,xlsx'
         ]);
         
        
@@ -159,6 +162,20 @@ class ManageCourseController extends Controller
                     $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
                     $extension = $file->getClientOriginalExtension();
                     $fileNameToStore = $filename.'_'.time().'.'.$extension;
+                    
+
+                    if (in_array($extension, ['jpeg', 'png', 'jpg', 'gif', 'svg'])) {
+                        // Generate a thumbnail for image files
+                        $thumbnail = Image::make($file)->resize(150, 150)->stream();
+                        Storage::put('public/classwork_files/thumbnails/' . $fileNameToStore, $thumbnail->__toString());
+                    } elseif ($extension == 'pdf') {
+                        // Generate a thumbnail for PDF files
+                        $pdf = new Imagick($file->getPathname() . '[0]'); // Get the first page
+                        $pdf->setImageFormat('jpeg');
+                        $pdf->thumbnailImage(150, 150, true, true);
+                        Storage::put('public/classwork_files/thumbnails/' . $fileNameToStore . '.jpg', $pdf);
+                    }
+
                     $path = $file->storeAs('public/classwork_files', $fileNameToStore);
                    
                     $fileData[] = [
@@ -182,7 +199,8 @@ class ManageCourseController extends Controller
             'userID' => $userID,
             'assignmentTableID' => $assignmentTableID,
             'courseID' => $courseID,
-        ])->with('success', 'Classwork added successfully.');
+        ])->with('success', 'Classwork added successfully.')
+          ->with('courseFiles', CourseClassworkFiles::where('classwork_id', $classwork->id)->get());
     }
 
 //    public function removeAnnouncement($userID, $assignmentTableID, $courseID, $contentID, $announcementID)

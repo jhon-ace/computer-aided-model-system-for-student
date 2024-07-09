@@ -342,14 +342,16 @@
                                                         <?php if($type ==="Classwork"): ?>
                                                             <?php $__currentLoopData = $file; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $files): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                             
-
+                                                            <?php if($content['content_id'] === $files->classwork_id): ?>
                                                             <li class="mb-2 flex items-center border rounded p-2">
-                                                                
+                                                                <img  src="<?php echo e(route('thumbnails.show', ['filename' => $files->classwork_file . '.jpg'])); ?>" alt="<?php echo e($files->classwork_file); ?>" class="w-16 h-16 object-cover mr-3">
                                                                 <div>
                                                                     <a href="<?php echo e(url('/classroom/files/' . $files->id)); ?>" class="text-blue-500 hover:underline"><?php echo e($files->classwork_file); ?></a>
                                                                     <div class="text-gray-500 text-sm"><?php echo e(strtoupper(pathinfo($files->classwork_file, PATHINFO_EXTENSION))); ?></div>
                                                                 </div>
                                                             </li>
+                                                            <?php endif; ?>
+                                                           
                                                             <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                                         <?php else: ?>
                                                             

@@ -252,14 +252,16 @@
                                                                     {{ $files->classwork_file }}
                                                                 </a>
                                                             </li> --}}
-
+                                                            @if ($content['content_id'] === $files->classwork_id)
                                                             <li class="mb-2 flex items-center border rounded p-2">
-                                                                {{-- <img src="{{ url('/classroom/files/' . $files->id) }}" alt="{{ $files->classwork_file }}" class="w-16 h-16 object-cover mr-3"> --}}
+                                                                <img  src="{{ route('thumbnails.show', ['filename' => $files->classwork_file . '.jpg']) }}" alt="{{ $files->classwork_file }}" class="w-16 h-16 object-cover mr-3">
                                                                 <div>
                                                                     <a href="{{ url('/classroom/files/' . $files->id) }}" class="text-blue-500 hover:underline">{{ $files->classwork_file }}</a>
                                                                     <div class="text-gray-500 text-sm">{{ strtoupper(pathinfo($files->classwork_file, PATHINFO_EXTENSION)) }}</div>
                                                                 </div>
                                                             </li>
+                                                            @endif
+                                                           
                                                             @endforeach
                                                         @else
                                                             

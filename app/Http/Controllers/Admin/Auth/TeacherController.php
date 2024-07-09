@@ -28,6 +28,30 @@ class TeacherController extends Controller
         return view('admin.teacher.index');
     }
 
+    public function dashboard()
+    {
+        $teacher = Auth::user();
+
+        // Fetch courses assigned to the teacher
+        $courseAssignments = CourseAssignment::with('course')
+            ->where('teacher_id', $teacher->id)
+            ->get();
+
+        // Prepare chart data
+        // $courseData = [
+        //     'labels' => ['1ST', '2ND'], // School years
+        //     'data' => [
+        //         $courseAssignments->count(), // Example data
+        //         0, // Placeholder for future data
+        //         0, // Placeholder for future data
+        //         0  // Placeholder for future data
+        //     ]
+        // ];
+
+        return view('teacher.dashboard', compact('teacher', 'courseAssignments'));
+    }
+
+
     /**
      * Show the form for creating a new resource.
      */
@@ -223,7 +247,10 @@ class TeacherController extends Controller
         $courseAssignment->delete();
 
         return redirect()->back()->with('success', 'Course removed successfully');
-    }
+    } 
+    
+   
+    
 
 
 }

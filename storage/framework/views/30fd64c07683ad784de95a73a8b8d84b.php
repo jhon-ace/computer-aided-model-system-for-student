@@ -1,4 +1,4 @@
-<div id="csidebarContainer" class="fixed flex flex-col left-0 w-[68px] hover:w-48 md:w-48 bg-gray-900 h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-50 sidebar">
+<div id="sidebarContainer" class="fixed flex flex-col left-0 w-[68px] hover:w-48 md:w-48 bg-gray-900 h-full text-black transition-all duration-300 border-r-2 border-gray-300 dark:border-gray-600 z-50 sidebar">
     <div class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow mr-0.5">
         <ul class="flex flex-col py-2 space-y-1 text-gray-800" >
             <a href="#" class="flex justify-center mt-5 mb-2">
