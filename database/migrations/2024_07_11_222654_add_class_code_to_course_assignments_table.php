@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            $table->string('class_code')->nullable()->after('course_code');
-
+        Schema::table('course_assignments', function (Blueprint $table) {
+            $table->string('class_code')->nullable()->after('course_id'); // Add the new column after 'class_end_time'
         });
     }
 
@@ -22,8 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('courses', function (Blueprint $table) {
-            //
+        Schema::table('course_assignments', function (Blueprint $table) {
             $table->dropColumn('class_code');
         });
     }

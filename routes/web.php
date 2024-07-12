@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\Auth\ProgramController;
 use App\Http\Controllers\Admin\Auth\CourseController;
 use App\Http\Controllers\Admin\Auth\TeacherController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\StudentCourseController;
 use App\Http\Controllers\Admin\Auth\TeacherCourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FileController;
@@ -16,9 +17,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('student.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('classwork_files/thumbnails/{filename}', [FileController::class, 'showThumbnail'])->name('thumbnails.show');
 Route::get('/courses/{id}', [CourseController::class, 'show'])->name('courses.show');
@@ -89,19 +87,24 @@ Route::middleware('auth:admin')->prefix('admin')->name('admin.')->group(function
 
 });
 
-Route::middleware(['auth:web', 'verified'])->prefix('web')->name('student.')->group(function () {
+Route::middleware(['auth', 'verified'])->name('student.')->group(function () {
     
     Route::get('/dashboard', function () {
         return view('student.dashboard')->with('success', 'Welcome to your dashboard!');
     })->name('dashboard');
-    Route::get('web/dashboard', [StudentController::class, 'index'])->name('student.dashboard');
+
+    Route::get('/dashboard', [StudentController::class, 'index'])
+    ->name('student.dashboard');
+
+    Route::post('/join-class',[StudentController::class, 'joinClass'])
+    ->name('joinClass');
 
     //Teacher-assign courses controller
     Route::get('/my-courses', [TeacherCourseController::class, 'class_load'])->name('teachercourses.index');
     // ManageCourse for Teacher
-    Route::get('/manage-course/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'index'])
-    ->name('teacher.index');
-    Route::post('/post-announcement/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'postAnnouncement'])
+    Route::get('/student-course/{userID}/{assignmentTableID}/{courseID}', [StudentCourseController::class, 'index'])
+    ->name('student.index');
+    Route::post('/post-announcement/{userID}/{assignmentTableID}/{courseID}', [StudentCourseController::class, 'postAnnouncement'])
     ->name('teacher.postAnnouncement');// add announcement
    
     Route::put('/remove-announcement/{userID}/{type}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'removeAnnouncement'])
@@ -109,21 +112,6 @@ Route::middleware(['auth:web', 'verified'])->prefix('web')->name('student.')->gr
     Route::put('/update-announcement/{userID}/{type}/{assignmentTableID}/{courseID}/{contentID}/{announcementID}', [ManageCourseController::class, 'updateAnnouncement'])
     ->name('teacher.updateAnnouncement'); //update announcement
 
-    //     Classwork Routes
-    // Route::resource('classwork/{userID}/{assignmentTableID}/{courseID}', ManageClassworkController::class)->names([
-    //     'index' => 'classwork.index',
-    //     'create' => 'classwork.create',
-    //     'store' => 'classwork.store',
-    //     'edit' => 'classwork.edit',
-    //     'update' => 'classwork.update'
-    // ]);
-
-    Route::get('/manage-classwork/{userID}/{assignmentTableID}/{courseID}', [ManageClassworkController::class, 'index'])
-    ->name('classwork.index');
-
-    Route::post('/post-classwork/{userID}/{assignmentTableID}/{courseID}', [ManageCourseController::class, 'postClasswork'])
-    ->name('teacher.postClasswork');// add classwork
-    
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

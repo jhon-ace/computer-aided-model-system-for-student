@@ -23,11 +23,11 @@
                                     </div>
                                     <li>
                                         <a href="#" class="block">
-                                            @if (Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo))
-                                                <img id="userImage" src="{{ asset('storage/teacher_photos/' . Auth::user()->teacher_photo) }}" class="rounded-full mt-[2px] w-[40px] h-auto sm:w-[26px] md:w-[26px] sm:h-auto object-contain border-[3px] border-transparent hover:border-red-500 mx-auto">
-                                            @else
-                                                <img id="imagePreview" src="{{ asset('assets/img/user.png') }}" class="rounded-lg w-9 h-9 sm:w-9 sm:h-9 mx-auto">
-                                            @endif
+                                            <?php if(Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo)): ?>
+                                                <img id="userImage" src="<?php echo e(asset('storage/teacher_photos/' . Auth::user()->teacher_photo)); ?>" class="rounded-full mt-[2px] w-[40px] h-auto sm:w-[26px] md:w-[26px] sm:h-auto object-contain border-[3px] border-transparent hover:border-red-500 mx-auto">
+                                            <?php else: ?>
+                                                <img id="imagePreview" src="<?php echo e(asset('assets/img/user.png')); ?>" class="rounded-lg w-9 h-9 sm:w-9 sm:h-9 mx-auto">
+                                            <?php endif; ?>
                                         </a>
                                     </li>
                                 </ul>
@@ -36,12 +36,12 @@
                             
                         </div>
                         <div x-show="open" @click.away="open = false" class="absolute right-0 w-48 bg-white rounded-md shadow-lg py-2 z-20 ">
-                            <a href="{{ route('teacher.profile.edit') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
+                            <a href="<?php echo e(route('teacher.profile.edit')); ?>" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                 <i class="fa-regular fa-user"></i> Profile
                             </a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <a href="{{ route('logout') }}"
+                            <form method="POST" action="<?php echo e(route('logout')); ?>">
+                                <?php echo csrf_field(); ?>
+                                <a href="<?php echo e(route('logout')); ?>"
                                     onclick="event.preventDefault(); this.closest('form').submit();"
                                     class="block px-4 py-2 text-gray-800 hover:bg-gray-200">
                                     <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
@@ -50,7 +50,8 @@
                         </div>
                     </div>
                 </div>
-            {{ $slot }}
+            <?php echo e($slot); ?>
+
             </div>
     </div>
 </div>
@@ -76,4 +77,4 @@ document.addEventListener('DOMContentLoaded', function() {
         theme: 'light', // Choose a theme: 'light', 'dark', etc.
     });
 });
-</script>
+</script><?php /**PATH C:\Users\Joshua Tabura\Desktop\computer-aided-model-system-for-student\resources\views/components/student/section-div-style.blade.php ENDPATH**/ ?>

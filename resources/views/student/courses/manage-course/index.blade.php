@@ -1,6 +1,6 @@
-<x-teacher-app-layout>
+<x-student-app-layout>
     <x-user-route-page-name 
-        :routeName="'teacher.teacher.index'"
+        :routeName="'student.student.index'"
         :courseDetails="[
             'course_name' => $manageCourse->course->course_name,
             'time' => date('g:i A', strtotime($manageCourse->class_start_time)) . ' - ' . date('g:i A', strtotime($manageCourse->class_end_time)),
@@ -8,7 +8,7 @@
             'section' => $manageCourse->section,
         ]"
     />
-    <x-teacher.section-div-style>
+    <x-student.section-div-style>
         <div class="container ml-1.5 sm:mx-auto p-4 relative">
                 <!-- heading -->
             <div class="rounded-md p-3 sm:p-4 md:p-6 lg:p-2 w-full h-18 sm:h-20 md:h-28 lg:h-24 lg:pt-4  mb-4 truncate" style="background: linear-gradient(to right, #3b82f6, #1e40af);">
@@ -378,8 +378,8 @@
                 </div>
             </div>
         </div>
-    </x-teacher.section-div-style>
-</x-teacher-app-layout>
+    </x-student.section-div-style>
+</x-student-app-layout>
 
 <x-show-hide-sidebar
     toggleButtonId="toggleButton"

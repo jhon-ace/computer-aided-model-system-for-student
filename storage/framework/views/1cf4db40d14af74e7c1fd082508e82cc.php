@@ -483,7 +483,7 @@
                             <i class="fa-solid fa-times"></i>
                         </button>
                     </div>
-                    <p class="text-black">Your invite code is: <strong><?php echo e($class_code->class_code); ?></strong></p>
+                    <p class="text-black">Your invite code is: <strong><?php echo e($manageCourse->class_code); ?></strong></p>
                     <button id="closeModalBottom" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                         Close
                     </button>

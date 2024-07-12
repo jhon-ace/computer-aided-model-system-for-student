@@ -12,7 +12,7 @@
             </label>
             <div class="border-t"></div> -->
             <li>
-            <a href="{{route('teacher.dashboard')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 {{ request()->routeIs('teacher.dashboard') ? ' rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white' }}">
+            <a href="{{route('student.student.dashboard')}}" class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-slate-700 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 {{ request()->routeIs('teacher.dashboard') ? ' rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : 'hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white' }}">
                 <span class="inline-flex justify-center items-center ml-4">
                     <i class="fa-solid fa-gauge-high fa-lg text-white" style="color: #fffff;"></i>
                 </span>
@@ -20,24 +20,24 @@
                 </a>
             </li>
             <li>
-                <a  href="{{ route('teacher.teachercourses.index') }}"  
+                {{-- <a  href="{{ route('teacher.teachercourses.index') }}"  
                     class="relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl hover:bg-blue-800 dark:hover:bg-slate-700 text-white-600 hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6
                         {{ request()->routeIs('teacher.teachercourses.index') || request()->routeIs('admin.department.edit') || request()->routeIs('admin.department.create') ? 'rounded-e-3xl border-l-green-500 bg-slate-700 text-gray-700 dark:text-gray-200' : '' }}">
                     <span class="inline-flex justify-center items-center ml-4">
                         <i class="fa-sharp fa-solid fa-file fa-md text-white" style="color: #fffff;"></i>
                     </span>
                     <span class="ml-2 text-sm tracking-wide truncate text-white">Courses</span>
-                </a>
-            {{-- </li>
+                </a> --}}
+            </li>
             @php
                 $currentUserID = request()->route('userID');
                 $currentAssignmentTableID = request()->route('assignmentTableID');
                 $currentCourseID = request()->route('courseID');
 
-                $assignedCoursesNav = \App\Models\CourseAssignment::where('teacher_id', Auth::id())
-                        ->with('course')
-                        ->get();
+               
 
+                $assignedCoursesNav = \App\Models\StudentByCourse::where('student_id', Auth::id())
+                        ->get();
                                         
             @endphp
 
@@ -46,7 +46,7 @@
             @else
                 <li class="px-5 hidden md:block">
                     <div class="flex flex-row items-center h-8">
-                        <div class="text-sm font-light tracking-wide text-white pl-5">Manage</div>
+                        <div class="text-sm font-light tracking-wide text-white pl-5">Enrolled</div>
                     </div>
                     <hr class="border-white w-full">
                 </li>
@@ -55,7 +55,7 @@
                         // Step 1: Count the occurrences of each course code
                         $courseCounts = [];
                         foreach($assignedCoursesNav as $courseAssignment) {
-                            $courseCode = $courseAssignment->course->course_code;
+                            $courseCode = $courseAssignment->courseAssignment->id;
                             if (isset($courseCounts[$courseCode])) {
                                 $courseCounts[$courseCode]++;
                             } else {
@@ -81,22 +81,22 @@
 
                     @foreach($assignedCoursesNav as $courseAssignment)
                         @php
-                            $isActive = $currentCourseID == $courseAssignment->course->id && $courseAssignment->id == $currentAssignmentTableID;
+                            $isActive = $currentAssignmentTableID == $courseAssignment->courseAssignment->id;
                         @endphp
                         <li class="">
-                            <a  href="{{ route('teacher.teacher.index', ['userID' => auth()->user()->id, 'assignmentTableID' => $courseAssignment->id, 'courseID' => $courseAssignment->course->id]) }}" class="{{ $isActive ? 'rounded-e-3xl border-l-green-500 text-red-500 bg-slate-700  dark:text-gray-200' : '' }} relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-white hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 "
-                                data-tippy-content="{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}<br>{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}">
+                            <a  href="{{ route('student.student.index', ['userID' => auth()->user()->id, 'assignmentTableID' => $courseAssignment->courseAssignment->id, 'courseID' => $courseAssignment->course->id]) }}" class="{{ $isActive ? 'rounded-e-3xl border-l-green-500 text-red-500 bg-slate-700  dark:text-gray-200' : '' }} relative flex flex-row items-center h-11 focus:outline-none hover:rounded-e-3xl mt-1 hover:bg-blue-800 dark:hover:bg-slate-700 text-white hover:text-white-800 border-l-4 border-transparent hover:border-blue-500 dark:hover:border-green-500 hover:text-white pr-6 "
+                                data-tippy-content="{{  $teacher_details->name   }} - {{ $courseAssignment->course->course_name }}<br>{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->courseAssignment->class_end_time)) }} | {{ $courseAssignment->courseAssignment->section}}">
 
-                                    <span class="inline-flex justify-center items-center ml-4 {{ isset($colorMap[$courseAssignment->course->course_code]) ? $colorMap[$courseAssignment->course->course_code] : 'text-white' }}">
-                                        @if(isset($iconMap[$courseAssignment->course->course_code]))
-                                            <i class="fa-solid {{ $iconMap[$courseAssignment->course->course_code] }}"></i>
+                                    <span class="inline-flex justify-center items-center ml-4 {{ isset($colorMap[$courseAssignment->courseAssignment->id]) ? $colorMap[$courseAssignment->courseAssignment->id] : 'text-white' }}">
+                                        @if(isset($iconMap[$courseAssignment->courseAssignment->id]))
+                                            <i class="fa-solid {{ $iconMap[$courseAssignment->courseAssignment->id] }}"></i>
                                         @endif
                                     </span>
                                     <!-- for sm -->
                                     <span class="ml-2 text-sm tracking-wide truncate sm:hidden ">
                                         <ul>
                                             <li><span class="text-white">{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}</span></li>
-                                            <li class="text-xs">{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}</li>
+                                            <li class="text-xs">{{ $courseAssignment->courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->courseAssignment->class_end_time)) }} | {{ $courseAssignment->courseAssignment->section}}</li>
                                         </ul>
                                         
                                     </span>
@@ -104,15 +104,15 @@
                                     <span class="ml-2 text-sm tracking-wide truncate hidden sm:inline-block">
                                         <ul>
                                             <li>{{ $courseAssignment->course->course_code }} - {{ $courseAssignment->course->course_name }}</li>
-                                            <li class="text-xs">{{ $courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->class_end_time)) }} | {{ $courseAssignment->section}}</li>
+                                            <li class="text-xs">{{ $courseAssignment->courseAssignment->days_of_the_week }} {{ date('g:i A', strtotime($courseAssignment->courseAssignment->class_start_time)) }} - {{ date('g:i A', strtotime($courseAssignment->courseAssignment->class_end_time)) }} | {{ $courseAssignment->courseAssignment->section}}</li>
                                         </ul>
                                     </span>
 
                             </a>
                         </li>
-                    @endforeach --}}
+                    @endforeach
                 </ul>
-            {{-- @endif --}}
+            @endif
         </ul>
             <p class="mb-14 px-5 py-3 hidden md:block text-center text-xs text-white">Copyright @2024</p>
     </div>

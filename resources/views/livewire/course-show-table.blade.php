@@ -1,3 +1,43 @@
+@php
+
+    $letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    $numbers = '0123456789';
+
+    $result = '';
+
+    // Get 3 random letters
+    for ($i = 0; $i < 3; $i++) {
+        $result .= $letters[rand(0, strlen($letters) - 1)];
+    }
+
+    // Get 3 random numbers
+    for ($i = 0; $i < 3; $i++) {
+        $result .= $numbers[rand(0, strlen($numbers) - 1)];
+    }
+
+    // Convert result string to an array to shuffle
+    $resultArray = str_split($result);
+
+    // Shuffle the array to mix letters and numbers
+    for ($i = count($resultArray) - 1; $i > 0; $i--) {
+        $j = rand(0, $i);
+        $temp = $resultArray[$i];
+        $resultArray[$i] = $resultArray[$j];
+        $resultArray[$j] = $temp;
+    }
+
+    // Join the array back into a string
+    $result = implode('', $resultArray);
+
+    
+   
+
+
+
+
+@endphp
+
+
 <div class="bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-8 text-black font-medium">
     @if (session('success'))
         <x-sweetalert type="success" :message="session('success')" />
@@ -194,6 +234,7 @@
                                                                 <label for="room" class="block text-gray-700 text-md w-72 font-bold mb-2 mt-4">Assign Room:</label>
                                                                 <input type="text" name="room" id="room" value="{{ old('room') }}" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="ex:NH201">
                                                                 <!-- Multi-select box for days of the week -->
+                                                                
                                                                 <div class="max-w-xl mx-auto grid grid-cols-3 gap-4">
                                                                     <div>
                                                                         <label for="days_of_week" class="block text-gray-700 text-md font-bold mb-2 mt-4">Day:</label>
@@ -210,6 +251,7 @@
                                                                     <div>
                                                                         <label for="end-time" class="block text-gray-700 text-md font-bold mb-2 mt-4">End time:</label>                                                                         
                                                                         <input type="time" id="end-time" name="class_end_time" class="bg-gray-50 border leading-none border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 focus:outline-none focus:shadow-outline" min="07:00" max="19:00" value="19:00" required />
+                                                                        
                                                                     </div>                                                                   
                                                                 </div>
                                                                                                                              
@@ -218,11 +260,13 @@
                                                                     <a @click="showModal = false" class="cursor-pointer px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 focus:outline-none">
                                                                         Cancel
                                                                     </a>
+                                
                                                                     <button type="submit"  class="cursor-pointer px-4 py-2 bg-blue-600 text-white rounded-md ml-4 hover:bg-blue-700 focus:outline-none">
                                                                         Save
                                                                     </button>
 
                                                                 </div>
+                                                                <input type="text" id="class_code" name="class_code"  value="{{$result}}" class="hidden">
                                                             </form>
                                                         </div>
                                                     </div>
@@ -303,4 +347,44 @@
     }
 
 </script>
+
+{{-- <script>
+    function generateRandomString() {
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        
+        let result = '';
+        
+        for (let i = 0; i < 3; i++) {
+            // Get a random letter
+            result += letters.charAt(Math.floor(Math.random() * letters.length));
+        }
+        
+        for (let i = 0; i < 3; i++) {
+            // Get a random number
+            result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        }
+        
+        // Convert result string to an array to shuffle
+        let resultArray = result.split('');
+        
+        // Shuffle the array to mix letters and numbers
+        for (let i = resultArray.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [resultArray[i], resultArray[j]] = [resultArray[j], resultArray[i]];
+        }
+        
+        // Join the array back into a string
+        result = resultArray.join('');
+        
+        // Set the value of the input element with ID 'class_code'
+        document.getElementById('class_code').value = result;
+        
+        console.log(result);
+    }
+
+    // Run the function when the page loads
+
+   
+</script> --}}
 

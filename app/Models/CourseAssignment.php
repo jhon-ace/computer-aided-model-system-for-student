@@ -18,6 +18,7 @@ class CourseAssignment extends Model
 
     protected $fillable = [
         'course_id',
+        'class_code',
         'section',
         'days_of_the_week',
         'class_start_time',

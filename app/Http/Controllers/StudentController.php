@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseAssignment;
 use App\Models\Teacher;
+use App\Models\StudentByCourse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +19,9 @@ class StudentController extends Controller
 
         $courseAssignments = CourseAssignment::with('course')
             ->with('teacher')
+            ->get();
+
+        $enrolledStudent = StudentByCourse::where('student_id',$user)
             ->get();
             
         $teachers = Teacher::all();
@@ -35,8 +39,6 @@ class StudentController extends Controller
         //     }
         //     }
         // }
-
-
         // Prepare chart data
         $courseData = [
             'labels' => ['1ST', '2ND'], // School years
@@ -54,6 +56,30 @@ class StudentController extends Controller
             'user' => $user,
             'courseAssignments' => $courseAssignments, 
             'teachers' => $teachers,
-            'courseData' => $courseData]);
+            'courseData' => $courseData,
+            'coursesEnrolled' => $enrolledStudent]);
+    }
+
+    public function joinClass(Request $request){
+        
+        $user= Auth::id();
+        
+        $request->validate([
+            'class_code' => 'required|string', 
+        ]);
+
+        $classcode = $request->input('class_code');
+
+        $course = CourseAssignment::where('class_code',$classcode)
+                        ->firstOrFail();
+
+        StudentByCourse::create([
+            'student_id'=> $user,
+            'course_id'=> $course->course_id,
+            'course_assignment_id' => $course->id
+        ]);
+        
+        return redirect()->route('student.student.dashboard')->with('success', 'Enrolled successfully.');
+
     }
 }
