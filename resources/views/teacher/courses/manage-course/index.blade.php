@@ -35,11 +35,7 @@
             <div id="floatingMenu" class="z-10 fixed right-4 top-1/2 transform -translate-y-1/2 bg-white shadow-lg rounded-md p-5 sm:p-6 md:p-7 lg:p-3 border-2 border-gray-400 text-black font-medium opacity-0 pointer-events-none transition-all duration-500">
                 <div class="text-center font-bold">View</div>
                 <hr class="border-gray-300">
-                <a href="{{ route('teacher.classwork.index', [
-                    'userID' => auth()->user()->id, 
-                    'assignmentTableID' => $manageCourse->id,
-                    'courseID' => $manageCourse->course_id])}}" 
-                class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
+                <a href="#" @click.prevent="openClassworkModal()" class="block px-4 py-2 text-sm text-gray-800 hover:bg-gray-200">
                     <i class="fa-solid fa-file"></i> Classwork
                 </a>
                 <hr class="border-gray-300">
@@ -55,6 +51,80 @@
                     <i class="fa-solid fa-file-pen"></i> Student
                 </a>
             </div>
+            
+            <!-- Classwork Modal -->
+            <div id="classworkModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+                <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
+                <div class="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full z-50">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-black">Add Classwork</h2>
+                        <button id="closeClassworkModal" class="text-lg text-black">X</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    
+                    <form id="classworkForm" action="{{ route('teacher.teacher.postClasswork', ['userID' => auth()->user()->id, 'assignmentTableID' => $manageCourse->id, 'courseID' => $manageCourse->course_id])}}" method="POST" onsubmit="logClasswork(event)" enctype="multipart/form-data">
+                        @csrf
+                        <div class="text-gray-500">
+                            Classwork Content
+                        </div>
+                        <div id="editor1" contenteditable="true" class="border p-2 mt-2 rounded h-40 bg-white overflow-y-auto text-black"
+                            placeholder="Enter your Classwork Content here..." ></div>
+                        <input type="hidden" name="content1" id="content1">
+                        <div class="editor-toolbar">
+                            <button class="text-black" type="button" onclick="formatText('bold')" title="Bold"><strong>B</strong></button>
+                            <button class="text-black" type="button" onclick="formatText('italic')" title="Italic"><em>I</em></button>
+                            <button class="text-black" type="button" onclick="formatText('underline')" title="Underline"><u>U</u></button>
+                        </div>
+                        {{-- Select --}}
+                        <div class="relative" >
+                            <select id="editor2" class="block appearance-none w-full bg-white border border-gray-300 text-gray-700 py-2.5 px-4 pr-8 rounded leading-tight focus:outline-none focus:border-blue-500 hover:bg-gray-100 " required>
+                              <option data-id="Practice Problem" >Practice Problems</option>
+                              <option data-id="Assignment">Assignments</option>
+                              <option data-id="Module">Module</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9 11l3 3 3-3h-6z"/></svg>
+                            </div>
+                        </div>
+                        <input type="hidden" name="content2" id="content2">
+                        {{-- Upload File --}}
+                        <div class="max-w-sm">
+                            <label class="block">
+                              <span class="sr-only">Choose profile photo</span>
+                              Choose profile photo
+                              <input id="files" type="file" name="files[]"class="block w-full text-sm text-gray-500
+                                file:me-4 file:py-2 file:px-4
+                                file:rounded-lg file:border-0
+                                file:text-sm file:font-semibold
+                                file:bg-blue-600 file:text-white
+                                hover:file:bg-blue-700
+                                file:disabled:opacity-50 file:disabled:pointer-events-none
+                                dark:text-neutral-500
+                                dark:file:bg-blue-500
+                                dark:hover:file:bg-blue-400
+                                "
+                                multiple
+                                onchange="displaySelectedFiles(this)
+                                "
+                              >
+                            </label>
+                          </div>
+                        
+                          <div id="fileList" class="mt-4 text-black">
+                             {{-- File names will be displayed here --}}
+                          </div>
+                          
+                                 
+                          
+                        <div class="flex justify-end mt-2">
+                            <button type="submit" id="addButton"  class="bg-blue-500 text-white px-4 py-2 rounded ">Add</button>
+                        </div>
+                    </form>
+                   
+                </div>
+            </div>
+
             <!-- Toggle Button for Adding of Components -->
             <div id="toggleButton2" class="fixed -right-1 top-1/2 transform -translate-y-1/2 z-50 bg-white text-gray-500 p-2 rounded-full shadow-md cursor-pointer">
                 <svg id="toggleIcon2" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -124,149 +194,185 @@
                             </form>
                         </div>
                     </div>
-                    @if(count($announcementsByAssignment) > 0)
-                        @foreach($announcementsByAssignment as $contentId => $announcements)
-                            @foreach($announcements as $announcement)
-                                <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
-                                    <div class="flex items-center">
-                                        <img src="{{ Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png') }}" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto">
-                                    </div>
-                                    <div class="flex justify-between w-full">
-                                        <div class="text-md sm:mt-3 text-tight md:mt-2.5 lg:mt-2 lg:p-1 lg:text-md ml-2 text-md text-black w-full">
-                                            Posted an announcement <span class="ml-5 text-gray-500 text-sm">{{ date('l, g:i A', strtotime($announcement['created_at'])) }}</span>
+                    @if(count($announcementsByAssignment) > 0 || count($classworkByAssignment) > 0)
+                        @foreach(['Announcement' => $announcementsByAssignment, 'Classwork' => $classworkByAssignment] as $type => $items)
+                            @foreach($items as $contentId => $contentItems)
+                                @foreach($contentItems as $content)
+                                    <div class="flex bg-white w-full h-20 rounded-[5px] p-4">
+                                        <div class="flex items-center">
+                                            <img src="{{ Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png') }}" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto">
                                         </div>
-                                        <div x-cloak x-data="{ showModal: false, announcementId: {{ $announcement['announcement_id'] }} }">
-                                            <div class="p-3 w-28 ml-3 mr-3 text-sm text-center text-gray-500 border rounded-md cursor-pointer border-gray-400 hover:border-blue-500 hover:text-black"
-                                                @click="showModal = true">Click to view</div>
-
-                                            <!-- Modal -->
-                                            <div x-show="showModal" x-cloak
-                                                x-transition:enter="transition ease-out duration-300"
-                                                x-transition:enter-start="opacity-0 transform scale-95"
-                                                x-transition:enter-end="opacity-100 transform scale-100"
-                                                x-transition:leave="transition ease-in duration-200"
-                                                x-transition:leave-start="opacity-100 transform scale-100"
-                                                x-transition:leave-end="opacity-0 transform scale-95"
-                                                @click.away="showModal = false"
-                                                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-
-                                                <div class="bg-white p-6 rounded-lg shadow-lg -mt-32 max-w-3xl w-full">
-                                                    <div x-cloak class="flex justify-between items-center border-b mb-4 w-full">
-                                                    <h2 class="text-xl font-semibold">Announcement # {{ $announcement['announcement_id'] }}</h2>
-                                                    <div class="flex items-center">
-                                                        <img src="{{ Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png') }}" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto mr-2">
-                                                        <p>{{ Auth::user()->name }}</p>
-                                                    </div>
-                                                </div>
-
-
-                                                    <div class=" p-2 rounded h-auto text-lg bg-white overflow-y-auto"
-                                                        placeholder="Enter your announcement here..." oninput="checkContentUpdate()" >
-                                                    {!! $announcement['announcement'] !!}
-                                                    </div>
-                                                    <div class="flex justify-end mt-4">
-                                                        <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
-                                                                @click="showModal = false">
-                                                                Close
-                                                        </button>
-                                                    </div>
-                                                </div>
+                                        <div class="flex justify-between w-full">
+                                            @if ($type === "Announcement")
+                                            <div class="text-md sm:mt-3 text-tight md:mt-2.5 lg:mt-2 lg:p-1 lg:text-md ml-2 text-md text-black w-full">
+                                                Posted an {{ strtolower($type) }} <span class="ml-5 text-gray-500 text-sm">{{ date('l, g:i A', strtotime($content['created_at'])) }}</span>
                                             </div>
-                                        </div>
-                                        <div x-data="{ open: false }" class="relative inline-block text-left">
-                                            <div class="dropdown">
-                                                <button @click="open = !open" type="button" class="z-50 inline-flex items-center p-2.5 ml-2 mt-2 text-sm text-gray-500 rounded-md cursor-pointer hover:text-black hover:shadow-xl focus:outline-none">
-                                                    <i class="fas fa-ellipsis-v"></i>
-                                                </button>
-                                                <div x-cloak x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
-                                                    <div x-data="{ open: false }" class="relative">
-                                                        <a href="#"  id="openModalButton" @click.prevent="open = true" class="block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none">
-                                                            Edit
-                                                        </a>
-
-                                                        <!-- Modal -->
-                                                        <div x-cloak x-show="open" id="updateModal" class="fixed inset-0 flex items-center justify-center z-50">
-                                                            <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
-                                                            <div class="bg-white p-6 rounded-lg shadow-lg -mt-32 max-w-3xl w-full z-50">
-                                                                <div x-cloak class="flex justify-between items-center">
-                                                                    <h2 class="text-xl font-semibold">Edit Announcement</h2>
-                                                                    <button @click="open = false" class="text-lg text-hover:text-red-500">×</button>
-                                                                </div>
-
-                                                                <!-- Modal body -->
-                                                                <form id="updateAnnouncementForm" action="{{ route('teacher.teacher.updateAnnouncement', [
-                                                                    'userID' => auth()->user()->id, 
-                                                                    'assignmentTableID' => $manageCourse->id,
-                                                                    'courseID' => $manageCourse->course_id,
-                                                                    'contentID' => $contentId,
-                                                                    'announcementID' => $announcement['announcement_id']
-                                                                ]) }}" method="POST">
-                                                                    @csrf
-                                                                    @method('PUT')
-
-                                                                    <div x-data="{ 
-                                                                        message: `{!! $announcement['announcement'] !!}`, 
-                                                                        initialMessage: `{!! $announcement['announcement'] !!}`, 
-                                                                        isEdited: false
-                                                                    }">
-                                                                        <!-- Editable content -->
-                                                                        <div 
-                                                                            contenteditable="true" 
-                                                                            @input="message = $event.target.innerHTML; isEdited = true" 
-                                                                            x-ref="editable" 
-                                                                            class="w-full border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
-                                                                        >{!! $announcement['announcement'] !!}</div>
-
-                                                                        <!-- Hidden textarea to hold the content -->
-                                                                        <textarea hidden name="content" x-text="message"></textarea>
-
-                                                                        <!-- Editor toolbar (assuming formatText function exists elsewhere) -->
-                                                                        <div class="editor-toolbar mt-2">
-                                                                            <button type="button" @click="formatText('bold')" title="Bold"><strong>B</strong></button>
-                                                                            <button type="button" @click="formatText('italic')" title="Italic"><em>I</em></button>
-                                                                            <button type="button" @click="formatText('underline')" title="Underline"><u>U</u></button>
-                                                                        </div>
-
-                                                                        <!-- Buttons for cancel and save -->
-                                                                        <div class="flex justify-end mt-2">
-                                                                            <button type="button" @click="open = false;" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
-                                                                            <button type="submit" id="updateButton"
-                                                                                class="text-white px-4 py-2 rounded"
-                                                                                :class="{
-                                                                                    'bg-blue-500 cursor-pointer': isEdited,
-                                                                                    'bg-blue-300 cursor-not-allowed': !isEdited
-                                                                                }"
-                                                                                x-text="isEdited ? 'Save changes' : 'Save changes'"
-                                                                                :disabled="!isEdited"
-                                                                            ></button>
-
-                                                                        </div>
-                                                                    </div>
-                                                                </form>
+                                            @else
+                                                @if ($content['type_of_classwork'] === 'Assignment')
+                                                    <div class="text-md sm:mt-3 text-tight md:mt-2.5 lg:mt-2 lg:p-1 lg:text-md ml-2 text-md text-black w-full">
+                                                        Posted an {{ strtolower($content['type_of_classwork']) }} <span class="ml-5 text-gray-500 text-sm">{{ date('l, g:i A', strtotime($content['created_at'])) }}</span>
+                                                    </div>
+                                                @else
+                                                    <div class="text-md sm:mt-3 text-tight md:mt-2.5 lg:mt-2 lg:p-1 lg:text-md ml-2 text-md text-black w-full">
+                                                        Posted a {{ strtolower($content['type_of_classwork']) }} <span class="ml-5 text-gray-500 text-sm">{{ date('l, g:i A', strtotime($content['created_at'])) }}</span>
+                                                    </div>
+                                                @endif
+                                                
+                                            @endif
+                                            <div x-cloak x-data="{ showModal: false, contentId: {{ $content['content_id'] }} }">
+                                                <div class="p-3 w-28 ml-3 mr-3 text-sm text-center text-gray-500 border rounded-md cursor-pointer border-gray-400 hover:border-blue-500 hover:text-black"
+                                                    @click="showModal = true">Click to view</div>
+                    
+                                                <!-- Modal -->
+                                                <div x-show="showModal" x-cloak
+                                                    x-transition:enter="transition ease-out duration-300"
+                                                    x-transition:enter-start="opacity-0 transform scale-95"
+                                                    x-transition:enter-end="opacity-100 transform scale-100"
+                                                    x-transition:leave="transition ease-in duration-200"
+                                                    x-transition:leave-start="opacity-100 transform scale-100"
+                                                    x-transition:leave-end="opacity-0 transform scale-95"
+                                                    @click.away="showModal = false"
+                                                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    
+                                                    <div class="bg-white p-6 rounded-lg shadow-lg -mt-32 max-w-3xl w-full">
+                                                        <div x-cloak class="flex justify-between items-center border-b mb-4 w-full">
+                                                            <h2 class="text-xl font-semibold">{{ $type }} # {{ $content['content_id'] }}</h2>
+                                                            <div class="flex items-center">
+                                                                <img src="{{ Auth::user()->teacher_photo && Storage::exists('public/teacher_photos/' . Auth::user()->teacher_photo) ? asset('storage/teacher_photos/' . Auth::user()->teacher_photo) : asset('assets/img/user.png') }}" class="shadow-xl border-[.1px] border-gray-500 rounded-full w-9 object-contain mx-auto mr-2">
+                                                                <p>{{ Auth::user()->name }}</p>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <form action="{{ route('teacher.teacher.removeAnnouncement', [
-                                                                    'userID' => auth()->user()->id,
-                                                                    'assignmentTableID' => $manageCourse->id,
-                                                                    'courseID' => $manageCourse->course_id,
-                                                                    'contentID' => $contentId,
-                                                                    'announcementID' => $announcement['announcement_id'],
-                                                                ]) }}" method="POST">
-                                                        @csrf
-                                                        @method('PUT')
-
-                                                        <input type="hidden" name="announcement_id" value="{{ $announcement['announcement_id'] }}">
+                                                        <div class=" p-2 rounded h-auto text-lg bg-white overflow-y-auto">
+                                                            {!! $content['content'] !!}
+                                                        </div>
+                                                        @if ($type ==="Classwork")
+                                                            @foreach ($file as $files)
+                                                            {{-- <li class="mb-2">
+                                                                <a href="{{ url('/classroom/files/' . $files->id) }}" class="text-blue-500 hover:underline" target="_blank">
+                                                                    {{ $files->classwork_file }}
+                                                                </a>
+                                                            </li> --}}
+                                                            @if ($content['content_id'] === $files->classwork_id)
+                                                            <li class="mb-2 flex items-center border rounded p-2">
+                                                                <img  src="{{ route('thumbnails.show', ['filename' => $files->classwork_file . '.jpg']) }}" alt="{{ $files->classwork_file }}" class="w-16 h-16 object-cover mr-3">
+                                                                <div>
+                                                                    <a href="{{ url('/classroom/files/' . $files->id) }}" class="text-blue-500 hover:underline">{{ $files->classwork_file }}</a>
+                                                                    <div class="text-gray-500 text-sm">{{ strtoupper(pathinfo($files->classwork_file, PATHINFO_EXTENSION)) }}</div>
+                                                                </div>
+                                                            </li>
+                                                            @endif
+                                                           
+                                                            @endforeach
+                                                        @else
+                                                            
+                                                        @endif
                                                         
-                                                        <button type="submit" class="text-left block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none"> 
-                                                            Remove 
-                                                        </button>
-                                                    </form>
+                                                        <div class="flex justify-end mt-4">
+                                                            <button class="px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md"
+                                                                    @click="showModal = false">
+                                                                    Close
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div x-data="{ open: false }" class="relative inline-block text-left">
+                                                <div class="dropdown">
+                                                    <button @click="open = !open" type="button" class="z-50 inline-flex items-center p-2.5 ml-2 mt-2 text-sm text-gray-500 rounded-md cursor-pointer hover:text-black hover:shadow-xl focus:outline-none">
+                                                        <i class="fas fa-ellipsis-v"></i>
+                                                    </button>
+                                                    <div x-cloak x-show="open" @click.away="open = false" class="dropdown-content absolute right-0 mt-2 w-32 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100 focus:outline-none">
+                                                        <div x-data="{ open: false }" class="relative">
+                                                            <a href="#" @click.prevent="open = true" class="block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none">
+                                                                Edit
+                                                            </a>
+                    
+                                                            <!-- Modal -->
+                                                            <div x-cloak x-show="open" id="updateModal" class="fixed inset-0 flex items-center justify-center z-50">
+                                                                <div class="fixed inset-0 bg-gray-800 bg-opacity-75"></div>
+                                                                <div class="bg-white p-6 rounded-lg shadow-lg -mt-32 max-w-3xl w-full z-50">
+                                                                    <div x-cloak class="flex justify-between items-center">
+                                                                        <h2 class="text-xl font-semibold">Edit {{ $type }}</h2>
+                                                                        <button @click="open = false" class="text-lg text-hover:text-red-500">×</button>
+                                                                    </div>
+                    
+                                                                    <!-- Modal body -->
+                                                                    <form id="updateForm_{{ $type }}_{{ $content['content_id'] }}" action="{{ route('teacher.teacher.updateAnnouncement', [
+                                                                        'userID' => auth()->user()->id,
+                                                                        'assignmentTableID' => $manageCourse->id,
+                                                                        'courseID' => $manageCourse->course_id,
+                                                                        'contentID' => $contentId,
+                                                                        'type' => $type,
+                                                                        'announcementID' => $content['content_id']
+                                                                    ]) }}" method="POST">
+                                                                        @csrf
+                                                                        @method('PUT')
+                    
+                                                                        <div x-data="{ 
+                                                                            message: `{!! $content['content'] !!}`, 
+                                                                            initialMessage: `{!! $content['content'] !!}`, 
+                                                                            isEdited: false
+                                                                        }">
+                                                                            <!-- Editable content -->
+                                                                            <div 
+                                                                                contenteditable="true" 
+                                                                                @input="message = $event.target.innerHTML; isEdited = true" 
+                                                                                x-ref="editable" 
+                                                                                class="w-full border p-2 mt-2 rounded h-40 bg-white overflow-y-auto"
+                                                                            >{!! $content['content'] !!}</div>
+                    
+                                                                            <!-- Hidden textarea to hold the content -->
+                                                                            <textarea hidden name="content" x-text="message"></textarea>
+                    
+                                                                            <!-- Editor toolbar -->
+                                                                            <div class="editor-toolbar mt-2">
+                                                                                <button type="button" @click="formatText('bold')" title="Bold"><strong>B</strong></button>
+                                                                                <button type="button" @click="formatText('italic')" title="Italic"><em>I</em></button>
+                                                                                <button type="button" @click="formatText('underline')" title="Underline"><u>U</u></button>
+                                                                            </div>
+                    
+                                                                            <!-- Buttons for cancel and save -->
+                                                                            <div class="flex justify-end mt-2">
+                                                                                <button type="button" @click="open = false;" class="bg-red-500 text-white px-4 py-2 rounded mr-2">Cancel</button>
+                                                                                <button type="submit" id="updateButton_{{ $type }}_{{ $content['content_id'] }}"
+                                                                                    class="text-white px-4 py-2 rounded"
+                                                                                    :class="{
+                                                                                        'bg-blue-500 cursor-pointer': isEdited,
+                                                                                        'bg-blue-300 cursor-not-allowed': !isEdited
+                                                                                    }"
+                                                                                    x-text="isEdited ? 'Save changes' : 'Save changes'"
+                                                                                    :disabled="!isEdited"
+                                                                                ></button>
+                    
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <form action="{{ route('teacher.teacher.removeAnnouncement', [
+                                                            'userID' => auth()->user()->id,
+                                                            'assignmentTableID' => $manageCourse->id,
+                                                            'courseID' => $manageCourse->course_id,
+                                                            'type' => $type,
+                                                            'contentID' => $contentId,
+                                                            'announcementID' => $content['content_id'],
+                                                        ]) }}" method="POST">
+                                                            @csrf
+                                                            @method('PUT')
+                    
+                                                            <input type="hidden" name="content_id" value="{{ $content['content_id'] }}">
+                                                            
+                                                            <button type="submit" class="text-left block px-4 py-2 w-full text-sm hover:rounded-md text-gray-700 hover:bg-gray-100 hover:text-black focus:outline-none"> 
+                                                                Remove 
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endforeach
                             @endforeach
                         @endforeach
                     @else
@@ -282,12 +388,12 @@
             <div id="inviteCodeModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 opacity-0 pointer-events-none transition-opacity duration-500">
                 <div class="bg-white rounded-lg p-6 max-w-md mx-auto">
                     <div class="flex justify-between items-center mb-4">
-                        <h3 class="text-xl font-semibold">Invite Code</h3>
+                        <h3 class="text-xl font-semibold text-black">Invite Code</h3>
                         <button id="closeModal" class="text-gray-500 hover:text-gray-800">
                             <i class="fa-solid fa-times"></i>
                         </button>
                     </div>
-                    <p>Your invite code is: <strong>XYZ123</strong></p>
+                    <p class="text-black">Your invite code is: <strong>{{$manageCourse->class_code}}</strong></p>
                     <button id="closeModalBottom" class="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
                         Close
                     </button>
@@ -328,6 +434,17 @@ function updateInput() {
         document.getElementById('announcementForm').submit();
     }
 
+    function logClasswork(event) {
+        event.preventDefault();
+        // Get the content from the editor
+        const editorContent = document.getElementById('editor1').innerHTML;
+        const element = document.getElementById('editor2');
+        // Set the value of the hidden input field
+        document.getElementById('content1').value = editorContent;
+        document.getElementById('content2').value = element.options[ element.selectedIndex ].getAttribute('data-id');
+        // Submit the form
+        document.getElementById('classworkForm').submit();
+    }
 
  // code for toggleButton floating menu
     
@@ -348,6 +465,25 @@ function updateInput() {
         });
     });
 </script>
+
+
+<script>
+    //code for toggling Classwork Modal
+    document.addEventListener('DOMContentLoaded', function() {
+        const classworkModal = document.getElementById('classworkModal');
+        const openClassworkModalButton = document.querySelector('#floatingMenu a[href="#"]');
+        const closeClassworkModalButton = document.getElementById('closeClassworkModal');
+
+        openClassworkModalButton.addEventListener('click', function() {
+            classworkModal.classList.remove('hidden');
+        });
+
+        closeClassworkModalButton.addEventListener('click', function() {
+            classworkModal.classList.add('hidden');
+        });
+    });
+</script>
+
 
 <style>
 /* css for toggleButton floating menu */
@@ -411,6 +547,21 @@ function updateInput() {
 });
 
 </script>
+
+{{-- <script>
+    //upload multiple files display
+    function displaySelectedFiles(input) {
+      const fileList = document.getElementById('fileList');
+      fileList.innerHTML = ''; // Clear previous content
+
+      for (let i = 0; i < input.files.length; i++) {
+        const fileName = input.files[i].name;
+        const listItem = document.createElement('div');
+        listItem.textContent = fileName;
+        fileList.appendChild(listItem);
+      }
+    }
+  </script> --}}
 
 <style>
     #floatingMenu2 {

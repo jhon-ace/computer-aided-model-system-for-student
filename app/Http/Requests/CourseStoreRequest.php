@@ -22,6 +22,7 @@ class CourseStoreRequest extends FormRequest
             'course_description' => ['required', 'string', 'max:255'],
             'course_unit' => ['required', 'string', 'max:255'],
             'course_semester' => ['required', 'string', 'max:255'],
+           
         ];
 
         if ($this->input('program_id')) {

@@ -26,7 +26,7 @@
                     <span class="inline-flex justify-center items-center ml-4">
                         <i class="fa-sharp fa-solid fa-file fa-md text-white" style="color: #fffff;"></i>
                     </span>
-                    <span class="ml-2 text-sm tracking-wide truncate text-white">My Courses</span>
+                    <span class="ml-2 text-sm tracking-wide truncate text-white">Course</span>
                 </a>
             </li>
             @php

@@ -18,6 +18,7 @@ class CourseAssignment extends Model
 
     protected $fillable = [
         'course_id',
+        'class_code',
         'section',
         'days_of_the_week',
         'class_start_time',
@@ -31,8 +32,15 @@ class CourseAssignment extends Model
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id', 'id');
+        // return $this->belongsTo(Course::class);
     }
+
+    // public function class_code()
+    // {
+    //     return $this->belongsTo(Course::class, 'course_id', 'id');
+    // }
+
 
     public function teacher()
     {

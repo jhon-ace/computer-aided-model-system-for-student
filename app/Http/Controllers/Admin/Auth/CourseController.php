@@ -53,7 +53,8 @@ class CourseController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $course = Course::findOrFail($id);
+        return view('courses.show', compact('course'));
     }
 
     /**
@@ -158,6 +159,7 @@ class CourseController extends Controller
             'class_start_time' => 'required|date_format:H:i',
             'class_end_time' => 'required|date_format:H:i|after:class_start_time',
             'room' => 'nullable|string|max:255',
+            'class_code' => 'required', 'string', 'max:255',
         ], [
             'teacher_id.exists' => 'The selected teacher does not exist.',
             'days_of_the_week.in' => 'Invalid days of the week selection.',
@@ -175,6 +177,7 @@ class CourseController extends Controller
             $class_start_time = $request->input('class_start_time');
             $class_end_time = $request->input('class_end_time');
             $room = $request->input('room');
+            $classcode = $request->input('class_code');
     
             // Find the teacher
             $teacher = Teacher::findOrFail($teacherId);
@@ -182,6 +185,7 @@ class CourseController extends Controller
             // Create a new course assignment
             CourseAssignment::create([
                 'course_id' => $course->id,
+                'class_code' => $classcode,
                 'section' => $section,
                 'days_of_the_week' => $days_of_the_week,
                 'class_start_time' => $class_start_time,
@@ -193,7 +197,7 @@ class CourseController extends Controller
             ]);
     
             // Redirect back with a success message
-            return redirect()->route('admin.course.index')->with('success', 'Course assigned to teacher successfully.');
+            return redirect()->route('admin.course.index')->with('success', $classcode);
     
         } catch (ModelNotFoundException $e) {
             // Redirect back with an error message if the course or teacher is not found
